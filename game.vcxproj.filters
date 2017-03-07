@@ -173,12 +173,4 @@
       <Filter>MFC</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="D:\Download\53645_8.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Bitmaps\53645_8.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
 </Project>
