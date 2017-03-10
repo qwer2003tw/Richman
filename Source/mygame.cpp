@@ -402,13 +402,13 @@ CGameMap::CGameMap()
 void CGameMap::LoadBitmap()
 {
     tableMap.LoadBitmap(IDB_MAP, RGB(255, 255, 255));
-    start.LoadBitmap(IDB_START);
 }
 
 void CGameMap::OnShow()
 {
     tableMap.SetTopLeft(0, 0);
     tableMap.ShowBitmap();
+
 
 }
 }
