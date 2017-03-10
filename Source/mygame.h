@@ -75,7 +75,15 @@ namespace game_framework {
 	// 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
 	// 每個Member function的Implementation都要弄懂
 	/////////////////////////////////////////////////////////////////////////////
-
+    class CGameMap
+    {
+    public:
+        CGameMap();
+        void LoadBitmap();
+        void OnShow();
+    protected:
+        CMovingBitmap tableMap;
+    };
 	class CGameStateRun : public CGameState {
 	public:
 		CGameStateRun(CGame *g);
@@ -101,6 +109,7 @@ namespace game_framework {
 		CEraser			eraser;		// 拍子
 		CInteger		hits_left;	// 剩下的撞擊數
 		CBouncingBall   bball;		// 反覆彈跳的球
+        CGameMap        gamemap;    // tableMap
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
