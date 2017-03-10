@@ -412,7 +412,7 @@ void CGameMap::OnShow()
     
     tableMap.SetTopLeft(0, 0);
     tableMap.ShowBitmap();
-    status_background.SetTopLeft(960, 0); //ª¬ºAÄæ­I´º¦ì¸m
+    status_background.SetTopLeft(890, 0); //ª¬ºAÄæ­I´º¦ì¸m
     status_background.ShowBitmap();       //Åã¥Ü¹Ï¤ù
 
 }

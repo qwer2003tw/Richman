@@ -134,7 +134,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 IDR_MAINFRAME           BITMAP                  "..\\res\\Toolbar.bmp"
 
-IDB_STATUS_BACKGROUND   BITMAP                  "..\\RES\\status_backgound.bmp"
+IDB_STATUS_BACKGROUND   BITMAP                  "..\\RES\\status_background.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////
