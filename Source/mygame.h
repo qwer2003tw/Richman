@@ -82,6 +82,7 @@ namespace game_framework {
         void LoadBitmap();
         void OnShow();
     protected:
+        CMovingBitmap status_background;
         CMovingBitmap tableMap;
         CMovingBitmap start;
     };

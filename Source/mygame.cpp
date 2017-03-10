@@ -285,7 +285,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 		ball[i].LoadBitmap();								// 載入第i個球的圖形
 	eraser.LoadBitmap();
 	background.LoadBitmap(IDB_BACKGROUND);					// 載入背景的圖形
-    gamemap.LoadBitmap();                                   // 載入tablemap
+    gamemap.LoadBitmap();                                   // 載入背景
                                                             //
 	// 完成部分Loading動作，提高進度
 	//
@@ -391,7 +391,7 @@ void CGameStateRun::OnShow()
 	corner.SetTopLeft(SIZE_X-corner.Width(), SIZE_Y-corner.Height());
 	corner.ShowBitmap();
     */
-    gamemap.OnShow();                   // 貼上tableMap
+    gamemap.OnShow();                   // 貼上背景
 }
 
 CGameMap::CGameMap()
@@ -403,10 +403,13 @@ void CGameMap::LoadBitmap()
 {
     tableMap.LoadBitmap(IDB_MAP, RGB(255, 255, 255));
     start.LoadBitmap(IDB_START);
+    status_background.LoadBitmapA(IDB_STATUS_BACKGROUND);  //讀狀態欄背景
 }
 
 void CGameMap::OnShow()
 {
+    status_background.SetTopLeft(960, 0); //狀態欄背景位置
+    status_background.ShowBitmap();       //顯示圖片
     tableMap.SetTopLeft(0, 0);
     tableMap.ShowBitmap();
 

@@ -186,5 +186,8 @@
     <Image Include="RES\START.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="RES\status_backgound.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

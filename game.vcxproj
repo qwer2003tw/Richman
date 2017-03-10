@@ -327,6 +327,7 @@
     <Image Include="Bitmaps\START.bmp" />
     <Image Include="RES\MAP.bmp" />
     <Image Include="RES\START.bmp" />
+    <Image Include="RES\status_backgound.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
