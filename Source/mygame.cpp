@@ -402,16 +402,18 @@ CGameMap::CGameMap()
 void CGameMap::LoadBitmap()
 {
     tableMap.LoadBitmap(IDB_MAP, RGB(255, 255, 255));
-    start.LoadBitmap(IDB_START);
+
     status_background.LoadBitmapA(IDB_STATUS_BACKGROUND);  //讀狀態欄背景
+
 }
 
 void CGameMap::OnShow()
 {
-    status_background.SetTopLeft(960, 0); //狀態欄背景位置
-    status_background.ShowBitmap();       //顯示圖片
+    
     tableMap.SetTopLeft(0, 0);
     tableMap.ShowBitmap();
+    status_background.SetTopLeft(960, 0); //狀態欄背景位置
+    status_background.ShowBitmap();       //顯示圖片
 
 }
 }
