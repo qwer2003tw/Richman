@@ -374,9 +374,11 @@ void CGameStateRun::OnShow()
 	//
 	//  貼上背景圖、撞擊數、球、擦子、彈跳的球
 	//
+    /*
 	background.ShowBitmap();			// 貼上背景圖
 	help.ShowBitmap();					// 貼上說明圖
 	hits_left.ShowBitmap();
+    
 	for (int i=0; i < NUMBALLS; i++)
 		ball[i].OnShow();				// 貼上第i號球
 	bball.OnShow();						// 貼上彈跳的球
@@ -388,6 +390,7 @@ void CGameStateRun::OnShow()
 	corner.ShowBitmap();
 	corner.SetTopLeft(SIZE_X-corner.Width(), SIZE_Y-corner.Height());
 	corner.ShowBitmap();
+    */
     gamemap.OnShow();                   // 貼上tableMap
 }
 
@@ -399,11 +402,13 @@ CGameMap::CGameMap()
 void CGameMap::LoadBitmap()
 {
     tableMap.LoadBitmap(IDB_MAP, RGB(255, 255, 255));
+    start.LoadBitmap(IDB_START);
 }
 
 void CGameMap::OnShow()
 {
     tableMap.SetTopLeft(0, 0);
     tableMap.ShowBitmap();
+
 }
 }

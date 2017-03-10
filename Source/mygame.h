@@ -83,6 +83,7 @@ namespace game_framework {
         void OnShow();
     protected:
         CMovingBitmap tableMap;
+        CMovingBitmap start;
     };
 	class CGameStateRun : public CGameState {
 	public:

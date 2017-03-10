@@ -177,5 +177,14 @@
     <Image Include="Bitmaps\MAP.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Bitmaps\START.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\MAP.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\START.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

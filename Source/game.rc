@@ -104,7 +104,9 @@ IDB_HELP                BITMAP                  "..\\res\\help.bmp"
 
 IDB_LOADING             BITMAP                  "..\\res\\loading.bmp"
 
-IDB_MAP                 BITMAP                  "D:\\oopcourse68\\Bitmaps\\MAP.bmp"
+IDB_MAP                 BITMAP                  "D:\\oopcourse68\\RES\\MAP.bmp"
+
+IDB_START               BITMAP                  "D:\\oopcourse68\\RES\\START.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////
