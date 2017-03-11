@@ -257,6 +257,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\audio.cpp" />
+    <ClCompile Include="Source\Button.cpp" />
     <ClCompile Include="Source\CBall.cpp" />
     <ClCompile Include="Source\CBouncingBall.cpp" />
     <ClCompile Include="Source\CEraser.cpp" />
@@ -303,6 +304,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\audio.h" />
+    <ClInclude Include="Source\Button.h" />
     <ClInclude Include="Source\CBall.h" />
     <ClInclude Include="Source\CBouncingBall.h" />
     <ClInclude Include="Source\CEraser.h" />
@@ -325,6 +327,9 @@
   <ItemGroup>
     <Image Include="Bitmaps\MAP.bmp" />
     <Image Include="Bitmaps\START.bmp" />
+    <Image Include="RES\BEGIN_BACKGROUND.bmp" />
+    <Image Include="RES\BUTTON_START_1.bmp" />
+    <Image Include="RES\BUTTON_START_2.bmp" />
     <Image Include="RES\MAP.bmp" />
     <Image Include="RES\START.bmp" />
     <Image Include="RES\status_backgound.bmp" />

@@ -129,6 +129,9 @@
     <ClCompile Include="Source\CBouncingBall.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Button.cpp">
+      <Filter>MyGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\audio.h">
@@ -167,6 +170,9 @@
     <ClInclude Include="Source\CBouncingBall.h">
       <Filter>MyGame</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Button.h">
+      <Filter>MyGame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Source\game.rc">
@@ -190,6 +196,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="RES\status_background.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\BEGIN_BACKGROUND.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\BUTTON_START_1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\BUTTON_START_2.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
