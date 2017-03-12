@@ -79,7 +79,7 @@ void CGameStateInit::OnInit()
 	//
 	// 開始載入資料
 	//
-    beginground.LoadBitmap(IDB_BEGIN_BACKGROUND);
+    beginground.LoadBitmap("res/BEGIN_BACKGROUND.bmp");
 	Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 	//
 	// 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
@@ -430,8 +430,8 @@ CGameMap::CGameMap()
 
 void CGameMap::LoadBitmap()
 {
-    tableMap.LoadBitmap(IDB_MAP, RGB(255, 255, 255));
-    status_background.LoadBitmapA(IDB_STATUS_BACKGROUND);  //讀狀態欄背景
+    tableMap.LoadBitmap("res/MAP.bmp", RGB(255, 255, 255));
+    status_background.LoadBitmapA("res/STATUS_BACKGROUND.bmp");  //讀狀態欄背景
 
 }
 
