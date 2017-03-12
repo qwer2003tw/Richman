@@ -207,5 +207,8 @@
     <Image Include="RES\BUTTON_START_2.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\bitmap5.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

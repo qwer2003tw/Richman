@@ -328,6 +328,7 @@
     <Image Include="Bitmaps\MAP.bmp" />
     <Image Include="Bitmaps\START.bmp" />
     <Image Include="RES\BEGIN_BACKGROUND.bmp" />
+    <Image Include="res\bitmap5.bmp" />
     <Image Include="RES\BUTTON_START_1.bmp" />
     <Image Include="RES\BUTTON_START_2.bmp" />
     <Image Include="RES\MAP.bmp" />

@@ -50,7 +50,7 @@ namespace game_framework {
         int my = point.y;
         int w = bmp[0].Width();
         int h = bmp[0].Height();
-        int t = 2;
+        int t = -12;
         int x1 = x - t;
         int x2 = x + w + t;
         int y1 = y - t;
@@ -64,7 +64,6 @@ namespace game_framework {
     }
     void Button::OnNoClick()
     {
-
         state = 0;
     }
     void Button::OnMove(CPoint point)
@@ -78,7 +77,7 @@ namespace game_framework {
         int x2 = x + w + t;
         int y1 = y - t;
         int y2 = y + h + t;
-        if (mx >= x1 && mx <= x2 && my >= y1 && my <= y2) // 表示滑鼠目前在按鍵上
+        if (mx >= x1 && mx <= x2 && my >= y1 && my <= y2) // 表示滑鼠目前在按鍵位置上
             state = 1;     
         else
             state = 0;          

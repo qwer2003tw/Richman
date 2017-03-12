@@ -18,7 +18,7 @@ namespace game_framework {
     protected:
         int n;
         int x, y;
-        CMovingBitmap bmp[3];
+        CMovingBitmap bmp[2];
         bool enable;
         int state;
         //
