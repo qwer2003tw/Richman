@@ -243,6 +243,7 @@ void CGameStateRun::OnBeginState()
 		ball[i].SetIsAlive(true);
 	}
 	eraser.Initialize();
+    dice.Initialize();
 	background.SetTopLeft(BACKGROUND_X,0);				// 設定背景的起始座標
 	help.SetTopLeft(0, SIZE_Y - help.Height());			// 設定說明圖的起始座標
 	hits_left.SetInteger(HITS_LEFT);					// 指定剩下的撞擊數
@@ -274,6 +275,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	// 移動擦子
 	//
 	eraser.OnMove();
+    dice.OnRoll();
 	//
 	// 判斷擦子是否碰到球
 	//
@@ -313,7 +315,9 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	eraser.LoadBitmap();
 	background.LoadBitmap(IDB_BACKGROUND);					// 載入背景的圖形
     gamemap.LoadBitmap();                                   // 載入背景
-                                                            //
+    dice.LoadBitmap();                                      // 載入骰子
+    
+    //
 	// 完成部分Loading動作，提高進度
 	//
 	ShowInitProgress(50);
@@ -369,6 +373,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 {
 	eraser.SetMovingLeft(true);
+    dice.SetStartRoll(true);
 }
 
 void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
@@ -418,9 +423,9 @@ void CGameStateRun::OnShow()
 	corner.SetTopLeft(SIZE_X-corner.Width(), SIZE_Y-corner.Height());
 	corner.ShowBitmap();
     */
-
+    
     gamemap.OnShow();                   // 貼上背景
-
+    dice.OnShow();                      // 貼上骰子
 }
 
 CGameMap::CGameMap()
