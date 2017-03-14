@@ -108,11 +108,11 @@ IDB_MAP                 BITMAP                  "..\\res\\MAP.bmp"
 
 IDB_START               BITMAP                  "..\\res\\START.bmp"
 
-IDB_BEGIN_BACKGROUND    BITMAP                  "D:\\oopcourse68\\RES\\BEGIN_BACKGROUND.bmp"
+IDB_BEGIN_BACKGROUND    BITMAP                  "..\\res\\BEGIN_BACKGROUND.bmp"
 
-IDB_BUTTON_START_1      BITMAP                  "D:\\oopcourse68\\RES\\BUTTON_START_1.bmp"
+IDB_BUTTON_START_1      BITMAP                  "..\\res\\BUTTON_START_1.bmp"
 
-IDB_BUTTON_START_2      BITMAP                  "D:\\oopcourse68\\RES\\BUTTON_START_2.bmp"
+IDB_BUTTON_START_2      BITMAP                  "..\\res\\BUTTON_START_2.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////
