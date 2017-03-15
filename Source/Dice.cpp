@@ -14,34 +14,53 @@ namespace game_framework {
     void Dice::Initialize()
     {
         x = 120; y = 120;
+        value = 0;
+        state = 0;
+        count = 0;
+        stops = 60;
     }
     void Dice::LoadBitmap()
     {
-        animation.AddBitmap("res/DICE_1.BMP", RGB(1, 0, 0));
-        animation.AddBitmap("res/DICE_2.BMP", RGB(1, 0, 0));
-        animation.AddBitmap("res/DICE_3.BMP", RGB(1, 0, 0));
-        animation.AddBitmap("res/DICE_4.BMP", RGB(1, 0, 0));
-        animation.AddBitmap("res/DICE_5.BMP", RGB(1, 0, 0));
-        animation.AddBitmap("res/DICE_6.BMP", RGB(1, 0, 0));
+        dicebmp[0].LoadBitmap("res/DICE_1.BMP", RGB(1, 0, 0));
+        dicebmp[1].LoadBitmap("res/DICE_2.BMP", RGB(1, 0, 0));
+        dicebmp[2].LoadBitmap("res/DICE_3.BMP", RGB(1, 0, 0));
+        dicebmp[3].LoadBitmap("res/DICE_4.BMP", RGB(1, 0, 0));
+        dicebmp[4].LoadBitmap("res/DICE_5.BMP", RGB(1, 0, 0));
+        dicebmp[5].LoadBitmap("res/DICE_6.BMP", RGB(1, 0, 0));
     }
-    void Dice::OnRoll()
+   void Dice::OnShow()
     {
-        animation.SetDelayCount(3);
-        if(isStartRoll)
-            animation.OnMove();
+        dicebmp[value].SetTopLeft(x, y);
+        dicebmp[value].ShowBitmap();
     }
-    void Dice::OnShow()
-    {
-        animation.SetTopLeft(x, y);
-        animation.OnShow();
-    }
-    void Dice::SetStartRoll(bool flag)
-    {
-        isStartRoll = flag;
-    }
+
+   void Dice::Onmove()
+   {
+       if (state == 1)
+       {
+           RandomValue();
+           count++;
+           if (count >= stops)
+               state = 0;
+       }
+          
+   }
+    
     void Dice::SetXY(int nx, int ny)
     {
         x = nx;
         y = ny;
+    }
+    void Dice::OnLButtonDown()
+    {
+        if (state == 0)
+        {
+            state = 1;
+            count = 0;
+        }
+    }
+    void Dice::RandomValue()
+    {
+        value = rand() % 6;
     }
 }

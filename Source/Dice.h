@@ -5,13 +5,17 @@ namespace game_framework {
         Dice();
         void Initialize();				// 設定擦子為初始值
         void LoadBitmap();				// 載入圖形
-        void OnRoll();					// 擲骰子
         void OnShow();					// 將擦子圖形貼到畫面
-        void SetStartRoll(bool flag);	    // 設定是否開始骰
+        void Onmove();
         void SetXY(int nx, int ny);		// 設定擦子左上角座標
+        void OnLButtonDown();
+        void RandomValue();
     protected:
-        CAnimation animation;		// 擦子的動畫
-        int x, y;					// 擦子左上角座標
+        
+        CMovingBitmap dicebmp[6];
+        int x, y,value,state,count,stops;					// 擦子左上角座標
+        //state 0 stop
+        //state 1 run
         bool isStartRoll;			// 是否正開始骰
     };
 }

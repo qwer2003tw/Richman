@@ -116,7 +116,7 @@ namespace game_framework {
 		CInteger		hits_left;	// 剩下的撞擊數
 		CBouncingBall   bball;		// 反覆彈跳的球
         CGameMap        gamemap;    // Map
-        Dice            dice;       // 骰子
+        Dice dice1, dice2;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
