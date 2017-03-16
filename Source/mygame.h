@@ -43,6 +43,7 @@
 #include "CBouncingBall.h"
 #include "Button.h"
 #include "Dice.h"
+#include "Number.h"
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// Constants
@@ -88,6 +89,7 @@ namespace game_framework {
         void OnShow();
     protected:
         CMovingBitmap status_background;
+        CMovingBitmap miniMap;
         CMovingBitmap tableMap;
     };
 	class CGameStateRun : public CGameState {
@@ -117,6 +119,8 @@ namespace game_framework {
 		CBouncingBall   bball;		// ¤ÏÂÐ¼u¸õªº²y
         CGameMap        gamemap;    // Map
         Dice dice1, dice2;
+        Number number1, number2;
+        int amount;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

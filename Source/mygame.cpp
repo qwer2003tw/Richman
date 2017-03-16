@@ -274,13 +274,15 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	//
 	// 移動擦子
 	//
-	eraser.OnMove();
     dice1.Onmove();
     dice2.Onmove();
+    amount = dice1.GetValue() + dice2.GetValue();//骰子的總和
+	eraser.OnMove();
+
 	//
 	// 判斷擦子是否碰到球
 	//
-	for (i=0; i < NUMBALLS; i++)
+	/*for (i=0; i < NUMBALLS; i++)
 		if (ball[i].IsAlive() && ball[i].HitEraser(&eraser)) {
 			ball[i].SetIsAlive(false);
 			CAudio::Instance()->Play(AUDIO_DING);
@@ -294,6 +296,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 				GotoGameState(GAME_STATE_OVER);
 			}
 		}
+        */
 	//
 	// 移動彈跳的球
 	//
@@ -319,12 +322,15 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     gamemap.LoadBitmap();                                   // 載入背景
     dice1.SetXY(150, 50);
     dice2.SetXY(150, 150);
+    number1.SetXY(400, 400); //設定數字初始位置
+    number2.SetXY(450, 400);
     dice1.RandomValue();
     dice2.RandomValue();
-    dice1.LoadBitmap();
-    dice2.LoadBitmap();                                    // 載入骰子
-    
-    
+    dice1.LoadBitmap(); // 載入骰子
+    dice2.LoadBitmap(); 
+    number1.LoadBitmap(); //載入數字
+    number2.LoadBitmap(); 
+
     //
 	// 完成部分Loading動作，提高進度
 	//
@@ -432,10 +438,21 @@ void CGameStateRun::OnShow()
 	corner.SetTopLeft(SIZE_X-corner.Width(), SIZE_Y-corner.Height());
 	corner.ShowBitmap();
     */
-    
+
     gamemap.OnShow();                   // 貼上背景
     dice1.OnShow();                      // 貼上骰子
     dice2.OnShow();                      // 貼上骰子
+    if ((amount / 10) == 0 && !dice1.GetState())
+    {
+        number2.OnShow((amount % 10));
+    }
+    else if (amount > 0 && amount<=12 && !dice1.GetState())
+    {
+        number1.OnShow((amount / 10));
+        number2.OnShow((amount % 10));
+
+    }
+
 }
 
 CGameMap::CGameMap()
@@ -446,7 +463,8 @@ CGameMap::CGameMap()
 void CGameMap::LoadBitmap()
 {
     tableMap.LoadBitmap("res/MAP.bmp", RGB(255, 255, 255));
-    status_background.LoadBitmapA("res/STATUS_BACKGROUND.bmp");  //讀狀態欄背景
+    miniMap.LoadBitmap("res/mini_map_1.bmp", RGB(255, 255, 255)); //讀取小地圖
+    status_background.LoadBitmap("res/STATUS_BACKGROUND.bmp");  //讀狀態欄背景
 
 }
 
@@ -457,6 +475,8 @@ void CGameMap::OnShow()
     tableMap.ShowBitmap();
     status_background.SetTopLeft(890, 0); //狀態欄背景位置
     status_background.ShowBitmap();       //顯示圖片
+    miniMap.SetTopLeft(890, 568);
+    miniMap.ShowBitmap();
 
 }
 }

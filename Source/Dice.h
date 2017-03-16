@@ -10,6 +10,8 @@ namespace game_framework {
         void SetXY(int nx, int ny);		// 設定擦子左上角座標
         void OnLButtonDown();
         void RandomValue();
+        int GetValue();
+        bool GetState();
     protected:
         
         CMovingBitmap dicebmp[6];

@@ -17,7 +17,7 @@ namespace game_framework {
         value = 0;
         state = 0;
         count = 0;
-        stops = 60;
+        stops = 30;
     }
     void Dice::LoadBitmap()
     {
@@ -40,8 +40,12 @@ namespace game_framework {
        {
            RandomValue();
            count++;
+           
            if (count >= stops)
-               state = 0;
+           {
+                state = 0;
+           }
+               
        }
           
    }
@@ -62,5 +66,14 @@ namespace game_framework {
     void Dice::RandomValue()
     {
         value = rand() % 6;
+    }
+    int Dice::GetValue()
+    {
+        return value + 1;
+    }
+    bool Dice::GetState()
+    {
+        if (state == 1) return true;
+        else return false;
     }
 }
