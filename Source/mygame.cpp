@@ -442,14 +442,14 @@ void CGameStateRun::OnShow()
     gamemap.OnShow();                   // 禟璉春
     dice1.OnShow();                      // 禟浑
     dice2.OnShow();                      // 禟浑
-    if ((amount / 10) == 0 && !dice1.GetState())
+    if ((amount / 10) == 0 && !dice1.GetState()) //浑羆㎝计 禟计ㄓ
     {
-        number2.OnShow((amount % 10));
+        number2.OnShow((amount % 10)); //计
     }
-    else if (amount > 0 && amount<=12 && !dice1.GetState())
+    else if (amount > 0 && amount<=12 && !dice1.GetState()) //浑羆计玥禟ㄢ计
     {
-        number1.OnShow((amount / 10));
-        number2.OnShow((amount % 10));
+        number1.OnShow((amount / 10)); //计
+        number2.OnShow((amount % 10)); //计
 
     }
 
