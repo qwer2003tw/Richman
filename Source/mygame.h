@@ -44,6 +44,7 @@
 #include "Button.h"
 #include "Dice.h"
 #include "Number.h"
+#include "Player.h"
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// Constants
@@ -120,6 +121,8 @@ namespace game_framework {
         CGameMap        gamemap;    // Map
         Dice dice1, dice2;
         Number number1, number2;
+        Player player1;
+        
         int amount;
 	};
 

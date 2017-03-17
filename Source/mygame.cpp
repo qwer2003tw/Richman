@@ -235,13 +235,13 @@ void CGameStateRun::OnBeginState()
 	const int HITS_LEFT_Y = 0;
 	const int BACKGROUND_X = 60;
 	const int ANIMATION_SPEED = 15;
-	for (int i = 0; i < NUMBALLS; i++) {				// 設定球的起始座標
+	/*for (int i = 0; i < NUMBALLS; i++) {				// 設定球的起始座標
 		int x_pos = i % BALL_PER_ROW;
 		int y_pos = i / BALL_PER_ROW;
 		ball[i].SetXY(x_pos * BALL_GAP + BALL_XY_OFFSET, y_pos * BALL_GAP + BALL_XY_OFFSET);
 		ball[i].SetDelay(x_pos);
 		ball[i].SetIsAlive(true);
-	}
+	}*/
 	eraser.Initialize();
 	background.SetTopLeft(BACKGROUND_X,0);				// 設定背景的起始座標
 	help.SetTopLeft(0, SIZE_Y - help.Height());			// 設定說明圖的起始座標
@@ -268,9 +268,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	//
 	// 移動球
 	//
-	int i;
-	for (i=0; i < NUMBALLS; i++)
-		ball[i].OnMove();
+
 	//
 	// 移動擦子
 	//
@@ -300,7 +298,6 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	//
 	// 移動彈跳的球
 	//
-	bball.OnMove();
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -330,6 +327,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     dice2.LoadBitmap(); 
     number1.LoadBitmap(); //載入數字
     number2.LoadBitmap(); 
+    player1.LoadBitmap(); //載入玩家圖片
 
     //
 	// 完成部分Loading動作，提高進度
@@ -342,8 +340,6 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				// 載入說明的圖形
 	corner.LoadBitmap(IDB_CORNER);							// 載入角落圖形
 	corner.ShowBitmap(background);							// 將corner貼到background
-	bball.LoadBitmap();										// 載入圖形
-	hits_left.LoadBitmap();									
 	CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
 	CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
 	CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	// 載入編號2的聲音ntut.mid
@@ -374,14 +370,26 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	const char KEY_UP    = 0x26; // keyboard上箭頭
 	const char KEY_RIGHT = 0x27; // keyboard右箭頭
 	const char KEY_DOWN  = 0x28; // keyboard下箭頭
-	if (nChar == KEY_LEFT)
-		eraser.SetMovingLeft(false);
-	if (nChar == KEY_RIGHT)
-		eraser.SetMovingRight(false);
-	if (nChar == KEY_UP)
-		eraser.SetMovingUp(false);
-	if (nChar == KEY_DOWN)
-		eraser.SetMovingDown(false);
+    if (nChar == KEY_LEFT)
+    {
+        eraser.SetMovingLeft(false);
+        player1.OnMove(-1, 0);
+    }
+    if (nChar == KEY_RIGHT)
+    {
+        eraser.SetMovingRight(false);
+        player1.OnMove(1, 0);
+    }
+    if (nChar == KEY_UP)
+    {
+        eraser.SetMovingUp(false);
+        player1.OnMove(0, 1);
+    }
+    if (nChar == KEY_DOWN)
+    {
+        eraser.SetMovingDown(false);
+        player1.OnMove(0, -1);
+    }
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
@@ -452,6 +460,7 @@ void CGameStateRun::OnShow()
         number2.OnShow((amount % 10)); //個位數
 
     }
+    player1.OnShow();
 
 }
 
