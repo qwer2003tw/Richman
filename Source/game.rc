@@ -142,7 +142,7 @@ IDR_MAINFRAME           BITMAP                  "..\\res\\Toolbar.bmp"
 
 IDB_STATUS_BACKGROUND   BITMAP                  "..\\RES\\status_background.bmp"
 
-IDB_MINIMAP             BITMAP                  "D:\\Richman\\RES\\mini_map_1.bmp"
+IDB_MINIMAP             BITMAP                  "..\\RES\\mini_map_1.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////
