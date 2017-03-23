@@ -250,7 +250,7 @@ void CGameStateRun::OnBeginState()
 	hits_left.SetTopLeft(HITS_LEFT_X,HITS_LEFT_Y);		// 指定剩下撞擊數的座標
 	CAudio::Instance()->Play(AUDIO_LAKE, true);			// 撥放 WAVE
 	CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
-	CAudio::Instance()->Play(AUDIO_NTUT, true);			// 撥放 MIDI
+	//CAudio::Instance()->Play(AUDIO_NTUT, true);			// 撥放 MIDI
    
 }
 
