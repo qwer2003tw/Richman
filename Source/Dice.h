@@ -12,10 +12,13 @@ namespace game_framework {
         void RandomValue();
         int GetValue();
         bool GetState();
+        int GetPlayerRun();
+        void SetPlayerRun(int set);
     protected:
         
         CMovingBitmap dicebmp[6];
-        int x, y,value,state,count,stops;					// 擦子左上角座標
+        int x, y, value, state, count, stops;					// 擦子左上角座標
+        int playerRun;
         //state 0 stop
         //state 1 run
         bool isStartRoll;			// 是否正開始骰

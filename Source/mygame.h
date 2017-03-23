@@ -45,6 +45,7 @@
 #include "Dice.h"
 #include "Number.h"
 #include "Player.h"
+#include "Map.h"
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// Constants
@@ -73,7 +74,7 @@ namespace game_framework {
 	protected:
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
-        Button* startButton=nullptr;                    // 按鈕
+        Button* startButton = nullptr;                    // 按鈕
 		CMovingBitmap logo;								// csie的logo
         CMovingBitmap beginground;                      // 初始畫面
 	};
@@ -91,7 +92,6 @@ namespace game_framework {
     protected:
         CMovingBitmap status_background;
         CMovingBitmap miniMap;
-        CMovingBitmap tableMap;
     };
 	class CGameStateRun : public CGameState {
 	public:
@@ -118,12 +118,13 @@ namespace game_framework {
 		CEraser			eraser;		// 拍子
 		CInteger		hits_left;	// 剩下的撞擊數
 		CBouncingBall   bball;		// 反覆彈跳的球
-        CGameMap        gamemap;    // Map
-        Dice dice1, dice2;
-        Number number1, number2;
-        Player player1;
-        
-        int amount;
+        CGameMap        gamemap;    // UI
+        Dice dice1, dice2;          // Dice
+        Number number1, number2;    // 骰子點數
+        Player player1;             // 玩家
+        Map bigMap;                 // 地圖
+        int amount;                 // 點數和
+        int sx, sy;                 // 螢幕地圖座標
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

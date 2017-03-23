@@ -18,6 +18,7 @@ namespace game_framework {
         state = 0;
         count = 0;
         stops = 30;
+        playerRun = 0;
     }
     void Dice::LoadBitmap()
     {
@@ -44,10 +45,9 @@ namespace game_framework {
            if (count >= stops)
            {
                 state = 0;
+                playerRun = 1;
            }
-               
        }
-          
    }
     
     void Dice::SetXY(int nx, int ny)
@@ -61,6 +61,7 @@ namespace game_framework {
         {
             state = 1;
             count = 0;
+            playerRun = 0;
         }
     }
     void Dice::RandomValue()
@@ -75,5 +76,13 @@ namespace game_framework {
     {
         if (state == 1) return true;
         else return false;
+    }
+    int Dice::GetPlayerRun()
+    {
+        return playerRun;
+    }
+    void Dice::SetPlayerRun(int set)
+    {
+        playerRun = set;
     }
 }
