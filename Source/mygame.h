@@ -46,6 +46,8 @@
 #include "Number.h"
 #include "Player.h"
 #include "Map.h"
+#include "MapData.h"
+
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// Constants

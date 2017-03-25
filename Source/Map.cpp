@@ -5,10 +5,49 @@
 #include "audio.h"
 #include "gamelib.h"
 #include "Map.h"
+#include <vector>
+#include "MapData.h"
 
 namespace game_framework {
     Map::Map()
     {
+     
+      
+        int dx[4] = { 192,0,-192,0 };
+        int dy[4] = { 0,192,0,-192 };
+        int nx = 96;
+        int ny = 96;
+        for (int i = 0; i < 36; i++)
+        {
+            mapData[i] = new MapData();
+            mapData[i]->SetPositionX(nx);
+            mapData[i]->SetPositionY(ny);
+            nx += dx[(i - 1) / 9];
+            ny += dy[(i - 1) / 9];
+        }
+        //1~9 10~18 19~27 28~35 所以我player為什麼不能傳直進去???
+        /*
+        for (int i = 1; i < 10; i++)                   //產生人物移動路徑座標 0-36
+        {
+            mapData[i].SetPositionX(mapData[i - 1].GetPositionX() + 192);
+            mapData[i].SetPositionY(96);
+        }
+        for (int i = 10; i < 19; i++)
+        {
+            mapData[i].SetPositionX(mapData[9].GetPositionX());
+            mapData[i].SetPositionY(mapData[i - 1].GetPositionY() + 192);
+        }
+        for (int i = 19; i < 28; i++)
+        {
+            mapData[i].SetPositionX(mapData[i - 1].GetPositionX() - 192);
+            mapData[i].SetPositionY(mapData[18].GetPositionY());
+        }
+        for (int i = 28; i < 36; i++)
+        {
+            mapData[i].SetPositionX(mapData[27].GetPositionX());
+            mapData[i].SetPositionY(mapData[i - 1].GetPositionY() - 192);
+        }
+        */
     }
 
     void Map::LoadBitmap()
@@ -20,6 +59,10 @@ namespace game_framework {
     {
         map.SetTopLeft(-sx, -sy);
         map.ShowBitmap();
+    }
+    MapData ** Map::GetMapData()
+    {
+        return mapData;
     }
 }
 

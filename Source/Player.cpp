@@ -4,8 +4,10 @@
 #include <ddraw.h>
 #include "audio.h"
 #include "gamelib.h"
+#include "Map.h"
 #include "Player.h"
 #include "mygame.h"
+
 
 namespace game_framework {
     Player::Player()
@@ -15,6 +17,7 @@ namespace game_framework {
         positionNum = 0;
         prePositionNum = 0;
         state = 0;
+        now = 0;
         for (int i = 1; i < 10; i++)                   //產生人物移動路徑座標 0-36
         {
             positionX[i] = positionX[i - 1] + 192;
@@ -40,6 +43,7 @@ namespace game_framework {
     {
         bmp.LoadBitmap("res/ball.bmp", RGB(0, 0, 0));
     }
+    /*
     void Player::OnMove()
     {       
         if (state == 1) {
@@ -55,8 +59,24 @@ namespace game_framework {
             else if (dy > positionY[prePositionNum]) dy-=8;
             if (prePositionNum == positionNum && dx == positionX[prePositionNum] && dy == positionY[prePositionNum])
                 state = 0;
+
+            //modify
+            //if (positionNum != prePositionNum && dx == map.GetMapData()[prePositionNum].GetPositionX && dy == map.GetMapData()[prePositionNum].GetPositionY)
+            //{
+            //    prePositionNum++;
+            //    prePositionNum %= 36;
+            //}
+            //if (dx < map.GetMapData()[prePositionNum].GetPositionX) dx += 8;
+            //else if (dx > map.GetMapData()[prePositionNum].GetPositionX) dx -= 8;
+            //if (dy < map.GetMapData()[prePositionNum].GetPositionY) dy += 8;
+            //else if (dy > map.GetMapData()[prePositionNum].GetPositionY) dy -= 8;
+            //if (prePositionNum == positionNum && dx == map.GetMapData()[prePositionNum].GetPositionX && dy == map.GetMapData()[prePositionNum].GetPositionY)
+            //    state = 0;
+
+
         }
     }
+    */
     void Player::OnShow(int sx, int sy)
     {
         bmp.SetTopLeft(dx - bmp.Height() / 2 - sx, dy - bmp.Width() / 2 -sy);
@@ -79,5 +99,16 @@ namespace game_framework {
     void Player::SetState(int ns)
     {
         state = ns;
+    }
+    int Player::GetState()
+    {
+        return state;
+    }
+    void Player::SetMap(Map * m)
+    {
+        map = m;
+    }
+    void Player::Move(int n)
+    {
     }
 }
