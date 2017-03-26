@@ -270,18 +270,19 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     dice1.Onmove(); 
     dice2.Onmove();
     amount = dice1.GetValue() + dice2.GetValue();     //骰子的總和
+    //骰子不用跟人物移動阿==
+    //骰子是UI UI基本部會扯到世界座標
+    //為神是骰子去問玩家有沒有RUN 採子婷 才給玩家run GetPlayerRun()是?
     if (dice1.GetPlayerRun())
     {
-        player1.SetPositionNum(amount);    
-        dice1.SetPlayerRun(0);
-        player1.SetState(1);
+        player[nowPlayer]->SetRemaining(amount);
     }
- 
-    if (player1.GetMapX() - sx > 480 && sx < 1030) sx += 8;
-    if (player1.GetMapX() - sx < 480 && sx > 0) sx -= 8;
-    if (player1.GetMapY() - sy > 480 && sy < 960) sy += 8;
-    if (player1.GetMapY() - sy < 480 && sy > 0) sy -= 8;
-
+    for (int i = 0; i < playercount; i++)
+    {
+        player[i]->OnMove();
+    }
+    
+    //
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -295,10 +296,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	//
 	// 開始載入資料
 	//
-	int i;
-	for (i = 0; i < NUMBALLS; i++)	
-		ball[i].LoadBitmap();								// 載入第i個球的圖形
-	eraser.LoadBitmap();
+//	int i;
 	background.LoadBitmap(IDB_BACKGROUND);					// 載入背景的圖形
     gamemap.LoadBitmap();                                   // 載入UI
     bigMap.LoadBitmap();                                    // 載入地圖
@@ -311,10 +309,19 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     dice1.LoadBitmap(); // 載入骰子
     dice2.LoadBitmap(); 
     number1.LoadBitmap(); //載入數字
-    number2.LoadBitmap(); 
-    player1.LoadBitmap(); //載入玩家圖片
+    number2.LoadBitmap();
+    //
+    nowPlayer = 0;
+
+    //將四個玩家創出來
+    for (int i = 0; i < playercount; i++)
+    {
+        player[i] = new Player(0);//後面引數掛TYPE
+        player[i]->LoadBitmap();
+        player[i]->SetMap(&bigMap);
+     
+    }
     sx = sy = 0;
-    player1.SetMap(&bigMap);
     //
 	// 完成部分Loading動作，提高進度
 	//
@@ -326,9 +333,9 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				    // 載入說明的圖形
 	corner.LoadBitmap(IDB_CORNER);						    	// 載入角落圖形
 	corner.ShowBitmap(background);						    	// 將corner貼到background
-	CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
-	CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
-	CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	// 載入編號2的聲音ntut.mid
+	//CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
+	//CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
+	//CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	// 載入編號2的聲音ntut.mid
 	//
 	// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
 	//
@@ -336,56 +343,28 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	const char KEY_LEFT  = 0x25; // keyboard左箭頭
-	const char KEY_UP    = 0x26; // keyboard上箭頭
-	const char KEY_RIGHT = 0x27; // keyboard右箭頭
-	const char KEY_DOWN  = 0x28; // keyboard下箭頭
-	if (nChar == KEY_LEFT)
-		eraser.SetMovingLeft(true);
-	if (nChar == KEY_RIGHT)
-		eraser.SetMovingRight(true);
-	if (nChar == KEY_UP)
-		eraser.SetMovingUp(true);
-	if (nChar == KEY_DOWN)
-		eraser.SetMovingDown(true);
+
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	const char KEY_LEFT  = 0x25; // keyboard左箭頭
-	const char KEY_UP    = 0x26; // keyboard上箭頭
-	const char KEY_RIGHT = 0x27; // keyboard右箭頭
-	const char KEY_DOWN  = 0x28; // keyboard下箭頭
-    if (nChar == KEY_LEFT)
-    {
-        //eraser.SetMovingLeft(false);
-    }
-    if (nChar == KEY_RIGHT)
-    {
 
-    }
-    if (nChar == KEY_UP)
-    {
-
-    }
-    if (nChar == KEY_DOWN)
-    {
-
-    }
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 {
-    if (!player1.GetState())
+   
+    if (canThrowDies)
     {
         dice1.OnLButtonDown();
         dice2.OnLButtonDown();
     }
+    canThrowDies = false;
 }
 
 void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 {
-	eraser.SetMovingLeft(false);
+	
 }
 
 void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠的動作
@@ -411,8 +390,9 @@ void CGameStateRun::OnShow()
 	//
 
     bigMap.OnShow(sx, sy);              // 貼上地圖
-    gamemap.OnShow();                   // 貼上UI
-    dice1.OnShow();                      // 貼上骰子
+    //以下為UI
+    //gamemap.OnShow();                   // 貼上UI小地圖最後處理
+    dice1.OnShow();                      // 貼上骰子 骰子到時候移到UI
     dice2.OnShow();                      // 貼上骰子
     if ((amount / 10) == 0 && !dice1.GetState()) //骰子總和為個位數 貼個位數出來
     {
@@ -423,7 +403,12 @@ void CGameStateRun::OnShow()
         number1.OnShow((amount / 10)); //十位數
         number2.OnShow((amount % 10)); //個位數
     }
-    player1.OnShow(sx, sy);
+    //人物顯示
+    for (int i = 0; i < playercount; i++)
+    {
+        if(!player[i]->GetBankruptcy())
+        player[i]->OnShow(sx, sy);
+    }
 }
 
 CGameMap::CGameMap()

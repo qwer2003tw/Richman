@@ -64,6 +64,10 @@ namespace game_framework {
     {
         return mapData;
     }
+    int Map::GetMapCount()
+    {
+        return mapcount;
+    }
 }
 
 

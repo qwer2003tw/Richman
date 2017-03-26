@@ -45,7 +45,7 @@ namespace game_framework {
            if (count >= stops)
            {
                 state = 0;
-                playerRun = 1;
+                playerRun = 1; //這是骰子停下來了 然後換玩家走動 OK
            }
        }
    }

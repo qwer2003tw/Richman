@@ -34,6 +34,12 @@ namespace game_framework {
     {
         this->homeLevel = homeLevel;
     }
+    void MapData::Through()
+    {
+    }
+    void MapData::Arrive()
+    {
+    }
     int MapData::GetPositionX()
     {
         return positionX;

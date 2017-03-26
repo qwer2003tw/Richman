@@ -12,75 +12,115 @@
 namespace game_framework {
     Player::Player()
     {
-        dx = positionX[0] = 96;
-        dy = positionY[0] = 96;
-        positionNum = 0;
-        prePositionNum = 0;
-        state = 0;
+        dx = 96;
+        dy = 96;
+        now= 0;
+        remaining = 0;
+        Bankruptcy = false;
+        speed = 8;//192/8=24 24*(1/30)sec 移動一格       
+        direct = 2;  
+        ani = 0;
+        count = 0;
+        type = 0;//預設為0
+    }
+    Player::Player(int t)
+    {
+        dx = 96;
+        dy = 96;
         now = 0;
-        for (int i = 1; i < 10; i++)                   //產生人物移動路徑座標 0-36
-        {
-            positionX[i] = positionX[i - 1] + 192;
-            positionY[i] = 96;
-        }
-        for (int i = 10; i < 19; i++)
-        {
-            positionX[i] = positionX[9];
-            positionY[i] = positionY[i - 1] + 192;
-        }
-        for (int i = 19; i < 28; i++)
-        {
-            positionX[i] = positionX[i - 1] - 192;
-            positionY[i] = positionY[18];
-        }
-        for (int i = 28; i < 36; i++)
-        {
-            positionX[i] = positionX[27];
-            positionY[i] = positionY[i - 1] - 192;
-        }
+        remaining = 0;
+        Bankruptcy = false;
+        speed = 8;//192/8=24 24*(1/30)sec 移動一格       
+        direct = 2;
+        ani = 0;
+        count = 0;
+        type = t;
+    
     }
     void Player::LoadBitmap()
-    {
-        bmp.LoadBitmap("res/ball.bmp", RGB(0, 0, 0));
-    }
-    /*
-    void Player::OnMove()
-    {       
-        if (state == 1) {
-            //從當前位置到累加位置一格一格遞增
-            if (positionNum != prePositionNum && dx == positionX[prePositionNum] && dy == positionY[prePositionNum])
-            {
-                prePositionNum++;           
-                prePositionNum %= 36;
-            }
-            if (dx < positionX[prePositionNum]) dx += 8;
-            else if (dx > positionX[prePositionNum]) dx-=8;
-            if (dy < positionY[prePositionNum]) dy+=8;
-            else if (dy > positionY[prePositionNum]) dy-=8;
-            if (prePositionNum == positionNum && dx == positionX[prePositionNum] && dy == positionY[prePositionNum])
-                state = 0;
-
-            //modify
-            //if (positionNum != prePositionNum && dx == map.GetMapData()[prePositionNum].GetPositionX && dy == map.GetMapData()[prePositionNum].GetPositionY)
-            //{
-            //    prePositionNum++;
-            //    prePositionNum %= 36;
-            //}
-            //if (dx < map.GetMapData()[prePositionNum].GetPositionX) dx += 8;
-            //else if (dx > map.GetMapData()[prePositionNum].GetPositionX) dx -= 8;
-            //if (dy < map.GetMapData()[prePositionNum].GetPositionY) dy += 8;
-            //else if (dy > map.GetMapData()[prePositionNum].GetPositionY) dy -= 8;
-            //if (prePositionNum == positionNum && dx == map.GetMapData()[prePositionNum].GetPositionX && dy == map.GetMapData()[prePositionNum].GetPositionY)
-            //    state = 0;
-
-
+    {    
+        //type=0 doreamon
+        if (type == 0)
+        {
+            bmp[2][0].LoadBitmap("res/doreamon_swap_part1x1.bmp", RGB(0, 0, 0));
+            bmp[2][1].LoadBitmap("res/doreamon_swap_part1x2.bmp", RGB(0, 0, 0));
+            bmp[2][2].LoadBitmap("res/doreamon_swap_part1x3.bmp", RGB(0, 0, 0));
+            bmp[2][3].LoadBitmap("res/doreamon_swap_part1x4.bmp", RGB(0, 0, 0));
+            bmp[4][0].LoadBitmap("res/doreamon_swap_part2x1.bmp", RGB(0, 0, 0));
+            bmp[4][1].LoadBitmap("res/doreamon_swap_part2x2.bmp", RGB(0, 0, 0));
+            bmp[4][2].LoadBitmap("res/doreamon_swap_part2x3.bmp", RGB(0, 0, 0));
+            bmp[4][3].LoadBitmap("res/doreamon_swap_part2x4.bmp", RGB(0, 0, 0));
+            bmp[6][0].LoadBitmap("res/doreamon_swap_part3x1.bmp", RGB(0, 0, 0));
+            bmp[6][1].LoadBitmap("res/doreamon_swap_part3x2.bmp", RGB(0, 0, 0));
+            bmp[6][2].LoadBitmap("res/doreamon_swap_part3x3.bmp", RGB(0, 0, 0));
+            bmp[6][3].LoadBitmap("res/doreamon_swap_part3x4.bmp", RGB(0, 0, 0));
+            bmp[8][0].LoadBitmap("res/doreamon_swap_part4x1.bmp", RGB(0, 0, 0));
+            bmp[8][1].LoadBitmap("res/doreamon_swap_part4x2.bmp", RGB(0, 0, 0));
+            bmp[8][2].LoadBitmap("res/doreamon_swap_part4x3.bmp", RGB(0, 0, 0));
+            bmp[8][3].LoadBitmap("res/doreamon_swap_part4x4.bmp", RGB(0, 0, 0));
+            countmax = 4;
+            animax = 4;
+            fector = 5;
+            w = bmp[2][0].Width()*fector;
+            h = bmp[2][0].Height()*fector;
         }
     }
-    */
+    
+    void Player::OnMove()
+    {       
+        //移動
+        if (remaining != 0)
+        {
+            int tx, ty;
+            MapData** mapData;
+            mapData = map->GetMapData();
+            tx=mapData[(now + 1) % map->GetMapCount()]->GetPositionX();
+            ty = mapData[(now + 1) % map->GetMapCount()]->GetPositionY();
+            if (tx > dx)
+            {
+                direct = 6;
+                dx += speed;
+            }
+            if (tx < dx)
+            {
+                direct = 4;
+                dx -= speed;
+            }
+            if (ty > dy)
+            {
+                direct = 8;
+                dy += speed;
+            }
+            if (ty < dy)
+            {
+                direct = 2;
+                dy += speed;
+            }
+            if (dx == tx && dy == ty)
+            {
+                now = (now + 1) % map->GetMapCount();
+                mapData[now]->Through();
+                remaining--;
+                if(remaining==0)
+                    mapData[now]->Arrive();
+            }
+        }
+    
+        //動畫控制
+        count++;
+        if (count >= countmax) {
+            count = 0;
+            ani++;
+            if (ani >= animax)ani = 0;
+        }
+    }
+    
     void Player::OnShow(int sx, int sy)
     {
-        bmp.SetTopLeft(dx - bmp.Height() / 2 - sx, dy - bmp.Width() / 2 -sy);
-        bmp.ShowBitmap();
+        
+        bmp[direct][ani].SetTopLeft(dx -w/2  - sx, dy -h/2 - sy);
+        bmp[direct][ani].ShowBitmap(fector);
+      
     }
     int Player::GetMapX()
     {
@@ -90,25 +130,20 @@ namespace game_framework {
     {
         return dy;
     }
-    void Player::SetPositionNum(int amount)
+    bool Player::GetBankruptcy()
     {
-        prePositionNum = positionNum % 36;
-        positionNum += amount;
-        positionNum %= 36;
+        return Bankruptcy;
     }
-    void Player::SetState(int ns)
-    {
-        state = ns;
-    }
-    int Player::GetState()
-    {
-        return state;
-    }
-    void Player::SetMap(Map * m)
+   void Player::SetMap(Map * m)
     {
         map = m;
     }
-    void Player::Move(int n)
-    {
-    }
+   void Player::SetRemaining(int r)
+   {
+       remaining = r;
+   }
+   int Player::GetRemaining()
+   {
+       return remaining;
+   }
 }

@@ -9,6 +9,8 @@ namespace game_framework {
         void SetOwner(int owner);
         void SetType(int type);
         void SetHomeLevel(int homeLevel);
+        void Through();//經過
+        void Arrive();//到達
         int GetPositionX();
         int GetPositionY();
         int GetPrice();

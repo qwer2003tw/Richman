@@ -7,9 +7,10 @@ namespace game_framework {
         void LoadBitmap();
         void OnShow(int sx, int sy);
         MapData** GetMapData();
-    
+        int GetMapCount();  
     private:
+        int mapcount = 36;//地圖格數
         CMovingBitmap map;
-        MapData* mapData[40];//??
+        MapData *mapData[40];//??
     };
 }

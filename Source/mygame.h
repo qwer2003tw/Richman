@@ -123,10 +123,13 @@ namespace game_framework {
         CGameMap        gamemap;    // UI
         Dice dice1, dice2;          // Dice
         Number number1, number2;    // 骰子點數
-        Player player1;             // 玩家
+        Player *player[4];          // 4個玩家
+        int playercount = 1;
+        int nowPlayer;              //當前玩家
         Map bigMap;                 // 地圖
         int amount;                 // 點數和
         int sx, sy;                 // 螢幕地圖座標
+        bool canThrowDies;          
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
