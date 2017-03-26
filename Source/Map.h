@@ -11,6 +11,6 @@ namespace game_framework {
     private:
         int mapcount = 36;//地圖格數
         CMovingBitmap map;
-        MapData *mapData[40];//??
+        MapData *mapData[40];
     };
 }

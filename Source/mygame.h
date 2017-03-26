@@ -47,6 +47,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "MapData.h"
+#include "UI.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -85,16 +86,6 @@ namespace game_framework {
 	// 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
 	// 每個Member function的Implementation都要弄懂
 	/////////////////////////////////////////////////////////////////////////////
-    class CGameMap
-    {
-    public:
-        CGameMap();
-        void LoadBitmap();
-        void OnShow();
-    protected:
-        CMovingBitmap status_background;
-        CMovingBitmap miniMap;
-    };
 	class CGameStateRun : public CGameState {
 	public:
 		CGameStateRun(CGame *g);
@@ -108,6 +99,8 @@ namespace game_framework {
 		void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作 
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
+       
+        int GetNowPlayer();
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
@@ -120,12 +113,11 @@ namespace game_framework {
 		CEraser			eraser;		// 拍子
 		CInteger		hits_left;	// 剩下的撞擊數
 		CBouncingBall   bball;		// 反覆彈跳的球
-        CGameMap        gamemap;    // UI
-        Dice dice1, dice2;          // Dice
-        Number number1, number2;    // 骰子點數
         Player *player[4];          // 4個玩家
+        UI ui;                      // User Interface
         int playercount = 1;
-        int nowPlayer;              //當前玩家
+        int nowPlayer;              // 當前玩家
+       
         Map bigMap;                 // 地圖
         int amount;                 // 點數和
         int sx, sy;                 // 螢幕地圖座標

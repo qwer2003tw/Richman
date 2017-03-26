@@ -261,28 +261,25 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		background.SetTopLeft(60 ,-background.Height());
 	background.SetTopLeft(background.Left(),background.Top()+1);
 
-	//
-	// 移動擦子
-	//
-    //eraser.OnMove();
-
     //骰子移動
-    dice1.Onmove(); 
-    dice2.Onmove();
-    amount = dice1.GetValue() + dice2.GetValue();     //骰子的總和
-    //骰子不用跟人物移動阿==
-    //骰子是UI UI基本部會扯到世界座標
-    //為神是骰子去問玩家有沒有RUN 採子婷 才給玩家run GetPlayerRun()是?
-    if (dice1.GetPlayerRun())
+    ui.OnMove();
+    if (ui.GetState()==2)
     {
-        player[nowPlayer]->SetRemaining(amount);
+        player[nowPlayer]->SetRemaining(ui.GetAmount());
+        ui.SetState(3);
     }
+    if (player[nowPlayer]->GetRemaining() == 0)
+        ui.SetState(4);
     for (int i = 0; i < playercount; i++)
     {
         player[i]->OnMove();
     }
+
+    //修正螢幕座標
+    ui.SetXY(player[nowPlayer]->GetMapX(), player[nowPlayer]->GetMapY(), player[nowPlayer]->GetSpeed());    
     
-    //
+    if (player[nowPlayer]->GetRemaining() == 0)
+        canThrowDies = true;
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -296,36 +293,24 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	//
 	// 開始載入資料
 	//
-//	int i;
-	background.LoadBitmap(IDB_BACKGROUND);					// 載入背景的圖形
-    gamemap.LoadBitmap();                                   // 載入UI
-    bigMap.LoadBitmap();                                    // 載入地圖
-    dice1.SetXY(576, 415);                                  //設定骰子1位置
-    dice2.SetXY(676, 415);                                  //設定骰子2位置
-    number1.SetXY(400, 400);                                //設定數字初始位置
-    number2.SetXY(450, 400);
-    //dice1.RandomValue();
-    //dice2.RandomValue();
-    dice1.LoadBitmap(); // 載入骰子
-    dice2.LoadBitmap(); 
-    number1.LoadBitmap(); //載入數字
-    number2.LoadBitmap();
-    //
-    nowPlayer = 0;
 
+	background.LoadBitmap(IDB_BACKGROUND);					// 載入背景的圖形
+    ui.LoadBitmap();                                        // 載入UI
+    bigMap.LoadBitmap();                                    // 載入地圖
+    sx = sy = 0;
+    nowPlayer = 0;
     //將四個玩家創出來
     for (int i = 0; i < playercount; i++)
     {
         player[i] = new Player(0);//後面引數掛TYPE
         player[i]->LoadBitmap();
         player[i]->SetMap(&bigMap);
-     
     }
-    sx = sy = 0;
+
     //
 	// 完成部分Loading動作，提高進度
 	//
-	ShowInitProgress(50);
+	//ShowInitProgress(50);
 	//Sleep(300); // 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 	//
 	// 繼續載入其他資料
@@ -353,11 +338,9 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 {
-   
     if (canThrowDies)
     {
-        dice1.OnLButtonDown();
-        dice2.OnLButtonDown();
+        ui.RollDice();
     }
     canThrowDies = false;
 }
@@ -380,6 +363,12 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 {
 }
 
+
+int CGameStateRun::GetNowPlayer()
+{
+    return nowPlayer;
+}
+
 void CGameStateRun::OnShow()
 {
 	//
@@ -389,45 +378,15 @@ void CGameStateRun::OnShow()
 	//
 	//
 
-    bigMap.OnShow(sx, sy);              // 貼上地圖
+    bigMap.OnShow(ui.GetSx(), ui.GetSy());              // 貼上地圖
     //以下為UI
-    //gamemap.OnShow();                   // 貼上UI小地圖最後處理
-    dice1.OnShow();                      // 貼上骰子 骰子到時候移到UI
-    dice2.OnShow();                      // 貼上骰子
-    if ((amount / 10) == 0 && !dice1.GetState()) //骰子總和為個位數 貼個位數出來
-    {
-        number2.OnShow((amount % 10)); //個位數
-    }
-    else if (amount > 0 && amount<=12 && !dice1.GetState()) //骰子總合為十位數則貼出兩位數
-    {
-        number1.OnShow((amount / 10)); //十位數
-        number2.OnShow((amount % 10)); //個位數
-    }
+    ui.OnShow();
     //人物顯示
     for (int i = 0; i < playercount; i++)
     {
         if(!player[i]->GetBankruptcy())
-        player[i]->OnShow(sx, sy);
+            player[i]->OnShow(ui.GetSx(), ui.GetSy());
     }
 }
 
-CGameMap::CGameMap()
-{
-
-}
-
-void CGameMap::LoadBitmap()
-{
-    miniMap.LoadBitmap("res/mini_map_1.bmp", RGB(255, 255, 255)); //讀取小地圖
-    status_background.LoadBitmap("res/STATUS_BACKGROUND.bmp");  //讀狀態欄背景
-}
-
-void CGameMap::OnShow()
-{
-    status_background.SetTopLeft(890, 0); //狀態欄背景位置
-    status_background.ShowBitmap();       //顯示圖片
-    miniMap.SetTopLeft(890, 568);
-    miniMap.ShowBitmap();
-
-}
 }

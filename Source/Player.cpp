@@ -12,29 +12,29 @@
 namespace game_framework {
     Player::Player()
     {
-        dx = 96;
-        dy = 96;
-        now= 0;
-        remaining = 0;
+        dx         = 96;
+        dy         = 96;
+        now        = 0;
+        remaining  = 0;
         Bankruptcy = false;
-        speed = 8;//192/8=24 24*(1/30)sec 移動一格       
-        direct = 2;  
-        ani = 0;
-        count = 0;
-        type = 0;//預設為0
+        speed      = 8;      // 192/8=24 24*(1/30)sec 移動一格       
+        direct     = 2;  
+        ani        = 0;
+        count      = 0;
+        type       = 0;      //預設為0
     }
     Player::Player(int t)
     {
-        dx = 96;
-        dy = 96;
-        now = 0;
-        remaining = 0;
+        dx         = 96;
+        dy         = 96;
+        now        = 0;
+        remaining  = 0;
         Bankruptcy = false;
-        speed = 8;//192/8=24 24*(1/30)sec 移動一格       
-        direct = 2;
-        ani = 0;
-        count = 0;
-        type = t;
+        speed      = 8;     //192/8=24 24*(1/30)sec 移動一格       
+        direct     = 2;
+        ani        = 0;
+        count      = 0;
+        type       = t;
     
     }
     void Player::LoadBitmap()
@@ -60,7 +60,7 @@ namespace game_framework {
             bmp[8][3].LoadBitmap("res/doreamon_swap_part4x4.bmp", RGB(0, 0, 0));
             countmax = 4;
             animax = 4;
-            fector = 5;
+            fector = 3;
             w = bmp[2][0].Width()*fector;
             h = bmp[2][0].Height()*fector;
         }
@@ -74,7 +74,7 @@ namespace game_framework {
             int tx, ty;
             MapData** mapData;
             mapData = map->GetMapData();
-            tx=mapData[(now + 1) % map->GetMapCount()]->GetPositionX();
+            tx = mapData[(now + 1) % map->GetMapCount()]->GetPositionX();
             ty = mapData[(now + 1) % map->GetMapCount()]->GetPositionY();
             if (tx > dx)
             {
@@ -88,14 +88,15 @@ namespace game_framework {
             }
             if (ty > dy)
             {
-                direct = 8;
+                direct = 2;
                 dy += speed;
             }
             if (ty < dy)
             {
-                direct = 2;
-                dy += speed;
+                direct = 8;
+                dy -= speed;
             }
+            
             if (dx == tx && dy == ty)
             {
                 now = (now + 1) % map->GetMapCount();
@@ -129,6 +130,10 @@ namespace game_framework {
     int Player::GetMapY()
     {
         return dy;
+    }
+    int Player::GetSpeed()
+    {
+        return speed;
     }
     bool Player::GetBankruptcy()
     {

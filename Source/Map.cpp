@@ -7,7 +7,7 @@
 #include "Map.h"
 #include <vector>
 #include "MapData.h"
-
+#include <math.h>
 namespace game_framework {
     Map::Map()
     {
@@ -22,10 +22,10 @@ namespace game_framework {
             mapData[i] = new MapData();
             mapData[i]->SetPositionX(nx);
             mapData[i]->SetPositionY(ny);
-            nx += dx[(i - 1) / 9];
-            ny += dy[(i - 1) / 9];
+            nx += dx[i / 9];
+            ny += dy[i / 9];
         }
-        //1~9 10~18 19~27 28~35 所以我player為什麼不能傳直進去???
+        //1~9 10~18 19~27 28~35
         /*
         for (int i = 1; i < 10; i++)                   //產生人物移動路徑座標 0-36
         {

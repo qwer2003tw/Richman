@@ -10,6 +10,7 @@ namespace game_framework {
         void OnShow(int sx, int sy);				// 將圖形貼到畫面 
         int GetMapX();                              // 取得人物地圖座標 X
         int GetMapY();                              // 取得人物地圖座標 Y
+        int GetSpeed();
         bool GetBankruptcy();
         void SetMap(Map* m);                        // 
         void SetRemaining(int r);

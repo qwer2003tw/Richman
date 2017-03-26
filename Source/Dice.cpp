@@ -35,17 +35,16 @@ namespace game_framework {
         dicebmp[value].ShowBitmap();
     }
 
-   void Dice::Onmove()
+   void Dice::OnMove()
    {
        if (state == 1)
        {
            RandomValue();
            count++;
-           
            if (count >= stops)
            {
                 state = 0;
-                playerRun = 1; //這是骰子停下來了 然後換玩家走動 OK
+                playerRun = 1; //這是骰子停下來了 然後換玩家走動
            }
        }
    }

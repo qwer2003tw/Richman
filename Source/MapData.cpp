@@ -36,9 +36,11 @@ namespace game_framework {
     }
     void MapData::Through()
     {
+        //
     }
     void MapData::Arrive()
     {
+        //會CALL這個 喔喔  原來這要做抵達後的事
     }
     int MapData::GetPositionX()
     {
