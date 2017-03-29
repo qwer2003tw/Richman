@@ -17,7 +17,10 @@ namespace game_framework {
         void RollDice();
         int GetState();
         void SetState(int n);
-        
+        void SetButton(int s);
+        void OnMouseMove(UINT nFlags, CPoint point);
+        void OnClick(CPoint point);
+        int GetYesOrNoBuy();
     protected:
         CMovingBitmap status_background;    // 狀態欄
         CMovingBitmap miniMap;              // 小地圖
@@ -26,7 +29,7 @@ namespace game_framework {
         Number number[2];
         Button yesButton, noButton;
         int amount;
-        int state=0;//0無事  1骰子轉動 2骰子轉動結束傳值 3人物移動中 4人物到達 
+        int state = 0;                      // 0 開始 > 1擲骰 > 2骰停傳值 > 3人物移動中 > 可以買跳4 不能買回0
         
     };
 }

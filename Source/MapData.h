@@ -21,6 +21,7 @@ namespace game_framework {
         int GetHomeLevel();
         int GetBuildingPositionX();
         int GetBuildingPositionY();
+        
     private:
         int positionX, positionY;
         int price, owner, type, homeLevel;

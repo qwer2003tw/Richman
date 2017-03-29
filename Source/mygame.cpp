@@ -142,20 +142,22 @@ void CGameStateInit::OnShow()
 	//
 	// Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
 	//
+    /*
 	CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
 	CFont f,*fp;
 	f.CreatePointFont(240,"Times New Roman");	// 產生 font f; 160表示16 point的字
 	fp=pDC->SelectObject(&f);					// 選用 font f
 	pDC->SetBkColor(RGB(0,0,0));
 	pDC->SetTextColor(RGB(255,255,0));
-	/*pDC->TextOut(SIZE_X/4, SIZE_Y/2,"Please click mouse or press SPACE to begin.");
+	pDC->TextOut(SIZE_X/4, SIZE_Y/2,"Please click mouse or press SPACE to begin.");
 	pDC->TextOut(5,825,"Press Ctrl-F to switch in between window mode and full screen mode.");
 	if (ENABLE_GAME_PAUSE)
 		pDC->TextOut(5,865,"Press Ctrl-Q to pause the Game.");
 	pDC->TextOut(5,905,"Press Alt-F4 or ESC to Quit.");
-    */
+
     pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
 	CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+    */
 }								
 
 /////////////////////////////////////////////////////////////////////////////
@@ -261,25 +263,36 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		background.SetTopLeft(60 ,-background.Height());
 	background.SetTopLeft(background.Left(),background.Top()+1);
 
-    //骰子移動
+
     ui.OnMove();
+    
+    //ui 骰子傳值
     if (ui.GetState() == 2)
     {
-        player[nowPlayer]->SetRemaining(ui.GetAmount());
-        ui.SetState(3);
+        player[nowPlayer]->SetRemaining(ui.GetAmount());        // 2-3 傳入值
+        ui.SetState(3); // player runing
     }
-    if (player[nowPlayer]->GetRemaining() == 0)
-        ui.SetState(4);
+    if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)   // 已跑完
+    {
+        if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
+        {
+            ui.SetButton(1);
+            ui.SetState(4); // player stopping & display menu
+        }
+        else ui.SetState(0);
+    }
+    TRACE("OWNER:%d", bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner());
     for (int i = 0; i < playercount; i++)
     {
         player[i]->OnMove();
     }
-
     //修正螢幕座標
     ui.SetXY(player[nowPlayer]->GetMapX(), player[nowPlayer]->GetMapY(), player[nowPlayer]->GetSpeed());    
     
-    if (player[nowPlayer]->GetRemaining() == 0)
+    if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 0)
         canThrowDies = true;
+    else canThrowDies = false;
+
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -342,7 +355,18 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
     {
         ui.RollDice();
     }
-    canThrowDies = false;
+    ui.OnClick(point);
+    if (ui.GetYesOrNoBuy() == 1)
+    {
+        bigMap.Build(nowPlayer, player[nowPlayer]->GetNow());
+        ui.SetButton(0);
+        ui.SetState(0);
+    }
+    else if (ui.GetYesOrNoBuy() == 0)
+    {
+        ui.SetState(0);
+        ui.SetButton(0);
+    }
 }
 
 void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
@@ -353,6 +377,7 @@ void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 {
 	// 沒事。如果需要處理滑鼠移動的話，寫code在這裡
+    ui.OnMouseMove(nFlags, point);
 }
 
 void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作

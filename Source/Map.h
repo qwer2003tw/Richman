@@ -6,11 +6,13 @@ namespace game_framework {
         Map();
         void LoadBitmap();
         void OnShow(int sx, int sy);
+        void Build(int nowPlayer, int nowPosition);
         MapData** GetMapData();
         int GetMapCount();  
     private:
         int mapcount = 36;//地圖格數
         CMovingBitmap map;
+        CMovingBitmap house[4][4][40]; // 4 users 4 levels 40 houses
         MapData *mapData[40];
     };
 }

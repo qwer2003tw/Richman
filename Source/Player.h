@@ -15,6 +15,7 @@ namespace game_framework {
         void SetMap(Map* m);                        // 
         void SetRemaining(int r);
         int  GetRemaining();
+        int GetNow();
     protected:
         Map* map;
     private:

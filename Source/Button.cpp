@@ -14,6 +14,7 @@ namespace game_framework {
         state = 0;
         enable = false;
         n = 0;
+        signal = 0;
     }
     Button::Button(int sn)
     {
@@ -22,6 +23,7 @@ namespace game_framework {
         enable = false;
         n = sn;
         state = 0;
+        signal = 0;
 
     }
     void Button::LoadBitmap(char* fileName1, char* fileName2, COLORREF colorkey)
@@ -59,6 +61,7 @@ namespace game_framework {
         {
             state=1;
             signal = true;
+            enable = 0;
         }
     }
     void Button::OnNoClick()
@@ -81,7 +84,7 @@ namespace game_framework {
         else
             state = 0;          
     }
-    bool Button::GetSignal()
+    int Button::GetSignal()
     {
         return signal;
     }

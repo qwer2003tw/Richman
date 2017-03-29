@@ -14,14 +14,14 @@ namespace game_framework {
         void OnClick(CPoint point);
         void OnNoClick();
         void OnMove(CPoint point);
-        bool GetSignal();
+        int GetSignal();
     protected:
         int n;
         int x, y;
         CMovingBitmap bmp[2];
         bool enable;
         int state;
-        bool signal;                    // 헕을Signal
+        int signal;                    // 헕을Signal
     private:
        
     };

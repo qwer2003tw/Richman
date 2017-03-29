@@ -152,4 +152,8 @@ namespace game_framework {
    {
        return remaining;
    }
+   int Player::GetNow()
+   {
+       return now;
+   }
 }

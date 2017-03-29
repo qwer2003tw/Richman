@@ -25,25 +25,25 @@ namespace game_framework {
         dice[1].LoadBitmap();
         number[0].LoadBitmap();
         number[1].LoadBitmap();
-        yesButton.LoadBitmap("res/YES.bmp", "res/YES.bmp", RGB(0, 0, 0));       // 滑過前圖片 滑過圖片
-        noButton.LoadBitmap("res/NO.bmp", "res/NO.bmp", RGB(0, 0, 0));          // 滑過前圖片 滑過圖片
+        yesButton.LoadBitmap("res/YES.bmp", "res/YES_1.bmp", RGB(0, 0, 0));       // 滑過前圖片 滑過圖片
+        noButton.LoadBitmap("res/NO.bmp", "res/NO_1.bmp", RGB(0, 0, 0));          // 滑過前圖片 滑過圖片
         miniMap.LoadBitmap("res/mini_map_1.bmp", RGB(255, 255, 255)); //讀取小地圖
         status_background.LoadBitmap("res/STATUS_BACKGROUND.bmp");  //讀狀態欄背景
     }
     void UI::OnShow()
     {
-        dice[0].OnShow();
-        dice[1].OnShow();
-        //
-        if ((amount / 10) == 0 && !dice[0].GetState()) //骰子總和為個位數 貼個位數出來
-        {
-            number[1].OnShow((amount % 10)); //個位數
-        }
-        else if (amount > 0 && amount <= 12 && !dice[0].GetState()) //骰子總合為十位數則貼出兩位數
-        {
-            number[0].OnShow((amount / 10)); //十位數
-            number[1].OnShow((amount % 10)); //個位數
-        }
+            dice[0].OnShow();
+            dice[1].OnShow();
+            //
+            if ((amount / 10) == 0 && !dice[0].GetState()) //骰子總和為個位數 貼個位數出來
+            {
+                number[1].OnShow((amount % 10)); //個位數
+            }
+            else if (amount > 0 && amount <= 12 && !dice[0].GetState()) //骰子總合為十位數則貼出兩位數
+            {
+                number[0].OnShow((amount / 10)); //十位數
+                number[1].OnShow((amount % 10)); //個位數
+            }
         //
         status_background.SetTopLeft(890, 0); //狀態欄背景位置
         status_background.ShowBitmap();       //顯示圖片
@@ -51,35 +51,20 @@ namespace game_framework {
         miniMap.ShowBitmap();
         yesButton.OnShow();
         noButton.OnShow();
-        if (state == 4)
-        {
-            yesButton.SetEnable(1);
-            noButton.SetEnable(1);
-        }
-        else
-        {
-            yesButton.SetEnable(0);
-            noButton.SetEnable(0);
-        }
     }
     void UI::OnMove()
     {  
-        dice[0].OnMove();
+        dice[0].OnMove();   
         dice[1].OnMove();
-
-        TRACE("ui=%d\n", state);
+        TRACE("ui state = %d\n", state);
         TRACE("playerrun=%d\n", dice[0].GetPlayerRun());
 
         amount = dice[0].GetValue() + dice[1].GetValue();
         if (dice[0].GetPlayerRun())
-            state = 2;
-        dice[0].SetPlayerRun(0);
-
-
-        if (state == 4)
         {
-           
+            state = 2;
         }
+        dice[0].SetPlayerRun(0);
     }
     void UI::SetXY(int playerX, int playerY, int speed)
     {
@@ -118,5 +103,34 @@ namespace game_framework {
     void UI::SetState(int n)
     {
         state = n;
+    }
+    void UI::SetButton(int s)
+    {
+        if (s == 1)
+        {
+            yesButton.SetEnable(true);
+            noButton.SetEnable(true);
+        }
+        else
+        {
+            yesButton.SetEnable(false);
+            noButton.SetEnable(false);
+        }
+    }
+    void UI::OnMouseMove(UINT nFlags, CPoint point)
+    {
+        yesButton.OnMove(point);
+        noButton.OnMove(point);
+    }
+    void UI::OnClick(CPoint point)
+    {
+        yesButton.OnClick(point);
+        noButton.OnClick(point);
+    }
+    int UI::GetYesOrNoBuy()
+    {
+        if (yesButton.GetSignal()) return 1;
+        else if (noButton.GetSignal())return 0;
+        else return 99;
     }
 }
