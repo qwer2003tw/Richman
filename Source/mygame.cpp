@@ -142,20 +142,22 @@ void CGameStateInit::OnShow()
 	//
 	// Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
 	//
+    /*
 	CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
 	CFont f,*fp;
 	f.CreatePointFont(240,"Times New Roman");	// 產生 font f; 160表示16 point的字
 	fp=pDC->SelectObject(&f);					// 選用 font f
 	pDC->SetBkColor(RGB(0,0,0));
 	pDC->SetTextColor(RGB(255,255,0));
-	/*pDC->TextOut(SIZE_X/4, SIZE_Y/2,"Please click mouse or press SPACE to begin.");
+	pDC->TextOut(SIZE_X/4, SIZE_Y/2,"Please click mouse or press SPACE to begin.");
 	pDC->TextOut(5,825,"Press Ctrl-F to switch in between window mode and full screen mode.");
 	if (ENABLE_GAME_PAUSE)
 		pDC->TextOut(5,865,"Press Ctrl-Q to pause the Game.");
 	pDC->TextOut(5,905,"Press Alt-F4 or ESC to Quit.");
-    */
+    
     pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
 	CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+    */
 }								
 
 /////////////////////////////////////////////////////////////////////////////

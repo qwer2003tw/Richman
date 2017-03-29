@@ -22,6 +22,7 @@ namespace game_framework {
         ani        = 0;
         count      = 0;
         type       = 0;      //預設為0
+        money      = 5000000;
     }
     Player::Player(int t)
     {
@@ -35,12 +36,12 @@ namespace game_framework {
         ani        = 0;
         count      = 0;
         type       = t;
-    
+        money = 5000000;
     }
     void Player::LoadBitmap()
     {    
         //type=0 doreamon
-        if (type == 0)
+        if (type == 1)
         {
             bmp[2][0].LoadBitmap("res/doreamon_swap_part1x1.bmp", RGB(0, 0, 0));
             bmp[2][1].LoadBitmap("res/doreamon_swap_part1x2.bmp", RGB(0, 0, 0));
@@ -64,16 +65,39 @@ namespace game_framework {
             w = bmp[2][0].Width()*fector;
             h = bmp[2][0].Height()*fector;
         }
+        else if (type == 0)
+        {
+            bmp[2][0].LoadBitmap("res/Suneo_01.bmp", RGB(255, 255, 255));
+            bmp[2][1].LoadBitmap("res/Suneo_02.bmp", RGB(255, 255, 255));
+            bmp[2][2].LoadBitmap("res/Suneo_03.bmp", RGB(255, 255, 255));
+            bmp[2][3].LoadBitmap("res/Suneo_04.bmp", RGB(255, 255, 255));
+            bmp[4][0].LoadBitmap("res/Suneo_05.bmp", RGB(255, 255, 255));
+            bmp[4][1].LoadBitmap("res/Suneo_06.bmp", RGB(255, 255, 255));
+            bmp[4][2].LoadBitmap("res/Suneo_07.bmp", RGB(255, 255, 255));
+            bmp[4][3].LoadBitmap("res/Suneo_08.bmp", RGB(255, 255, 255));
+            bmp[6][0].LoadBitmap("res/Suneo_09.bmp", RGB(255, 255, 255));
+            bmp[6][1].LoadBitmap("res/Suneo_10.bmp", RGB(255, 255, 255));
+            bmp[6][2].LoadBitmap("res/Suneo_11.bmp", RGB(255, 255, 255));
+            bmp[6][3].LoadBitmap("res/Suneo_12.bmp", RGB(255, 255, 255));
+            bmp[8][0].LoadBitmap("res/Suneo_13.bmp", RGB(255, 255, 255));
+            bmp[8][1].LoadBitmap("res/Suneo_14.bmp", RGB(255, 255, 255));
+            bmp[8][2].LoadBitmap("res/Suneo_15.bmp", RGB(255, 255, 255));
+            bmp[8][3].LoadBitmap("res/Suneo_16.bmp", RGB(255, 255, 255));
+            countmax = 4;
+            animax = 4;
+            fector = 3;
+            w = bmp[2][0].Width()*fector;
+            h = bmp[2][0].Height()*fector;
+        }
     }
     
     void Player::OnMove()
     {       
+        mapData = map->GetMapData();
         //移動
         if (remaining != 0)
         {
             int tx, ty;
-            MapData** mapData;
-            mapData = map->GetMapData();
             tx = mapData[(now + 1) % map->GetMapCount()]->GetPositionX();
             ty = mapData[(now + 1) % map->GetMapCount()]->GetPositionY();
             if (tx > dx)
@@ -102,7 +126,8 @@ namespace game_framework {
                 now = (now + 1) % map->GetMapCount();
                 mapData[now]->Through();
                 remaining--;
-                if(remaining==0)
+                if (remaining == 0)
+                    if (mapData[now]->GetType() == 2) money -= 500;
                     mapData[now]->Arrive();
             }
         }
@@ -119,10 +144,10 @@ namespace game_framework {
     
     void Player::OnShow(int sx, int sy)
     {
-        
+        mapData = map->GetMapData();
         bmp[direct][ani].SetTopLeft(dx -w/2  - sx, dy -h/2 - sy);
         bmp[direct][ani].ShowBitmap(fector);
-      
+
     }
     int Player::GetMapX()
     {
@@ -151,5 +176,33 @@ namespace game_framework {
    int Player::GetRemaining()
    {
        return remaining;
+   }
+   int Player::GetMoney()
+   {
+       return money;
+   }
+   void Player::AdjMoney(int amount)
+   {
+       money += amount;
+   }
+   void Player::AdjEstate(int amount)
+   {
+       estate += amount;
+   }
+   void Player::OnShowState()
+   {
+       CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
+       CFont f, *fp;
+       f.CreatePointFont(240, "Times New Roman");	// 產生 font f; 160表示16 point的字
+       fp = pDC->SelectObject(&f);					// 選用 font f
+       pDC->SetBkColor(RGB(238, 224, 175));
+       pDC->SetTextColor(RGB(0, 0, 0));
+       char str[80];								// Demo 數字對字串的轉換
+       sprintf(str, "財產: %d", money);
+       pDC->TextOut(900, 50, str);
+
+
+       pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+       CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
    }
 }

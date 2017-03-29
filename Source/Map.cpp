@@ -46,6 +46,15 @@ namespace game_framework {
             mapData[i + 27]->SetBuildingPoisitionY(mapData[i]->GetPositionY() - 96);
 
         }
+        // 事件格設定
+        for (int i = 0; i < 3; i++) {
+            if((i-1)==-1) mapData[35]->SetType(2);
+            else mapData[i-1]->SetType(2);                // 2事件格
+            mapData[i+8]->SetType(2);              // 2事件格
+            mapData[i+17]->SetType(2);             // 2事件格
+            mapData[i+26]->SetType(2);             // 2事件格
+        }
+
     }
     void Map::LoadBitmap()
     {
