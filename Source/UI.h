@@ -29,7 +29,7 @@ namespace game_framework {
         Number number[2];
         Button yesButton, noButton;
         int amount;
-        int state = 0;                      // 0 開始 > 1擲骰 > 2骰停傳值 > 3人物移動中 > 可以買跳4 不能買回0
+        int state = 0;                      // 0 開始 > 1擲骰 > 2骰停傳值 > 3人物移動中 > 可以買跳4做詢問 不能買回0
         
     };
 }

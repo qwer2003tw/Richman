@@ -111,7 +111,7 @@ namespace game_framework {
             yesButton.SetEnable(true);
             noButton.SetEnable(true);
         }
-        else
+        else if(s == 0)
         {
             yesButton.SetEnable(false);
             noButton.SetEnable(false);
@@ -129,8 +129,16 @@ namespace game_framework {
     }
     int UI::GetYesOrNoBuy()
     {
-        if (yesButton.GetSignal()) return 1;
-        else if (noButton.GetSignal())return 0;
+        if (yesButton.GetSignal())
+        {
+            yesButton.SetSignal(0);
+            return 1;
+        }
+        else if (noButton.GetSignal())
+        {
+            noButton.SetSignal(0);
+            return 0;
+        }
         else return 99;
     }
 }

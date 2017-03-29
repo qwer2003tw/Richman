@@ -88,4 +88,8 @@ namespace game_framework {
     {
         return signal;
     }
+    void Button::SetSignal(int s)
+    {
+        signal = 0; // reset
+    }
 }

@@ -15,6 +15,7 @@ namespace game_framework {
         void OnNoClick();
         void OnMove(CPoint point);
         int GetSignal();
+        void SetSignal(int s);
     protected:
         int n;
         int x, y;

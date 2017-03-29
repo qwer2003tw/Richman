@@ -24,7 +24,10 @@ namespace game_framework {
         
     private:
         int positionX, positionY;
-        int price, owner, type, homeLevel;
+        int price;
+        int owner;
+        int type;                                     //格子的種類 0->可蓋房子 1->已蓋房子 2->事件格子
+        int homeLevel;
         int buildingPositionX, buildingPositionY;
     };
 }

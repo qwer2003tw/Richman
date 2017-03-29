@@ -154,7 +154,11 @@ void CGameStateInit::OnShow()
 	if (ENABLE_GAME_PAUSE)
 		pDC->TextOut(5,865,"Press Ctrl-Q to pause the Game.");
 	pDC->TextOut(5,905,"Press Alt-F4 or ESC to Quit.");
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 29c0cca915a36ab6d8609b38b585a27e306407c1
     pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
 	CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
     */
@@ -356,16 +360,16 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
         ui.RollDice();
     }
     ui.OnClick(point);
-    if (ui.GetYesOrNoBuy() == 1)
+    if (ui.GetYesOrNoBuy() == 1 && ui.GetState() == 4)
     {
         bigMap.Build(nowPlayer, player[nowPlayer]->GetNow());
         ui.SetButton(0);
         ui.SetState(0);
     }
-    else if (ui.GetYesOrNoBuy() == 0)
+    else if (ui.GetYesOrNoBuy() == 0 && ui.GetState() == 4)
     {
-        ui.SetState(0);
         ui.SetButton(0);
+        ui.SetState(0);
     }
 }
 
