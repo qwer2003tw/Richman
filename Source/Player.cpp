@@ -111,7 +111,8 @@ namespace game_framework {
         count++;
         if (count >= countmax) {
             count = 0;
-            ani++;
+            if(remaining!=0)ani++;
+            else direct = 2;
             if (ani >= animax)ani = 0;
         }
     }
