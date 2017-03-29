@@ -22,7 +22,7 @@ namespace game_framework {
         ani        = 0;
         count      = 0;
         type       = 0;      //¹w³]¬°0
-        money      = 5000000;
+        money      = 300000;
     }
     Player::Player(int t)
     {
@@ -36,11 +36,11 @@ namespace game_framework {
         ani        = 0;
         count      = 0;
         type       = t;
-        money = 5000000;
+        money = 300000;
     }
     void Player::LoadBitmap()
     {    
-        //type=0 doreamon
+        //type=1 doreamon
         if (type == 1)
         {
             bmp[2][0].LoadBitmap("res/doreamon_swap_part1x1.bmp", RGB(0, 0, 0));
@@ -137,7 +137,11 @@ namespace game_framework {
         if (count >= countmax) {
             count = 0;
             if(remaining!=0)ani++;
-            else direct = 2;
+            else
+            {
+                ani = 0;
+                direct = 2;
+            }
             if (ani >= animax)ani = 0;
         }
     }
