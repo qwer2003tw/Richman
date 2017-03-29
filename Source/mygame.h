@@ -114,7 +114,7 @@ namespace game_framework {
 		CBouncingBall   bball;		// 反覆彈跳的球
         Player *player[4];          // 4個玩家
         UI ui;                      // User Interface
-        int playercount = 1;
+        int playercount;
         int nowPlayer;              // 當前玩家
        
         Map bigMap;                 // 地圖

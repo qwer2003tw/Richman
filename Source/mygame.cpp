@@ -284,7 +284,10 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             ui.SetState(4); // player stopping & display buy button
         }
 
-        else ui.SetState(0);
+        else
+        {
+            ui.SetState(0);
+        }
     }
     TRACE("OWNER:%d", bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner());
     for (int i = 0; i < playercount; i++)
@@ -317,14 +320,20 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     bigMap.LoadBitmap();                                    // 載入地圖
     sx = sy = 0;
     nowPlayer = 0;
+    playercount = 2;
     //將四個玩家創出來
-    for (int i = 0; i < playercount; i++)
+    /*for (int i = 0; i < playercount; i++)
     {
         player[i] = new Player(0);//後面引數掛TYPE
         player[i]->LoadBitmap();
         player[i]->SetMap(&bigMap);
-    }
-
+    }*/
+    player[0] = new Player(0);//後面引數掛TYPE
+    player[0]->LoadBitmap();
+    player[0]->SetMap(&bigMap);
+    player[1] = new Player(1);//後面引數掛TYPE
+    player[1]->LoadBitmap();
+    player[1]->SetMap(&bigMap);
     //
 	// 完成部分Loading動作，提高進度
 	//
@@ -366,9 +375,19 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
         if (ui.GetYesOrNoBuy() == 1)
         {
             bigMap.Build(nowPlayer, player[nowPlayer]->GetNow());
+            ui.SetButton(0);
+            ui.SetState(0);
+            if (nowPlayer < playercount - 1) nowPlayer++;
+            else nowPlayer = 0;
         }
-        ui.SetButton(0);
-        ui.SetState(0);
+        else if (ui.GetYesOrNoBuy() == 0)
+        {
+            ui.SetButton(0);
+            ui.SetState(0);
+            if (nowPlayer < playercount - 1) nowPlayer++;
+            else nowPlayer = 0;
+        }
+
     }
 }
 

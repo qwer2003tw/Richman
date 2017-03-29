@@ -32,8 +32,11 @@ namespace game_framework {
     }
     void UI::OnShow()
     {
+        if (state != 3)     //非擲骰隱藏
+        {
             dice[0].OnShow();
             dice[1].OnShow();
+        }
             //
             if ((amount / 10) == 0 && !dice[0].GetState()) //骰子總和為個位數 貼個位數出來
             {
