@@ -7,7 +7,7 @@ namespace game_framework {
         void LoadBitmap();
         void OnShow(int sx, int sy);
         void Build(int nowPlayer, int nowPosition);
-
+        void Upgrade(int nowPosition);
         MapData** GetMapData();
         int GetMapCount();  
     private:

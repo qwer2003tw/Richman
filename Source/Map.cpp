@@ -92,6 +92,10 @@ namespace game_framework {
         mapData[nowPosition]->SetOwner(nowPlayer);
         mapData[nowPosition]->SetHomeLevel(0);
     }
+    void Map::Upgrade(int nowPosition)
+    {
+        mapData[nowPosition]->SetHomeLevel(mapData[nowPosition]->GetHomeLevel() + 1);
+    }
     MapData ** Map::GetMapData()
     {
         return mapData;

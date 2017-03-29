@@ -283,7 +283,11 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             ui.SetButton(1);
             ui.SetState(4); // player stopping & display buy button
         }
-
+        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == nowPlayer && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() < 3)
+        {
+            ui.SetButton(1);
+            ui.SetState(5); // player stopping & display upgrade button
+        }
         else ui.SetState(0);
     }
     TRACE("OWNER:%d", bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner());
@@ -366,9 +370,23 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
         if (ui.GetYesOrNoBuy() == 1)
         {
             bigMap.Build(nowPlayer, player[nowPlayer]->GetNow());
+            ui.SetButton(0);
+            ui.SetState(0);
         }
-        ui.SetButton(0);
-        ui.SetState(0);
+        else if (ui.GetYesOrNoBuy() == 0)
+        {
+            ui.SetButton(0);
+            ui.SetState(0);
+        }
+    }
+    if (ui.GetState() == 5)
+    {
+        if (ui.GetYesOrNoBuy() == 1)
+        {
+            bigMap.Upgrade(player[nowPlayer]->GetNow());
+            ui.SetButton(0);
+            ui.SetState(0);
+        }
     }
 }
 
