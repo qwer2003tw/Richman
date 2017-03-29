@@ -360,14 +360,12 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
         ui.RollDice();
     }
     ui.OnClick(point);
-    if (ui.GetYesOrNoBuy() == 1 && ui.GetState() == 4)
+    if (ui.GetState() == 4)
     {
-        bigMap.Build(nowPlayer, player[nowPlayer]->GetNow());
-        ui.SetButton(0);
-        ui.SetState(0);
-    }
-    else if (ui.GetYesOrNoBuy() == 0 && ui.GetState() == 4)
-    {
+        if (ui.GetYesOrNoBuy() == 1)
+        {
+            bigMap.Build(nowPlayer, player[nowPlayer]->GetNow());
+        }
         ui.SetButton(0);
         ui.SetState(0);
     }
