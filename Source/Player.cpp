@@ -40,8 +40,8 @@ namespace game_framework {
     }
     void Player::LoadBitmap()
     {    
-        //type=1 doreamon
-        if (type == 1)
+        //type=0 doreamon
+        if (type == 0)
         {
             bmp[2][0].LoadBitmap("res/doreamon_swap_part1x1.bmp", RGB(0, 0, 0));
             bmp[2][1].LoadBitmap("res/doreamon_swap_part1x2.bmp", RGB(0, 0, 0));
@@ -65,7 +65,7 @@ namespace game_framework {
             w = bmp[2][0].Width()*fector;
             h = bmp[2][0].Height()*fector;
         }
-        else if (type == 0)
+        else if (type == 1)
         {
             bmp[2][0].LoadBitmap("res/Suneo_01.bmp", RGB(255, 255, 255));
             bmp[2][1].LoadBitmap("res/Suneo_02.bmp", RGB(255, 255, 255));
