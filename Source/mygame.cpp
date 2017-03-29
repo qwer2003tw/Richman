@@ -281,8 +281,9 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
         if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
         {
             ui.SetButton(1);
-            ui.SetState(4); // player stopping & display menu
+            ui.SetState(4); // player stopping & display buy button
         }
+
         else ui.SetState(0);
     }
     TRACE("OWNER:%d", bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner());

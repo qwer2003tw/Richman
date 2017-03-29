@@ -65,6 +65,8 @@ namespace game_framework {
             state = 2;
         }
         dice[0].SetPlayerRun(0);
+        yesButton.SetSignal(0);
+        noButton.SetSignal(0);
     }
     void UI::SetXY(int playerX, int playerY, int speed)
     {
@@ -131,12 +133,10 @@ namespace game_framework {
     {
         if (yesButton.GetSignal())
         {
-            yesButton.SetSignal(0);
             return 1;
         }
         else if (noButton.GetSignal())
         {
-            noButton.SetSignal(0);
             return 0;
         }
         else return 99;
