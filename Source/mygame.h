@@ -41,7 +41,6 @@
 #include "CEraser.h"
 #include "CBall.h"
 #include "CBouncingBall.h"
-#include "Button.h"
 #include "Dice.h"
 #include "Number.h"
 #include "Player.h"

@@ -1,5 +1,7 @@
 #pragma once
 #include"Player.h"
+#include "Button.h"
+
 namespace game_framework {
     class UI {
     public:
@@ -22,7 +24,9 @@ namespace game_framework {
         int sx, sy;                         // 螢幕座標
         Dice dice[2];
         Number number[2];
+        Button yesButton, noButton;
         int amount;
-        int state=0;//0無事  1骰子轉動 2骰子轉動結束船直 3人物移動中 4人物到達
+        int state=0;//0無事  1骰子轉動 2骰子轉動結束傳值 3人物移動中 4人物到達 
+        
     };
 }

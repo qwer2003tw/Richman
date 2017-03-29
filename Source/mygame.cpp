@@ -86,8 +86,7 @@ void CGameStateInit::OnInit()
 	// 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
 	//
     startButton = new Button(1);
-    startButton->Setcga(this);
-    startButton->LoadBitmap();
+    startButton->LoadBitmap("res/BUTTON_START_1.bmp", "res/BUTTON_START_2.bmp", RGB(255, 255, 255));
     startButton->SetXY(420, SIZE_Y / 2);
     startButton->SetEnable(true);
 }
@@ -109,20 +108,21 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)   //按下滑鼠左鍵
 {
     if (startButton != nullptr)
-    startButton->OnClick(point);
-	//GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+        startButton->OnClick(point);
+    if(startButton->GetSignal())
+	    GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
 }
 
 void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point)     //按下彈起滑鼠左鍵
 {
     if (startButton != nullptr)
-    startButton->OnNoClick();
+        startButton->OnNoClick();
 }
 
 void CGameStateInit::OnMouseMove(UINT nFlags, CPoint point)     //滑鼠滑過
 {   
     if (startButton != nullptr)
-    startButton->OnMove(point);
+        startButton->OnMove(point);
 }
 
 void CGameStateInit::OnShow()
@@ -263,7 +263,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 
     //骰子移動
     ui.OnMove();
-    if (ui.GetState()==2)
+    if (ui.GetState() == 2)
     {
         player[nowPlayer]->SetRemaining(ui.GetAmount());
         ui.SetState(3);

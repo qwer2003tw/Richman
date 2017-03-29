@@ -24,10 +24,10 @@ namespace game_framework {
         state = 0;
 
     }
-    void Button::LoadBitmap()
+    void Button::LoadBitmap(char* fileName1, char* fileName2, COLORREF colorkey)
     {
-        bmp[0].LoadBitmap(IDB_BUTTON_START_1, RGB(255, 255, 255));
-        bmp[1].LoadBitmap(IDB_BUTTON_START_2, RGB(255, 255, 255));
+        bmp[0].LoadBitmap(fileName1, colorkey);
+        bmp[1].LoadBitmap(fileName2, colorkey);
     }
     void Button::OnShow()
     {
@@ -50,16 +50,15 @@ namespace game_framework {
         int my = point.y;
         int w = bmp[0].Width();
         int h = bmp[0].Height();
-        int t = -12;
-        int x1 = x - t;
-        int x2 = x + w + t;
-        int y1 = y - t;
-        int y2 = y + h + t;
-        if (mx >= x1&&mx <= x2&&my >= y1&&my <= y2)
+        int t = 5;
+        int x1 = x + t;
+        int x2 = x + w - t;
+        int y1 = y + t;
+        int y2 = y + h - t;
+        if (mx >= x1 && mx <= x2 && my >= y1 && my <= y2)
         {
             state=1;
-            cga->GotoGameState(GAME_STATE_RUN);
-            //GotoGameState(GAME_STATE_RUN);
+            signal = true;
         }
     }
     void Button::OnNoClick()
@@ -72,18 +71,18 @@ namespace game_framework {
         int my = point.y;
         int w = bmp[0].Width();
         int h = bmp[0].Height();
-        int t = 2;
-        int x1 = x - t;
-        int x2 = x + w + t;
-        int y1 = y - t;
-        int y2 = y + h + t;
+        int t = 5;
+        int x1 = x + t;
+        int x2 = x + w - t;
+        int y1 = y + t;
+        int y2 = y + h - t;
         if (mx >= x1 && mx <= x2 && my >= y1 && my <= y2) // 表示滑鼠目前在按鍵位置上
             state = 1;     
         else
             state = 0;          
     }
-    void Button::Setcga(CGameState * c)
+    bool Button::GetSignal()
     {
-        cga = c;
+        return signal;
     }
 }

@@ -11,8 +11,8 @@
 namespace game_framework {
     Map::Map()
     {
-     
-      
+
+
         int dx[4] = { 192,0,-192,0 };
         int dy[4] = { 0,192,0,-192 };
         int nx = 96;
@@ -24,32 +24,29 @@ namespace game_framework {
             mapData[i]->SetPositionY(ny);
             nx += dx[i / 9];
             ny += dy[i / 9];
+            mapData[i]->SetOwner(0);        // 0不屬於任何人
         }
-        //1~9 10~18 19~27 28~35
-        /*
-        for (int i = 1; i < 10; i++)                   //產生人物移動路徑座標 0-36
+        for (int i = 2; i < 8; i++)         
         {
-            mapData[i].SetPositionX(mapData[i - 1].GetPositionX() + 192);
-            mapData[i].SetPositionY(96);
-        }
-        for (int i = 10; i < 19; i++)
-        {
-            mapData[i].SetPositionX(mapData[9].GetPositionX());
-            mapData[i].SetPositionY(mapData[i - 1].GetPositionY() + 192);
-        }
-        for (int i = 19; i < 28; i++)
-        {
-            mapData[i].SetPositionX(mapData[i - 1].GetPositionX() - 192);
-            mapData[i].SetPositionY(mapData[18].GetPositionY());
-        }
-        for (int i = 28; i < 36; i++)
-        {
-            mapData[i].SetPositionX(mapData[27].GetPositionX());
-            mapData[i].SetPositionY(mapData[i - 1].GetPositionY() - 192);
-        }
-        */
-    }
+            // 上排區
+            mapData[i]->SetType(0);             // 0住宅區
+            mapData[i]->SetBuildingPoisitionX(mapData[i]->GetPositionX() - 96);
+            mapData[i]->SetBuildingPoisitionY(mapData[i]->GetPositionY() + 96);
+            // 右排區
+            mapData[i + 9]->SetType(0);         // 0住宅區
+            mapData[i + 9]->SetBuildingPoisitionX(mapData[i]->GetPositionX() - 288);
+            mapData[i + 9]->SetBuildingPoisitionY(mapData[i]->GetPositionY() - 96);
+            // 下排區
+            mapData[i + 18]->SetType(0);         // 0住宅區
+            mapData[i + 18]->SetBuildingPoisitionX(mapData[i]->GetPositionX() - 96);
+            mapData[i + 18]->SetBuildingPoisitionY(mapData[i]->GetPositionY() - 288);
+            // 左排區
+            mapData[i + 27]->SetType(0);         // 0住宅區
+            mapData[i + 27]->SetBuildingPoisitionX(mapData[i]->GetPositionX() + 96);
+            mapData[i + 27]->SetBuildingPoisitionY(mapData[i]->GetPositionY() - 96);
 
+        }
+    }
     void Map::LoadBitmap()
     {
         map.LoadBitmap("res/MAP.bmp", RGB(255, 255, 255));

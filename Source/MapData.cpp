@@ -34,13 +34,21 @@ namespace game_framework {
     {
         this->homeLevel = homeLevel;
     }
+    void MapData::SetBuildingPoisitionX(int x)
+    {
+        buildingPositionX = x;
+    }
+    void MapData::SetBuildingPoisitionY(int y)
+    {
+        buildingPositionY = y;
+    }
     void MapData::Through()
     {
         //
     }
     void MapData::Arrive()
     {
-        //會CALL這個 喔喔  原來這要做抵達後的事
+        //做抵達後的事
     }
     int MapData::GetPositionX()
     {
@@ -65,5 +73,13 @@ namespace game_framework {
     int MapData::GetHomeLevel()
     {
         return homeLevel;
+    }
+    int MapData::GetBuildingPositionX()
+    {
+        return buildingPositionX;
+    }
+    int MapData::GetBuildingPositionY()
+    {
+        return buildingPositionY;
     }
 }

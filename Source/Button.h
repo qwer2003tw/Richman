@@ -7,22 +7,21 @@ namespace game_framework {
     public:
         Button();
         Button(int sn);
-        void LoadBitmap();										
+        void LoadBitmap(char* fileName1, char* fileName2, COLORREF colorkey); // fileName1未滑過 fileName2滑過
         void OnShow();											
         void SetXY(int nx, int ny);								
         void SetEnable(bool e);
         void OnClick(CPoint point);
         void OnNoClick();
         void OnMove(CPoint point);
-        void Setcga(CGameState* c);
+        bool GetSignal();
     protected:
         int n;
         int x, y;
         CMovingBitmap bmp[2];
         bool enable;
         int state;
-        //
-        CGameState* cga;
+        bool signal;                    // 點擊Signal
     private:
        
     };
