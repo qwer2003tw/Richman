@@ -60,8 +60,7 @@ namespace game_framework {
         if (mx >= x1 && mx <= x2 && my >= y1 && my <= y2)
         {
             state=1;
-            signal = true;
-            enable = 0;
+            signal = 1;
         }
     }
     void Button::OnNoClick()
