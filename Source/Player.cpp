@@ -208,9 +208,11 @@ namespace game_framework {
        fp = pDC->SelectObject(&f);					// 選用 font f
        pDC->SetBkColor(RGB(238, 224, 175));
        pDC->SetTextColor(RGB(0, 0, 0));
-       char str[80];								// Demo 數字對字串的轉換
-       sprintf(str, "財產: %d", money);
-       pDC->TextOut(900, 50, str);
+       char str[80], name[80];								// Demo 數字對字串的轉換
+       sprintf(name, "玩家：%d", type + 1);
+       sprintf(str, "財產：%d", money);
+       pDC->TextOut(1600, 50, name);
+       pDC->TextOut(1600, 100, str);
 
 
        pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)

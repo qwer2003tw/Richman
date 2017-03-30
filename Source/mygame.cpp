@@ -87,7 +87,7 @@ void CGameStateInit::OnInit()
 	//
     startButton = new Button(1);
     startButton->LoadBitmap("res/BUTTON_START_1.bmp", "res/BUTTON_START_2.bmp", RGB(255, 255, 255));
-    startButton->SetXY(420, SIZE_Y / 2);
+    startButton->SetXY((SIZE_X - 484) / 2, SIZE_Y / 2);
     startButton->SetEnable(true);
 }
 
@@ -137,7 +137,7 @@ void CGameStateInit::OnShow()
     // 貼上beginbackground和button
     //
     beginground.SetTopLeft(0, 0);    
-    beginground.ShowBitmap();        
+    beginground.ShowBitmap(1.2);        
     startButton->OnShow();           
 	//
 	// Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
@@ -278,9 +278,9 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     }
     if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)   // 已跑完
     {
-        if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 2)
+        if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 2 && ui.GetState() != 0)
         {
-            player[nowPlayer]->AdjMoney(-500);
+            //player[nowPlayer]->AdjMoney(-500);
             ui.SetState(0);
 
             if (nowPlayer < playercount - 1) nowPlayer++;
@@ -297,7 +297,12 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             ui.SetButton(1);
             ui.SetState(5); // player stopping & display upgrade button
         }
-        else ui.SetState(0);
+        else
+        {
+            ui.SetState(0);
+            if (nowPlayer < playercount - 1) nowPlayer++;
+            else nowPlayer = 0;
+        }
     }
     TRACE("OWNER:%d", bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner());
     for (int i = 0; i < playercount; i++)
@@ -413,6 +418,14 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
             if (nowPlayer < playercount - 1) nowPlayer++;
             else nowPlayer = 0;
         }
+        else if (ui.GetYesOrNoBuy() == 0)
+        {
+            ui.SetButton(0);
+            ui.SetState(0);
+            if (nowPlayer < playercount - 1) nowPlayer++;
+            else nowPlayer = 0;
+        }
+
     }
 }
 
@@ -457,13 +470,13 @@ void CGameStateRun::OnShow()
 
     bigMap.OnShow(ui.GetSx(), ui.GetSy());              // 貼上地圖
     //以下為UI
-    ui.OnShow();
     //人物顯示
     for (int i = 0; i < playercount; i++)
     {
         if(!player[i]->GetBankruptcy())
             player[i]->OnShow(ui.GetSx(), ui.GetSy());
-    }
+    } 
+    ui.OnShow();
 }
 
 }

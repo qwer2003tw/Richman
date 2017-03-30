@@ -48,9 +48,9 @@ namespace game_framework {
                 number[1].OnShow((amount % 10)); //個位數
             }
         //
-        status_background.SetTopLeft(890, 0); //狀態欄背景位置
+        status_background.SetTopLeft(SIZE_X - 390, 0); //狀態欄背景位置
         status_background.ShowBitmap();       //顯示圖片
-        miniMap.SetTopLeft(890, 568);
+        miniMap.SetTopLeft(SIZE_X - 390, SIZE_Y - 390);
         miniMap.ShowBitmap();
         yesButton.OnShow();
         noButton.OnShow();
@@ -61,7 +61,6 @@ namespace game_framework {
         dice[0].OnMove();   
         dice[1].OnMove();
         TRACE("ui state = %d\n", state);
-        TRACE("playerrun=%d\n", dice[0].GetPlayerRun());
 
         amount = dice[0].GetValue() + dice[1].GetValue();
         if (dice[0].GetPlayerRun())
@@ -74,10 +73,10 @@ namespace game_framework {
     }
     void UI::SetXY(int playerX, int playerY, int speed)
     {
-        if (playerX - sx > 445 && sx < 1030) sx += speed;
-        if (playerX - sx < 445 && sx > 0) sx -= speed;
-        if (playerY - sy > 480 && sy < 960) sy += speed;
-        if (playerY - sy < 480 && sy > 0) sy -= speed;
+        if (playerX - sx > (SIZE_X - 390) / 2 && sx < 390) sx += speed;
+        if (playerX - sx < (SIZE_X - 390) / 2 && sx > 0) sx -= speed;
+        if (playerY - sy > SIZE_Y / 2 && sy < 890) sy += speed;
+        if (playerY - sy < SIZE_Y / 2 && sy > 0) sy -= speed;
     }
     int UI::GetSx()
     {

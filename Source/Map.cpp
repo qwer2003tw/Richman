@@ -66,7 +66,8 @@ namespace game_framework {
         {
             for (int j = 0; j < 36; j++)
             {
-                house[i][0][j].LoadBitmap("res/House_level0.bmp", RGB(0, 0, 0));
+                if (i == 1)house[i][0][j].LoadBitmap("res/House_level0_1.bmp", RGB(0, 0, 0));
+                else house[i][0][j].LoadBitmap("res/House_level0.bmp", RGB(0, 0, 0));
                 house[i][1][j].LoadBitmap("res/House_level1.bmp", RGB(0, 0, 0));
                 house[i][2][j].LoadBitmap("res/House_level2.bmp", RGB(0, 0, 0));
                 house[i][3][j].LoadBitmap("res/House_level3.bmp", RGB(0, 0, 0));
