@@ -37,7 +37,7 @@
  *      2. Replace the demonstration of animation as a new bouncing ball.
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
-
+#pragma once
 #include "CEraser.h"
 #include "CBall.h"
 #include "CBouncingBall.h"
@@ -98,7 +98,7 @@ namespace game_framework {
 		void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作 
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
-       
+        Player **GetPlayer();
         int GetNowPlayer();
 	protected:
 		void OnMove();									// 移動遊戲元素

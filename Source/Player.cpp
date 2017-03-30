@@ -1,3 +1,4 @@
+#pragma once
 #include "stdafx.h"
 #include "Resource.h"
 #include <mmsystem.h>
@@ -127,7 +128,9 @@ namespace game_framework {
                 mapData[now]->Through();
                 remaining--;
                 if (remaining == 0)
-                    if (mapData[now]->GetType() == 2) money -= 500;
+                    if (mapData[now]->GetType() == 2) {
+                        money -= 500;
+                    }
                     mapData[now]->Arrive();
             }
         }

@@ -1,12 +1,11 @@
+#pragma once
 #include "stdafx.h"
 #include "Resource.h"
 #include <mmsystem.h>
 #include <ddraw.h>
 #include "audio.h"
 #include "gamelib.h"
-#include "Dice.h"
-#include "Number.h" 
-#include "UI.h"
+#include "mygame.h"
 
 namespace game_framework {
     UI::UI()
@@ -32,6 +31,7 @@ namespace game_framework {
     }
     void UI::OnShow()
     {
+        
         if (state != 3)     //«DÂY»ëÁôÂÃ
         {
             dice[0].OnShow();
@@ -54,6 +54,7 @@ namespace game_framework {
         miniMap.ShowBitmap();
         yesButton.OnShow();
         noButton.OnShow();
+        myGame->GetPlayer()[myGame->GetNowPlayer()]->OnShowState();
     }
     void UI::OnMove()
     {  
@@ -143,5 +144,9 @@ namespace game_framework {
             return 0;
         }
         else return 99;
+    }
+    void UI::SetMyGame(CGameStateRun *mygame)
+    {
+        myGame = mygame;
     }
 }

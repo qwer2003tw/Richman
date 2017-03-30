@@ -21,7 +21,9 @@ namespace game_framework {
         void OnMouseMove(UINT nFlags, CPoint point);
         void OnClick(CPoint point);
         int GetYesOrNoBuy();
+        void SetMyGame(CGameStateRun *mygame);
     protected:
+        CGameStateRun *myGame;              // 讀mygme資訊
         CMovingBitmap status_background;    // 狀態欄
         CMovingBitmap miniMap;              // 小地圖
         int sx, sy;                         // 螢幕座標

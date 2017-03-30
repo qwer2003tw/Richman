@@ -50,7 +50,7 @@
  *   2010-03-23 V4.6
  *      1. Demo MP3 support: use lake.mp3 to replace lake.wav.
 */
-
+#pragma once
 #include "stdafx.h"
 #include "Resource.h"
 #include <mmsystem.h>
@@ -278,7 +278,15 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     }
     if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)   // 已跑完
     {
-        if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
+        if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 2)
+        {
+            player[nowPlayer]->AdjMoney(-500);
+            ui.SetState(0);
+
+            if (nowPlayer < playercount - 1) nowPlayer++;
+            else nowPlayer = 0;
+        }
+        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
         {
             ui.SetButton(1);
             ui.SetState(4); // player stopping & display buy button
@@ -323,6 +331,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     sx = sy = 0;
     nowPlayer = 0;
     playercount = 2;
+    ui.SetMyGame(this);
     //將四個玩家創出來
     /*for (int i = 0; i < playercount; i++)
     {
@@ -424,6 +433,11 @@ void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 
 void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 {
+}
+
+Player **CGameStateRun::GetPlayer()
+{
+    return player;
 }
 
 
