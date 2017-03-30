@@ -38,15 +38,17 @@ namespace game_framework {
             dice[1].OnShow();
         }
             //
-            if ((amount / 10) == 0 && !dice[0].GetState()) //浑羆㎝计 禟计ㄓ
-            {
-                number[1].OnShow((amount % 10)); //计
-            }
-            else if (amount > 0 && amount <= 12 && !dice[0].GetState()) //浑羆计玥禟ㄢ计
-            {
-                number[0].OnShow((amount / 10)); //计
-                number[1].OnShow((amount % 10)); //计
-            }
+        if (state == 0) amount = 0;
+        if ((amount / 10) == 0 && !dice[0].GetState()) //浑羆㎝计 禟计ㄓ
+        {
+            number[1].OnShow((amount % 10)); //计
+        }
+        else if (amount > 0 && amount <= 12 && !dice[0].GetState()) //浑羆计玥禟ㄢ计
+        {
+            number[0].OnShow((amount / 10)); //计
+            number[1].OnShow((amount % 10)); //计
+        }
+            
         //
         status_background.SetTopLeft(SIZE_X - 390, 0); //篈逆璉春竚
         status_background.ShowBitmap();       //陪ボ瓜
