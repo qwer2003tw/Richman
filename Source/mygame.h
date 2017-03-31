@@ -116,11 +116,11 @@ namespace game_framework {
         UI ui;                      // User Interface
         int playercount;
         int nowPlayer;              // 當前玩家
-       
         Map bigMap;                 // 地圖
         int amount;                 // 點數和
         int sx, sy;                 // 螢幕地圖座標
         bool canThrowDies;          
+        int test = 2, test1 = 3;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

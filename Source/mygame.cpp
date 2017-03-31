@@ -273,7 +273,27 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     //ui 骰子傳值
     if (ui.GetState() == 2)
     {
-        player[nowPlayer]->SetRemaining(ui.GetAmount());        // 2-3 傳入值
+        // test
+/*        if (nowPlayer == 0)
+        {
+            if (test < 2)
+            {
+                test = 0;
+            }
+            player[nowPlayer]->SetRemaining(test);
+            test--;
+        }
+        else if(nowPlayer == 1)
+        {
+            if (test1 < 3)
+            {
+                test1 = 0;
+            }
+            player[nowPlayer]->SetRemaining(test1);
+            test1--;
+        }
+        else*/ player[nowPlayer]->SetRemaining(ui.GetAmount());        // 2-3 傳入值
+        // test
         ui.SetState(3); // player runing
     }
     if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)   // 已跑完
