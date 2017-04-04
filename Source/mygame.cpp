@@ -300,7 +300,6 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     {
         if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 2 && ui.GetState() != 0)
         {
-            //player[nowPlayer]->AdjMoney(-500);
             ui.SetState(0);
 
             if (nowPlayer < playercount - 1) nowPlayer++;
@@ -309,6 +308,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
         {
             ui.SetButton(1);
+            ui.SetMessage(1, 800);
+            ui.SetDisplay(1);
             ui.SetState(4); // player stopping & display buy button
         }
 
@@ -411,9 +412,10 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
         if (ui.GetYesOrNoBuy() == 1)
         {
             bigMap.Build(nowPlayer, player[nowPlayer]->GetNow());
+            player[nowPlayer]->AdjMoney(-800);
             ui.SetButton(0);
             ui.SetState(0);
-
+            ui.SetDisplay(0);
             if (nowPlayer < playercount - 1) nowPlayer++;
             else nowPlayer = 0;
 
@@ -422,7 +424,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
         {
             ui.SetButton(0);
             ui.SetState(0);
-
+            ui.SetDisplay(0);
             if (nowPlayer < playercount - 1) nowPlayer++;
             else nowPlayer = 0;
         }

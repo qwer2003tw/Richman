@@ -11,6 +11,7 @@ namespace game_framework {
     UI::UI()
     {
         sx = sy = 0;
+        displayMessage = false;
     }
     void UI::LoadBitmap()
     {
@@ -28,6 +29,7 @@ namespace game_framework {
         noButton.LoadBitmap("res/NO.bmp", "res/NO_1.bmp", RGB(0, 0, 0));          // 滑過前圖片 滑過圖片
         miniMap.LoadBitmap("res/mini_map_1.bmp", RGB(255, 255, 255)); //讀取小地圖
         status_background.LoadBitmap("res/STATUS_BACKGROUND.bmp");  //讀狀態欄背景
+        messageFrame.LoadBitmap("res/MESSAGE_FRAME.bmp", RGB(0, 0, 0));
     }
     void UI::OnShow()
     {
@@ -54,9 +56,15 @@ namespace game_framework {
         status_background.ShowBitmap();       //顯示圖片
         miniMap.SetTopLeft(SIZE_X - 390, SIZE_Y - 390);
         miniMap.ShowBitmap();
+        myGame->GetPlayer()[myGame->GetNowPlayer()]->OnShowState();
+        if (displayMessage)
+        {
+            messageFrame.ShowBitmap();
+            messageFrame.SetTopLeft(440, 230);
+        }
         yesButton.OnShow();
         noButton.OnShow();
-        myGame->GetPlayer()[myGame->GetNowPlayer()]->OnShowState();
+        OnShowMessage();
     }
     void UI::OnMove()
     {  
@@ -149,5 +157,37 @@ namespace game_framework {
     void UI::SetMyGame(CGameStateRun *mygame)
     {
         myGame = mygame;
+    }
+    void UI::OnShowMessage()
+    {
+        CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
+        CFont f, *fp;
+        f.CreatePointFont(300, "Times New Roman");	// 產生 font f; 160表示16 point的字
+        fp = pDC->SelectObject(&f);					// 選用 font f
+        pDC->SetBkMode(TRANSPARENT);
+        pDC->SetTextColor(RGB(255, 255, 255));
+        char str[80], moneyStr[50];								// Demo 數字對字串的轉換
+        
+        if (messageType == 1)
+        {
+            sprintf(str, "是否要購買土地");
+            sprintf(moneyStr, "$ %d", money);
+        }
+        if (displayMessage)
+        {
+            pDC->TextOut(500, 325, str);
+            pDC->TextOut(500, 400, moneyStr);
+        }
+        pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+        CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+    }
+    void UI::SetMessage(int type, int Money)
+    {
+        money = Money;
+        messageType = type;
+    }
+    void UI::SetDisplay(bool displayMessage)
+    {
+        this->displayMessage = displayMessage;
     }
 }
