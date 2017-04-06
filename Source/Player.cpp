@@ -32,7 +32,7 @@ namespace game_framework {
         now        = 0;
         remaining  = 0;
         Bankruptcy = false;
-        speed      = 8;     //192/8=24 24*(1/30)sec 移動一格       
+        speed      = 192;     //192/8=24 24*(1/30)sec 移動一格       
         direct     = 2;
         ani        = 0;
         count      = 0;
