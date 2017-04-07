@@ -14,6 +14,7 @@ namespace game_framework {
         bool GetState();
         int GetPlayerRun();
         void SetPlayerRun(int set);
+		void SetValue(int value);
     protected:
         
         CMovingBitmap dicebmp[6];

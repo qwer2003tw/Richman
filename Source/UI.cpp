@@ -21,12 +21,15 @@ namespace game_framework {
         number[1].SetXY(450, 400);
         yesButton.SetXY(480, 480);
         noButton.SetXY(680, 480);
+		cardButton.SetXY(0, 0);
         dice[0].LoadBitmap();
         dice[1].LoadBitmap();
         number[0].LoadBitmap();
         number[1].LoadBitmap();
         yesButton.LoadBitmap("res/YES.bmp", "res/YES_1.bmp", RGB(0, 0, 0));       // 滑過前圖片 滑過圖片
         noButton.LoadBitmap("res/NO.bmp", "res/NO_1.bmp", RGB(0, 0, 0));          // 滑過前圖片 滑過圖片
+		cardButton.LoadBitmap("res/CARD.bmp", "res/CARD.bmp", RGB(0, 0, 0));
+		cardButton.SetEnable(true);
         miniMap.LoadBitmap("res/mini_map_1.bmp", RGB(255, 255, 255)); //讀取小地圖
         status_background.LoadBitmap("res/STATUS_BACKGROUND.bmp");  //讀狀態欄背景
         messageFrame.LoadBitmap("res/MESSAGE_FRAME.bmp", RGB(0, 0, 0));
@@ -36,9 +39,11 @@ namespace game_framework {
         
         //if (state != 3)     //非擲骰隱藏
         //{
+        if (state != 5)     //非擲骰隱藏
+        {
             dice[0].OnShow();
             dice[1].OnShow();
-        //}
+        }
             //
         if (state == 0) amount = 0;
         if ((amount / 10) == 0 && !dice[0].GetState()) //骰子總和為個位數 貼個位數出來
@@ -64,6 +69,7 @@ namespace game_framework {
         }
         yesButton.OnShow();
         noButton.OnShow();
+		cardButton.OnShow();
         OnShowMessage();
     }
     void UI::OnMove()
@@ -80,14 +86,16 @@ namespace game_framework {
         dice[0].SetPlayerRun(0);
         yesButton.SetSignal(0);
         noButton.SetSignal(0);
+		cardButton.SetSignal(0);
     }
     void UI::SetXY(int playerX, int playerY, int speed)
     {
-        if (playerX - sx > (SIZE_X - 390) / 2 && sx < 390) sx += speed;
+        if (playerX - sx > (SIZE_X - 390) / 2 && sx < 370) sx += speed;
         if (playerX - sx < (SIZE_X - 390) / 2 && sx > 0) sx -= speed;
-        if (playerY - sy > SIZE_Y / 2 && sy < 890) sy += speed;
+        if (playerY - sy > SIZE_Y / 2 && sy < 800) sy += speed;
         if (playerY - sy < SIZE_Y / 2 && sy > 0) sy -= speed;
-    }
+	
+	}
     int UI::GetSx()
     {
         return sx;
@@ -190,4 +198,9 @@ namespace game_framework {
     {
         this->displayMessage = displayMessage;
     }
+	void UI::SetDiceValue(int d1, int d2)
+	{
+		dice[0].SetValue(d1);
+		dice[1].SetValue(d2);
+	}
 }
