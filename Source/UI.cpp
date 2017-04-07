@@ -10,17 +10,18 @@
 namespace game_framework {
     UI::UI()
     {
-        sx = sy = 0;
+        sx = 0;
+        sy = -60;
         displayMessage = false;
     }
     void UI::LoadBitmap()
     {
-        dice[0].SetXY(576, 415);                                  // 設定骰子1位置
-        dice[1].SetXY(676, 415);                                  // 設定骰子2位置
-        number[0].SetXY(400, 400);                                // 設定數字初始位置
-        number[1].SetXY(450, 400);
-        yesButton.SetXY(480, 480);
-        noButton.SetXY(680, 480);
+        dice[0].SetXY(576, 475);                                  // 設定骰子1位置
+        dice[1].SetXY(676, 475);                                  // 設定骰子2位置
+        number[0].SetXY(400, 460);                                // 設定數字初始位置
+        number[1].SetXY(450, 460);
+        yesButton.SetXY(480, 540);
+        noButton.SetXY(680, 540);
 		cardButton.SetXY(0, 0);
         dice[0].LoadBitmap();
         dice[1].LoadBitmap();
@@ -65,7 +66,7 @@ namespace game_framework {
         if (displayMessage)
         {
             messageFrame.ShowBitmap();
-            messageFrame.SetTopLeft(440, 230);
+            messageFrame.SetTopLeft(440, 260);
         }
         yesButton.OnShow();
         noButton.OnShow();
@@ -183,8 +184,8 @@ namespace game_framework {
         }
         if (displayMessage)
         {
-            pDC->TextOut(490, 325, str);
-            pDC->TextOut(490, 400, moneyStr);
+            pDC->TextOut(490, 335, str);
+            pDC->TextOut(490, 410, moneyStr);
         }
         pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
         CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC

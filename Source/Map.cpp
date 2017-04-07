@@ -80,6 +80,7 @@ namespace game_framework {
 
     void Map::OnShow(int sx, int sy)
     {
+        
         map.SetTopLeft(-sx, -sy);
         map.ShowBitmap();
         for (int i = 0; i < 36; i++)
