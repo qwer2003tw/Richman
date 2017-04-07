@@ -29,7 +29,7 @@ namespace game_framework {
         number[1].LoadBitmap();
         yesButton.LoadBitmap("res/YES.bmp", "res/YES_1.bmp", RGB(0, 0, 0));       // 滑過前圖片 滑過圖片
         noButton.LoadBitmap("res/NO.bmp", "res/NO_1.bmp", RGB(0, 0, 0));          // 滑過前圖片 滑過圖片
-		cardButton.LoadBitmap("res/CARD.bmp", "res/CARD.bmp", RGB(0, 0, 0));
+		cardButton.LoadBitmap("res/props.bmp", "res/props1.bmp", RGB(0, 0, 0));
 		cardButton.SetEnable(true);
         miniMap.LoadBitmap("res/mini_map_1.bmp", RGB(255, 255, 255)); //讀取小地圖
         status_background.LoadBitmap("res/STATUS_BACKGROUND.bmp");  //讀狀態欄背景
@@ -145,11 +145,13 @@ namespace game_framework {
     {
         yesButton.OnMove(point);
         noButton.OnMove(point);
+        cardButton.OnMove(point);
     }
     void UI::OnClick(CPoint point)
     {
         yesButton.OnClick(point);
         noButton.OnClick(point);
+        cardButton.OnClick(point);
     }
     int UI::GetYesOrNoBuy()
     {
