@@ -252,6 +252,8 @@ void CGameStateRun::OnBeginState()
 	//CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
 	//CAudio::Instance()->Play(AUDIO_NTUT, true);	    // 撥放 MIDI
 
+    CAudio::Instance()->Play(AUDIO_BGM, true);	    // 撥放 MIDI
+
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
@@ -365,10 +367,10 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
         player[i]->LoadBitmap();
         player[i]->SetMap(&bigMap);
     }*/
-    player[0] = new Player(0);//後面引數掛TYPE
+    player[0] = new Player(1);//後面引數掛TYPE
     player[0]->LoadBitmap();
     player[0]->SetMap(&bigMap);
-    player[1] = new Player(1);//後面引數掛TYPE
+    player[1] = new Player(4);//後面引數掛TYPE
     player[1]->LoadBitmap();
     player[1]->SetMap(&bigMap);
     //
@@ -385,7 +387,9 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	//CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
 	//CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
 	//CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	// 載入編號2的聲音ntut.mid
-	//
+
+    CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	// 載入編號2的聲音BGM.mp3
+    //
 	// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
 	//
 }
