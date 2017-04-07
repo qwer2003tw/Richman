@@ -85,4 +85,8 @@ namespace game_framework {
     {
         playerRun = set;
     }
+	void Dice::SetValue(int value)
+	{
+		this->value = value;
+	}
 }
