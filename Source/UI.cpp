@@ -11,7 +11,7 @@ namespace game_framework {
     UI::UI()
     {
         sx = 0;
-        sy = -60;
+        sy = -60;     //道具欄位下修
         displayMessage = false;
     }
     void UI::LoadBitmap()

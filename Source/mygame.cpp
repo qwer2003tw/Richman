@@ -489,7 +489,7 @@ void CGameStateRun::OnShow()
 	//
 	//
 
-    bigMap.OnShow(ui.GetSx(), ui.GetSy());              // 貼上地圖60是上方功能欄的高度
+    bigMap.OnShow(ui.GetSx(), ui.GetSy());              
     //以下為UI
     //人物顯示
     for (int i = 0; i < playercount; i++)
