@@ -52,15 +52,29 @@ namespace game_framework {
         int my = point.y;
         int w = bmp[0].Width();
         int h = bmp[0].Height();
-        int t = 5;
-        int x1 = x + t;
-        int x2 = x + w - t;
-        int y1 = y + t;
-        int y2 = y + h - t;
-        if (mx >= x1 && mx <= x2 && my >= y1 && my <= y2)
+        int t = 3;
+        int x1 = x;
+        int x2 = x + w;
+        int ch = x + (w / 2);
+        int y1 = y;
+        int y2 = y + h;
+        int ck = y + (h / 2);
+
+        if (n == 0)
         {
-            state=1;
-            signal = 1;
+            if (pow((mx - ch + t), 2) + pow((my - ck), 2) <= pow((w / 2), 2))  //圓形不等式
+            {
+                state = 1;
+                signal = 1;
+            }
+        }
+        else
+        {
+            if (mx >= x1 && mx <= x2 && my >= y1 && my <= y2)
+            {
+                state = 1;
+                signal = 1;
+            }
         }
     }
     void Button::OnNoClick()
@@ -73,15 +87,28 @@ namespace game_framework {
         int my = point.y;
         int w = bmp[0].Width();
         int h = bmp[0].Height();
-        int t = 5;
-        int x1 = x + t;
-        int x2 = x + w - t;
-        int y1 = y + t;
-        int y2 = y + h - t;
-        if (mx >= x1 && mx <= x2 && my >= y1 && my <= y2) // 表示滑鼠目前在按鍵位置上
-            state = 1;     
+        int t = 3;
+        int x1 = x;
+        int x2 = x + w;
+        int ch = x + (w / 2);
+
+        int y1 = y;
+        int y2 = y + h;
+        int ck = y + (h / 2);
+        if (n == 0)
+        {
+            if (pow((mx - ch + t), 2) + pow((my - ck), 2) <= pow((w / 2), 2)) state = 1;  //圓形不等式
+            else state = 0;
+        }
         else
-            state = 0;          
+        {
+            if (mx >= x1 && mx <= x2 && my >= y1 && my <= y2) // 表示滑鼠目前在按鍵位置上
+                state = 1;
+            else
+                state = 0;
+        }
+
+              
     }
     int Button::GetSignal()
     {
