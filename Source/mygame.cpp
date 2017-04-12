@@ -401,11 +401,11 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 {
 	ui.SetDiceValue(0, 0);
-    if (canThrowDies)
+    if (canThrowDies && (point.y > 60) && !ui.GetCardDisplay())
     {
         ui.RollDice();
     }
-    ui.OnClick(point);
+    ui.OnLClick(point);
     if (ui.GetState() == 4)
     {
         if (ui.GetYesOrNoBuy() == 1)
@@ -427,7 +427,6 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
             if (nowPlayer < playercount - 1) nowPlayer++;
             else nowPlayer = 0;
         }
-
     }
     if (ui.GetState() == 5)
     {
@@ -463,6 +462,7 @@ void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 
 void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 {
+    ui.OnRClick(point);
 }
 
 void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
