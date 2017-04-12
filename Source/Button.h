@@ -17,7 +17,7 @@ namespace game_framework {
         int GetSignal();
         void SetSignal(int s);
     protected:
-        int n;
+        int n;         //«ö¶sªº§Îª¬
         int x, y;
         CMovingBitmap bmp[2];
         bool enable;

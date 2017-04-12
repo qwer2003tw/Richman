@@ -32,6 +32,7 @@ namespace game_framework {
         now        = 0;
         remaining  = 0;
         Bankruptcy = false;
+
         speed      = 64;     //192/8=24 24*(1/30)sec ²¾°Ê¤@®æ       
         direct     = 2;
         ani        = 0;
@@ -44,22 +45,17 @@ namespace game_framework {
         //type=0 doreamon
         if (type == 0)
         {
-            bmp[2][0].LoadBitmap("res/doreamon_swap_part1x1.bmp", RGB(0, 0, 0));
-            bmp[2][1].LoadBitmap("res/doreamon_swap_part1x2.bmp", RGB(0, 0, 0));
-            bmp[2][2].LoadBitmap("res/doreamon_swap_part1x3.bmp", RGB(0, 0, 0));
-            bmp[2][3].LoadBitmap("res/doreamon_swap_part1x4.bmp", RGB(0, 0, 0));
-            bmp[4][0].LoadBitmap("res/doreamon_swap_part2x1.bmp", RGB(0, 0, 0));
-            bmp[4][1].LoadBitmap("res/doreamon_swap_part2x2.bmp", RGB(0, 0, 0));
-            bmp[4][2].LoadBitmap("res/doreamon_swap_part2x3.bmp", RGB(0, 0, 0));
-            bmp[4][3].LoadBitmap("res/doreamon_swap_part2x4.bmp", RGB(0, 0, 0));
-            bmp[6][0].LoadBitmap("res/doreamon_swap_part3x1.bmp", RGB(0, 0, 0));
-            bmp[6][1].LoadBitmap("res/doreamon_swap_part3x2.bmp", RGB(0, 0, 0));
-            bmp[6][2].LoadBitmap("res/doreamon_swap_part3x3.bmp", RGB(0, 0, 0));
-            bmp[6][3].LoadBitmap("res/doreamon_swap_part3x4.bmp", RGB(0, 0, 0));
-            bmp[8][0].LoadBitmap("res/doreamon_swap_part4x1.bmp", RGB(0, 0, 0));
-            bmp[8][1].LoadBitmap("res/doreamon_swap_part4x2.bmp", RGB(0, 0, 0));
-            bmp[8][2].LoadBitmap("res/doreamon_swap_part4x3.bmp", RGB(0, 0, 0));
-            bmp[8][3].LoadBitmap("res/doreamon_swap_part4x4.bmp", RGB(0, 0, 0));
+            int c = 1;
+            char bf[3];
+            char s[100];
+            char *f = "res/Player/doreamon_";
+            char *b = ".bmp";
+            for (int k = 2; k <= 8; k += 2) for (int j = 0; j < 4; j++)
+            {
+                sprintf(bf, "%02d", c++);
+                sprintf(s, "%s%s%s", f, bf, b);
+                bmp[k][j].LoadBitmap(s, RGB(250, 250, 250));
+            }
             countmax = 4;
             animax = 4;
             fector = 3;
@@ -68,22 +64,74 @@ namespace game_framework {
         }
         else if (type == 1)
         {
-            bmp[2][0].LoadBitmap("res/Suneo_01.bmp", RGB(255, 255, 255));
-            bmp[2][1].LoadBitmap("res/Suneo_02.bmp", RGB(255, 255, 255));
-            bmp[2][2].LoadBitmap("res/Suneo_03.bmp", RGB(255, 255, 255));
-            bmp[2][3].LoadBitmap("res/Suneo_04.bmp", RGB(255, 255, 255));
-            bmp[4][0].LoadBitmap("res/Suneo_05.bmp", RGB(255, 255, 255));
-            bmp[4][1].LoadBitmap("res/Suneo_06.bmp", RGB(255, 255, 255));
-            bmp[4][2].LoadBitmap("res/Suneo_07.bmp", RGB(255, 255, 255));
-            bmp[4][3].LoadBitmap("res/Suneo_08.bmp", RGB(255, 255, 255));
-            bmp[6][0].LoadBitmap("res/Suneo_09.bmp", RGB(255, 255, 255));
-            bmp[6][1].LoadBitmap("res/Suneo_10.bmp", RGB(255, 255, 255));
-            bmp[6][2].LoadBitmap("res/Suneo_11.bmp", RGB(255, 255, 255));
-            bmp[6][3].LoadBitmap("res/Suneo_12.bmp", RGB(255, 255, 255));
-            bmp[8][0].LoadBitmap("res/Suneo_13.bmp", RGB(255, 255, 255));
-            bmp[8][1].LoadBitmap("res/Suneo_14.bmp", RGB(255, 255, 255));
-            bmp[8][2].LoadBitmap("res/Suneo_15.bmp", RGB(255, 255, 255));
-            bmp[8][3].LoadBitmap("res/Suneo_16.bmp", RGB(255, 255, 255));
+            int c = 1;
+            char bf[3];
+            char s[100];
+            char *f = "res/Player/Suneo_";
+            char *b = ".bmp";
+            for (int k = 2; k <= 8; k += 2) for (int j = 0; j < 4; j++)
+            {
+                sprintf(bf, "%02d", c++);
+                sprintf(s, "%s%s%s", f, bf, b);
+                bmp[k][j].LoadBitmap(s, RGB(255, 255, 255));
+            }
+            countmax = 4;
+            animax = 4;
+            fector = 3;
+            w = bmp[2][0].Width()*fector;
+            h = bmp[2][0].Height()*fector;
+        }
+        else if (type == 2)
+        {
+            int c = 1;
+            char bf[3];
+            char s[100];
+            char *f = "res/Player/Goda_Takeshi_";
+            char *b = ".bmp";
+            for (int k = 2; k <= 8; k += 2) for (int j = 0; j < 4; j++)
+            {
+                sprintf(bf, "%02d", c++);
+                sprintf(s, "%s%s%s", f, bf, b);
+                bmp[k][j].LoadBitmap(s, RGB(255, 255, 255));
+            }
+            countmax = 4;
+            animax = 4;
+            fector = 3;
+            w = bmp[2][0].Width()*fector;
+            h = bmp[2][0].Height()*fector;
+        }
+        else if (type == 3)
+        {
+            int c = 1;
+            char bf[3];
+            char s[100];
+            char *f = "res/Player/Minamoto_Shizuka_";
+            char *b = ".bmp";
+            for (int k = 2; k <= 8; k += 2) for (int j = 0; j < 4; j++)
+            {
+                sprintf(bf, "%02d", c++);
+                sprintf(s, "%s%s%s", f, bf, b);
+                bmp[k][j].LoadBitmap(s, RGB(255, 255, 255));
+            }
+            countmax = 4;
+            animax = 4;
+            fector = 3;
+            w = bmp[2][0].Width()*fector;
+            h = bmp[2][0].Height()*fector;
+        }
+        else if (type == 4)
+        {
+            int c = 1;
+            char bf[3];
+            char s[100];
+            char *f = "res/Player/Nobi_Nobita_";
+            char *b = ".bmp";
+            for (int k = 2; k <= 8; k += 2) for (int j = 0; j < 4; j++)
+            {
+                sprintf(bf, "%02d", c++);
+                sprintf(s, "%s%s%s", f, bf, b);
+                bmp[k][j].LoadBitmap(s, RGB(255, 255, 255));
+            }
             countmax = 4;
             animax = 4;
             fector = 3;
