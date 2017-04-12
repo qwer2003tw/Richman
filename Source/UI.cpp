@@ -72,8 +72,8 @@ namespace game_framework {
         }
         if (displayCardFrame)
         {
-            cardFrame.ShowBitmap();
-            cardFrame.SetTopLeft(440, 260);
+            cardFrame.ShowBitmap(1.5);
+            cardFrame.SetTopLeft(440, 360);
         }
         yesButton->OnShow();
         noButton->OnShow();
