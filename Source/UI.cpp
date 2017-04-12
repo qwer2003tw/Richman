@@ -13,6 +13,7 @@ namespace game_framework {
         sx = 0;
         sy = -60;     //道具欄位下修
         displayMessage = false;
+        displayCardFrame = false;
     }
     void UI::LoadBitmap()
     {
@@ -20,20 +21,21 @@ namespace game_framework {
         dice[1].SetXY(676, 475);                                  // 設定骰子2位置
         number[0].SetXY(400, 460);                                // 設定數字初始位置
         number[1].SetXY(450, 460);
-        yesButton.SetXY(480, 540);
-        noButton.SetXY(680, 540);
-		cardButton.SetXY(0, 0);
+        yesButton->SetXY(480, 540);
+        noButton->SetXY(680, 540);
+		cardButton->SetXY(0, 0);
         dice[0].LoadBitmap();
         dice[1].LoadBitmap();
         number[0].LoadBitmap();
         number[1].LoadBitmap();
-        yesButton.LoadBitmap("res/YES.bmp", "res/YES_1.bmp", RGB(0, 0, 0));       // 滑過前圖片 滑過圖片
-        noButton.LoadBitmap("res/NO.bmp", "res/NO_1.bmp", RGB(0, 0, 0));          // 滑過前圖片 滑過圖片
-		cardButton.LoadBitmap("res/props.bmp", "res/props1.bmp", RGB(0, 0, 0));
-		cardButton.SetEnable(true);
+        yesButton->LoadBitmap("res/YES.bmp", "res/YES_1.bmp", RGB(0, 0, 0));       // 滑過前圖片 滑過圖片
+        noButton->LoadBitmap("res/NO.bmp", "res/NO_1.bmp", RGB(0, 0, 0));          // 滑過前圖片 滑過圖片
+		cardButton->LoadBitmap("res/props.bmp", "res/props1.bmp", RGB(0, 0, 0));
+		cardButton->SetEnable(true);
         miniMap.LoadBitmap("res/mini_map_1.bmp", RGB(255, 255, 255)); //讀取小地圖
         status_background.LoadBitmap("res/STATUS_BACKGROUND.bmp");  //讀狀態欄背景
         messageFrame.LoadBitmap("res/MESSAGE_FRAME.bmp", RGB(0, 0, 0));
+        cardFrame.LoadBitmap("res/CARD_FRAME.bmp");
     }
     void UI::OnShow()
     {
@@ -68,9 +70,14 @@ namespace game_framework {
             messageFrame.ShowBitmap();
             messageFrame.SetTopLeft(440, 260);
         }
-        yesButton.OnShow();
-        noButton.OnShow();
-		cardButton.OnShow();
+        if (displayCardFrame)
+        {
+            cardFrame.ShowBitmap();
+            cardFrame.SetTopLeft(440, 260);
+        }
+        yesButton->OnShow();
+        noButton->OnShow();
+		cardButton->OnShow();
         OnShowMessage();
     }
     void UI::OnMove()
@@ -85,9 +92,9 @@ namespace game_framework {
             state = 2;
         }
         dice[0].SetPlayerRun(0);
-        yesButton.SetSignal(0);
-        noButton.SetSignal(0);
-		cardButton.SetSignal(0);
+        yesButton->SetSignal(0);
+        noButton->SetSignal(0);
+		cardButton->SetSignal(0);
     }
     void UI::SetXY(int playerX, int playerY, int speed)
     {
@@ -132,38 +139,53 @@ namespace game_framework {
     {
         if (s == 1)
         {
-            yesButton.SetEnable(true);
-            noButton.SetEnable(true);
+            yesButton->SetEnable(true);
+            noButton->SetEnable(true);
         }
         else if(s == 0)
         {
-            yesButton.SetEnable(false);
-            noButton.SetEnable(false);
+            yesButton->SetEnable(false);
+            noButton->SetEnable(false);
         }
     }
     void UI::OnMouseMove(UINT nFlags, CPoint point)
     {
-        yesButton.OnMove(point);
-        noButton.OnMove(point);
-        cardButton.OnMove(point);
+        yesButton->OnMove(point);
+        noButton->OnMove(point);
+        cardButton->OnMove(point);
     }
-    void UI::OnClick(CPoint point)
+    void UI::OnLClick(CPoint point)
     {
-        yesButton.OnClick(point);
-        noButton.OnClick(point);
-        cardButton.OnClick(point);
+        yesButton->OnClick(point);
+        noButton->OnClick(point);
+        cardButton->OnClick(point);
+        if (state == 0 && cardButton->GetSignal())
+        {
+            displayCardFrame = true;
+        }
+    }
+    void UI::OnRClick(CPoint point)
+    {
+        if (state == 0 && displayCardFrame)
+        {
+            displayCardFrame = false;
+        }
     }
     int UI::GetYesOrNoBuy()
     {
-        if (yesButton.GetSignal())
+        if (yesButton->GetSignal())
         {
             return 1;
         }
-        else if (noButton.GetSignal())
+        else if (noButton->GetSignal())
         {
             return 0;
         }
         else return 99;
+    }
+   bool UI::GetCardDisplay()
+    {
+        return displayCardFrame;
     }
     void UI::SetMyGame(CGameStateRun *mygame)
     {
