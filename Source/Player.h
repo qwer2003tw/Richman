@@ -1,6 +1,18 @@
 #pragma once
 #include "Map.h"
 namespace game_framework {
+    class Props
+    {
+    public:
+        Props() {
+            index = -1;
+            amount = 0;
+        }
+        int index;
+        int amount;
+    };
+    
+    
     class Player {
     public:
         Player();
@@ -20,6 +32,9 @@ namespace game_framework {
         void AdjMoney(int amount);                  //增加或減少金錢                           
         void AdjEstate(int amount);                 //
         void OnShowState();
+        void GiveProp(int index,int amount);
+        void PropInit();
+        vector<Props*> prop;
     protected:
         Map* map;
         MapData** mapData;                          //讀取地圖資訊
