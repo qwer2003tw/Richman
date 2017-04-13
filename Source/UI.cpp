@@ -14,6 +14,10 @@ namespace game_framework {
         sy = -60;     //道具欄位下修
         displayMessage = false;
         displayCardFrame = false;
+        propName[0] = "地雷";
+        propName[1] = "路障";
+        propName[2] = "定時炸彈";
+        propName[3] = "遙控骰子";
     }
     void UI::LoadBitmap()
     {
@@ -74,6 +78,34 @@ namespace game_framework {
         {
             cardFrame.ShowBitmap(1.5);
             cardFrame.SetTopLeft(440, 360);
+
+            CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
+            CFont f, *fp;
+            f.CreatePointFont(300, "Times New Roman");	// 產生 font f; 160表示16 point的字
+
+            fp = pDC->SelectObject(&f);					// 選用 font f
+            pDC->SetBkMode(TRANSPARENT);
+            pDC->SetTextColor(RGB(255, 255, 255));
+
+            
+            for (int i = 0; myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index != -1; i++)
+            {
+                if (i >= 0 && i < 5)
+                {
+                    pDC->TextOutA(490+i*190, 380, propName[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index]);
+                }
+                else if (i >= 5 && i < 10)
+                {
+                    pDC->TextOutA(490 + (i % 5) * 190, 470, propName[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index]);
+                }
+                else if (i >= 10 && i < 15)
+                {
+                    pDC->TextOutA(490 + (i % 5) * 190, 560, propName[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index]);
+                }
+            }
+
+            pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+            CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
         }
         yesButton->OnShow();
         noButton->OnShow();

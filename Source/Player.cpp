@@ -27,6 +27,8 @@ namespace game_framework {
     }
     Player::Player(int t)
     {
+        for (int i = 0; i < 15; i++) prop.push_back(new Props);
+        PropInit();
         dx         = 96;
         dy         = 96;
         now        = 0;
@@ -267,4 +269,34 @@ namespace game_framework {
        pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
        CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
    }
+
+   void Player::GiveProp(int index, int amount)
+   {
+       for (int i = 0; i < 15; i++)
+       {
+           if (prop.at(i)->index == index) {
+               prop.at(i)->amount += amount;
+               return;
+           }
+       }
+       
+       for (int i = 0; i < 15; i++)
+       {
+           if (prop.at(i)->index == -1)
+           {
+               prop.at(i)->amount += amount;
+               prop.at(i)->index = index;
+               return;
+           }
+           
+       }
+       //TRACE("prop[0].index=%d", prop.at(0)->index);
+       
+   }
+
+   void Player::PropInit()
+   {
+       for (int i = 0; i < 4; i++) GiveProp(i, 1);
+   }
+   
 }

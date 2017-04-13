@@ -45,5 +45,6 @@ namespace game_framework {
         int money;                          // ª÷ÃB°T®§
         bool displayMessage;
         bool displayCardFrame;
+        char *propName[15];
     };
 }
