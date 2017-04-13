@@ -207,6 +207,12 @@ namespace game_framework {
             sprintf(str, "是否要購買土地");
             sprintf(moneyStr, "$ %d", money);
         }
+        else if (messageType == 2)
+        {
+            sprintf(str, "是否要升級");
+            sprintf(moneyStr, "$ %d", money);
+
+        }
         if (displayMessage)
         {
             pDC->TextOut(490, 335, str);

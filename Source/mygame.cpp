@@ -269,13 +269,12 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		background.SetTopLeft(60 ,-background.Height());
 	background.SetTopLeft(background.Left(),background.Top()+1);
 
-
     ui.OnMove();
     
     //ui 骰子傳值
     if (ui.GetState() == 2)
     {
-        // test
+        // test building house
 /*        if (nowPlayer == 0)
         {
             if (test < 2)
@@ -300,30 +299,38 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     }
     if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)   // 已跑完
     {
-        if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 2 && ui.GetState() != 0)
-        {
-            ui.SetState(0);
-
-            if (nowPlayer < playercount - 1) nowPlayer++;
-            else nowPlayer = 0;
-        }
-        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
+        // 可以蓋房子
+        if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
         {
             ui.SetButton(1);
             ui.SetMessage(1, 800);
             ui.SetDisplay(1);
             ui.SetState(4); // player stopping & display buy button
         }
-
+        //可以升級
         else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == nowPlayer && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() < 3)
         {
             ui.SetButton(1);
+            if(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 0) ui.SetMessage(2, 1200);
+            else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 1) ui.SetMessage(2, 2000);
+            else ui.SetMessage(2, 2800);
+            ui.SetDisplay(1);
             ui.SetState(5); // player stopping & display upgrade button
         }
         else
         {
-            ui.SetState(0);
-            if (nowPlayer < playercount - 1) nowPlayer++;
+            ui.SetState(6);
+        }
+    }
+    if (ui.GetState() == 6)                                 // 延遲狀態
+    {
+        if (delayCount > 0)
+            delayCount--;
+        else
+        {
+            delayCount = 30; 
+            ui.SetState(0);                                 // 延遲結束 跳回開始狀態
+            if (nowPlayer < playercount - 1) nowPlayer++;   // 切換玩家
             else nowPlayer = 0;
         }
     }
@@ -400,7 +407,6 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 {
-	ui.SetDiceValue(0, 0);
     if (canThrowDies && (point.y > 60) && !ui.GetCardDisplay())
     {
         ui.RollDice();
@@ -410,40 +416,38 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
     {
         if (ui.GetYesOrNoBuy() == 1)
         {
-            bigMap.Build(nowPlayer, player[nowPlayer]->GetNow());
             player[nowPlayer]->AdjMoney(-800);
+            bigMap.Build(nowPlayer, player[nowPlayer]->GetNow());
             ui.SetButton(0);
-            ui.SetState(0);
+            ui.SetState(6);
             ui.SetDisplay(0);
-            if (nowPlayer < playercount - 1) nowPlayer++;
-            else nowPlayer = 0;
-
         }
         else if (ui.GetYesOrNoBuy() == 0)
         {
             ui.SetButton(0);
-            ui.SetState(0);
+            ui.SetState(6);
             ui.SetDisplay(0);
-            if (nowPlayer < playercount - 1) nowPlayer++;
-            else nowPlayer = 0;
         }
     }
     if (ui.GetState() == 5)
     {
         if (ui.GetYesOrNoBuy() == 1)
         {
+            //升級費用
+            if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 0) player[nowPlayer]->AdjMoney(-1200);
+            else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 1) player[nowPlayer]->AdjMoney(-2000);
+            else  player[nowPlayer]->AdjMoney(-2800);
+            
             bigMap.Upgrade(player[nowPlayer]->GetNow());
             ui.SetButton(0);
-            ui.SetState(0);
-            if (nowPlayer < playercount - 1) nowPlayer++;
-            else nowPlayer = 0;
+            ui.SetState(6);
+            ui.SetDisplay(0);
         }
         else if (ui.GetYesOrNoBuy() == 0)
         {
             ui.SetButton(0);
-            ui.SetState(0);
-            if (nowPlayer < playercount - 1) nowPlayer++;
-            else nowPlayer = 0;
+            ui.SetState(6);
+            ui.SetDisplay(0);
         }
 
     }
@@ -482,22 +486,21 @@ int CGameStateRun::GetNowPlayer()
 
 void CGameStateRun::OnShow()
 {
-	//
-	//  注意：Show裡面千萬不要移動任何物件的座標，移動座標的工作應由Move做才對，
-	//        否則當視窗重新繪圖時(OnDraw)，物件就會移動，看起來會很怪。換個術語
-	//        說，Move負責MVC中的Model，Show負責View，而View不應更動Model。
-	//
-	//
+    //
+    //  注意：Show裡面千萬不要移動任何物件的座標，移動座標的工作應由Move做才對，
+    //        否則當視窗重新繪圖時(OnDraw)，物件就會移動，看起來會很怪。換個術語
+    //        說，Move負責MVC中的Model，Show負責View，而View不應更動Model。
+    //
+    //
 
-    bigMap.OnShow(ui.GetSx(), ui.GetSy());              
+    bigMap.OnShow(ui.GetSx(), ui.GetSy());
     //以下為UI
     //人物顯示
     for (int i = 0; i < playercount; i++)
     {
-        if(!player[i]->GetBankruptcy())
+        if (!player[i]->GetBankruptcy())
             player[i]->OnShow(ui.GetSx(), ui.GetSy());
-    } 
+    }
     ui.OnShow();
 }
-
 }
