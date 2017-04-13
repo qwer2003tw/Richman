@@ -40,12 +40,16 @@ namespace game_framework {
         status_background.LoadBitmap("res/STATUS_BACKGROUND.bmp");  //讀狀態欄背景
         messageFrame.LoadBitmap("res/MESSAGE_FRAME.bmp", RGB(0, 0, 0));
         cardFrame.LoadBitmap("res/CARD_FRAME.bmp");
+        props[0].LoadBitmap("res/Landmine.bmp", RGB(255, 255, 255));
+        props[1].LoadBitmap("res/Roadblocks.bmp", RGB(255, 255, 255));
+        props[2].LoadBitmap("res/Timebombs.bmp", RGB(255, 255, 255));
+        props[3].LoadBitmap("res/Remotedice.bmp", RGB(255, 255, 255));
+        
     }
     void UI::OnShow()
     {
         
-        //if (state != 3)     //非擲骰隱藏
-        //{
+
         if (state != 5)     //非擲骰隱藏
         {
             dice[0].OnShow();
@@ -76,37 +80,9 @@ namespace game_framework {
         }
         if (displayCardFrame)
         {
-            cardFrame.ShowBitmap(1.5);
-            cardFrame.SetTopLeft(440, 360);
-
-            CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
-            CFont f, *fp;
-            f.CreatePointFont(300, "Times New Roman");	// 產生 font f; 160表示16 point的字
-
-            fp = pDC->SelectObject(&f);					// 選用 font f
-            pDC->SetBkMode(TRANSPARENT);
-            pDC->SetTextColor(RGB(255, 255, 255));
-
-            
-            for (int i = 0; myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index != -1; i++)
-            {
-                if (i >= 0 && i < 5)
-                {
-                    pDC->TextOutA(490+i*190, 380, propName[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index]);
-                }
-                else if (i >= 5 && i < 10)
-                {
-                    pDC->TextOutA(490 + (i % 5) * 190, 470, propName[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index]);
-                }
-                else if (i >= 10 && i < 15)
-                {
-                    pDC->TextOutA(490 + (i % 5) * 190, 560, propName[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index]);
-                }
-            }
-
-            pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-            CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+            showPropFields();
         }
+
         yesButton->OnShow();
         noButton->OnShow();
 		cardButton->OnShow();
@@ -261,4 +237,72 @@ namespace game_framework {
 		dice[0].SetValue(d1);
 		dice[1].SetValue(d2);
 	}
+    void UI::showPropFields()
+    {
+        char amountStr[50] = "";
+        cardFrame.SetTopLeft(440, 360);
+        cardFrame.ShowBitmap(1.5);
+        for (int i = 0; myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index != -1; i++)
+        {
+            if (i >= 0 && i < 5)
+            {
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(510 + i * 180, 380);
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
+                //sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
+                //pDC->TextOutA(520 + i * 170, 450, amountStr);
+            }
+            else if (i >= 5 && i < 10)
+            {
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(510 + (i % 5) * 180, 470);
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
+                //sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
+                //pDC->TextOutA(520 + (i % 5) * 170, 540, amountStr);
+            }
+            else if (i >= 10 && i < 15)
+            {
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(510 + (i % 5) * 180, 560);
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
+                //sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
+                //pDC->TextOutA(520 + (i % 5) * 170, 630, amountStr);
+
+            }
+        }
+
+        CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
+        CFont f, *fp;
+        f.CreatePointFont(200, "Times New Roman");
+        fp = pDC->SelectObject(&f);					// 選用 font f
+        pDC->SetBkMode(TRANSPARENT);
+        pDC->SetTextColor(RGB(255, 255, 255));
+
+
+        for (int i = 0; myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index != -1; i++)
+        {
+            if (i >= 0 && i < 5)
+            {
+                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(490 + i * 190, 380);
+                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
+                sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
+                pDC->TextOutA(520 + i * 180, 450, amountStr);
+            }
+            else if (i >= 5 && i < 10)
+            {
+                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(490 + (i % 5) * 190, 470);
+                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
+                sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
+                pDC->TextOutA(520 + (i % 5) * 180, 540, amountStr);
+            }
+            else if (i >= 10 && i < 15)
+            {
+                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(490 + (i % 5) * 190, 560);
+                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
+                sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
+                pDC->TextOutA(520 + (i % 5) * 180, 630, amountStr);
+
+            }
+        }
+
+        pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+        CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+    }
 }
