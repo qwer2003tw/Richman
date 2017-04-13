@@ -108,7 +108,7 @@ namespace game_framework {
             CDDraw::ReleaseBackCDC();					// ©ñ±¼ Back Plain ªº CDC
         }
         yesButton->OnShow();
-        noButton->OnShow();
+        noButton->OnShow();        
 		cardButton->OnShow();
         OnShowMessage();
     }

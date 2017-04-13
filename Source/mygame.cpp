@@ -328,7 +328,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             delayCount--;
         else
         {
-            delayCount = 30; 
+            delayCount = 20; 
             ui.SetState(0);                                 // 延遲結束 跳回開始狀態
             if (nowPlayer < playercount - 1) nowPlayer++;   // 切換玩家
             else nowPlayer = 0;
