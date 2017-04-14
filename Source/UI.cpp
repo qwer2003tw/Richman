@@ -103,6 +103,7 @@ namespace game_framework {
         yesButton->SetSignal(0);
         noButton->SetSignal(0);
 		cardButton->SetSignal(0);
+        TRACE("%d", testsingal);
     }
     void UI::SetXY(int playerX, int playerY, int speed)
     {
@@ -171,6 +172,13 @@ namespace game_framework {
         {
             displayCardFrame = true;
         }
+        if (displayCardFrame) // §PÂ_ÂIÀ»¦ì¸m 620/5=124 270/3=90
+        {
+            if (point.x > 510 && point.x < 634 && point.y > 380 && point.y < 470)
+                testsingal = 1;
+        }
+
+
     }
     void UI::OnRClick(CPoint point)
     {

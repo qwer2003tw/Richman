@@ -48,5 +48,6 @@ namespace game_framework {
         bool displayCardFrame;
         char *propName[15];
         void showPropFields();
+        int testsingal = 0;
     };
 }
