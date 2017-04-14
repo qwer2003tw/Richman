@@ -122,7 +122,7 @@ namespace game_framework {
         int sx, sy;                 // 螢幕地圖座標
         bool canThrowDies;          
         int test = 2, test1 = 3;    // 原地升級test
-        int delayCount = 30;        // 延遲 以便玩家瀏覽目前狀態 
+        int delayCount = 20;        // 延遲 以便玩家瀏覽目前狀態 
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

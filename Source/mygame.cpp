@@ -307,7 +307,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             ui.SetDisplay(1);
             ui.SetState(4); // player stopping & display buy button
         }
-        //可以升級
+        // 可以升級
         else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == nowPlayer && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() < 3)
         {
             ui.SetButton(1);
@@ -316,6 +316,12 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             else ui.SetMessage(2, 2800);
             ui.SetDisplay(1);
             ui.SetState(5); // player stopping & display upgrade button
+        }
+        // 事件格
+        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 2)
+        {
+            player[nowPlayer]->AdjMoney(-500);
+            ui.SetState(6);
         }
         else
         {
@@ -328,7 +334,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             delayCount--;
         else
         {
-            delayCount = 30; 
+            delayCount = 20; 
             ui.SetState(0);                                 // 延遲結束 跳回開始狀態
             if (nowPlayer < playercount - 1) nowPlayer++;   // 切換玩家
             else nowPlayer = 0;
@@ -397,12 +403,19 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-
+    //const char KEY_SHIFT = 16;
+    //if (nChar == KEY_SHIFT && ui.GetState() == 0)
+    //{
+    //    for (int i = 0; i < playercount; i++)
+    //        player[i]->SetSpeed(64);
+    //}
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-
+    const char KEY_ESC = 27;
+    if (nChar == KEY_ESC)								        // 關閉遊戲的方法
+        PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作

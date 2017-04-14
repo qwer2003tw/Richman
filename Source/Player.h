@@ -26,6 +26,7 @@ namespace game_framework {
         bool GetBankruptcy();
         void SetMap(Map* m);                        // 
         void SetRemaining(int r);
+        void SetSpeed(int sp);
         int  GetRemaining();
         int GetNow();
         int GetMoney();                             //獲得金錢

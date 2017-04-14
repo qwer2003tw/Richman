@@ -177,11 +177,7 @@ namespace game_framework {
                 now = (now + 1) % map->GetMapCount();
                 mapData[now]->Through();
                 remaining--;
-                if (remaining == 0)
-                    if (mapData[now]->GetType() == 2) {
-                        money -= 500;
-                    }
-                    mapData[now]->Arrive();
+                 mapData[now]->Arrive();
             }
         }
     
@@ -229,6 +225,10 @@ namespace game_framework {
    void Player::SetRemaining(int r)
    {
        remaining = r;
+   }
+   void Player::SetSpeed(int sp)
+   {
+       speed = sp;
    }
    int Player::GetRemaining()
    {
