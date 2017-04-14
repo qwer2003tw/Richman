@@ -403,12 +403,15 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-    //const char KEY_SHIFT = 16;
-    //if (nChar == KEY_SHIFT && ui.GetState() == 0)
-    //{
-    //    for (int i = 0; i < playercount; i++)
-    //        player[i]->SetSpeed(64);
-    //}
+    const char KEY_SHIFT = 16;
+    if (nChar == KEY_SHIFT && ui.GetState() == 0)
+    {
+        for (int i = 0; i < playercount; i++)
+        {
+            if (player[i]->GetSpeed() == 8) player[i]->SetSpeed(64);
+            else if(player[i]->GetSpeed() == 64) player[i]->SetSpeed(8);
+        }
+    }
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)

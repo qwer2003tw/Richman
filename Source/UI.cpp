@@ -44,7 +44,10 @@ namespace game_framework {
         props[1].LoadBitmap("res/Roadblocks.bmp", RGB(255, 255, 255));
         props[2].LoadBitmap("res/Timebombs.bmp", RGB(255, 255, 255));
         props[3].LoadBitmap("res/Remotedice.bmp", RGB(255, 255, 255));
-        
+        event[0].LoadBitmap("res/Nude.bmp", RGB(255, 255, 255));
+        event[1].LoadBitmap("res/Getmoney.bmp");
+        event[2].LoadBitmap("res/Zero.bmp");
+        event[3].LoadBitmap("res/Ufo.bmp");
     }
     void UI::OnShow()
     {

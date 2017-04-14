@@ -35,6 +35,7 @@ namespace game_framework {
         CMovingBitmap messageFrame;         // 訊息框架
         CMovingBitmap cardFrame;            // 道具欄
         CMovingBitmap props[15];            // 道具
+        CMovingBitmap event[10];            // 事件
         int sx, sy;                         // 螢幕座標
         Dice dice[2];
         Number number[2];
