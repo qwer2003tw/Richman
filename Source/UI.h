@@ -28,6 +28,7 @@ namespace game_framework {
         void SetMessage(int type, int Money);
         void SetDisplay(bool displayMessage);
 		void SetDiceValue(int d1, int d2);
+        void GetEvent();
     protected:
         CGameStateRun *myGame;              // Åªmygme¸ê°T
         CMovingBitmap status_background;    // ª¬ºAÄæ
@@ -48,6 +49,6 @@ namespace game_framework {
         bool displayCardFrame;
         char *propName[15];
         void showPropFields();
-        int testsingal = 0;
+        int enevtIndex = 4;
     };
 }
