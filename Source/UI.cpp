@@ -90,6 +90,11 @@ namespace game_framework {
         noButton->OnShow();        
 		cardButton->OnShow();
         OnShowMessage();
+        if (showEvent != 99)
+        {
+            event[showEvent].SetTopLeft(400, 300);
+            event[showEvent].ShowBitmap();
+        }
     }
     void UI::OnMove()
     {  
@@ -254,24 +259,28 @@ namespace game_framework {
 	}
     void UI::GetEvent()
     {
-        int eventType = rand() % enevtIndex;
-        switch (eventType)
-        {
-        case 0:
+        showEvent = rand() % enevtIndex;
+        //switch (eventType)
+        //{
+        //case 0:
+        //    showEvent = 0;
+        //    break;
+        //case 1:
 
-            break;
-        case 1:
+        //    break;
+        //case 2:
 
-            break;
-        case 2:
+        //    break;
+        //case 3:
 
-            break;
-        case 3:
-
-            break;
-        default:
-            break;
-        }
+        //    break;
+        //default:
+        //    break;
+        //}
+    }
+    void UI::InitEvent()
+    {
+        showEvent = 99;
     }
     void UI::showPropFields()
     {

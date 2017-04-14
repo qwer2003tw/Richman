@@ -154,11 +154,7 @@ void CGameStateInit::OnShow()
 	if (ENABLE_GAME_PAUSE)
 		pDC->TextOut(5,865,"Press Ctrl-Q to pause the Game.");
 	pDC->TextOut(5,905,"Press Alt-F4 or ESC to Quit.");
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 29c0cca915a36ab6d8609b38b585a27e306407c1
     pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
 	CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
     */
@@ -321,7 +317,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 2)
         {
             player[nowPlayer]->AdjMoney(-500);
-            ui.SetState(6);
+            ui.GetEvent();
+            ui.SetState(7);
         }
         else
         {
@@ -334,7 +331,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             delayCount--;
         else
         {
-            delayCount = 20; 
+            delayCount = DELAY;
             ui.SetState(0);                                 // 延遲結束 跳回開始狀態
             if (nowPlayer < playercount - 1) nowPlayer++;   // 切換玩家
             else nowPlayer = 0;
@@ -445,7 +442,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
             ui.SetDisplay(0);
         }
     }
-    if (ui.GetState() == 5)
+    else if (ui.GetState() == 5)
     {
         if (ui.GetYesOrNoBuy() == 1)
         {
@@ -465,7 +462,13 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
             ui.SetState(6);
             ui.SetDisplay(0);
         }
-
+    }
+    else if (ui.GetState() == 7)
+    {
+        ui.InitEvent();
+        ui.SetState(0);
+        if (nowPlayer < playercount - 1) nowPlayer++;   // 切換玩家
+        else nowPlayer = 0;
     }
 }
 

@@ -47,7 +47,7 @@
 #include "Map.h"
 #include "MapData.h"
 #include "UI.h"
-
+#define DELAY 30
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// Constants
@@ -122,7 +122,7 @@ namespace game_framework {
         int sx, sy;                 // 螢幕地圖座標
         bool canThrowDies;          
         int test = 2, test1 = 3;    // 原地升級test
-        int delayCount = 20;        // 延遲 以便玩家瀏覽目前狀態 
+        int delayCount = DELAY;        // 延遲 以便玩家瀏覽目前狀態 
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
