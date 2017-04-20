@@ -316,8 +316,11 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         // 事件格
         else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 2)
         {
-            player[nowPlayer]->AdjMoney(-500);
-            ui.GetEvent();
+            ui.RandomEvent();
+            if (ui.GetEvent() == 0) player[nowPlayer]->AdjMoney(-3000);     // 犯罪
+            else if(ui.GetEvent() == 1) player[nowPlayer]->AdjMoney(3000);  // 寶藏
+            else if (ui.GetEvent() == 2) player[nowPlayer]->AdjMoney(-500); // 沒收
+            else if (ui.GetEvent() == 3) player[nowPlayer]->AdjMoney(-500); // 勒索
             ui.SetState(7);
         }
         else

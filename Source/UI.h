@@ -28,7 +28,8 @@ namespace game_framework {
         void SetMessage(int type, int Money);
         void SetDisplay(bool displayMessage);
 		void SetDiceValue(int d1, int d2);
-        void GetEvent();
+        void RandomEvent();
+        int GetEvent();
         void InitEvent();
     protected:
         CGameStateRun *myGame;              // Åªmygme¸ê°T

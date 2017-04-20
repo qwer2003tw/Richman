@@ -44,10 +44,10 @@ namespace game_framework {
         props[1].LoadBitmap("res/Roadblocks.bmp", RGB(255, 255, 255));
         props[2].LoadBitmap("res/Timebombs.bmp", RGB(255, 255, 255));
         props[3].LoadBitmap("res/Remotedice.bmp", RGB(255, 255, 255));
-        event[0].LoadBitmap("res/Nude.bmp", RGB(255, 255, 255));
-        event[1].LoadBitmap("res/Getmoney.bmp");
-        event[2].LoadBitmap("res/Zero.bmp");
-        event[3].LoadBitmap("res/Ufo.bmp");
+        event[0].LoadBitmap("res/Nude1.bmp");
+        event[1].LoadBitmap("res/Getmoney1.bmp");
+        event[2].LoadBitmap("res/Zero1.bmp");
+        event[3].LoadBitmap("res/Ufo1.bmp");
     }
     void UI::OnShow()
     {
@@ -257,26 +257,13 @@ namespace game_framework {
 		dice[0].SetValue(d1);
 		dice[1].SetValue(d2);
 	}
-    void UI::GetEvent()
+    void UI::RandomEvent()
     {
         showEvent = rand() % enevtIndex;
-        //switch (eventType)
-        //{
-        //case 0:
-        //    showEvent = 0;
-        //    break;
-        //case 1:
-
-        //    break;
-        //case 2:
-
-        //    break;
-        //case 3:
-
-        //    break;
-        //default:
-        //    break;
-        //}
+    }
+    int UI::GetEvent()
+    {
+        return showEvent;
     }
     void UI::InitEvent()
     {
