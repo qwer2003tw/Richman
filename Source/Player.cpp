@@ -272,24 +272,41 @@ namespace game_framework {
 
    void Player::GiveProp(int index, int amount)
    {
-       for (int i = 0; i < 15; i++)
+       if (amount > 0)
        {
-           if (prop.at(i)->index == index) {
-               prop.at(i)->amount += amount;
-               return;
+           for (int i = 0; i < 15; i++)
+           {
+               if (prop.at(i)->index == index) {
+                   prop.at(i)->amount += amount;
+                   return;
+               }
+           }
+
+           for (int i = 0; i < 15; i++)
+           {
+               if (prop.at(i)->index == -1)
+               {
+                   prop.at(i)->amount += amount;
+                   prop.at(i)->index = index;
+                   return;
+               }
+           }
+       }
+       else
+       {
+           if (index == -1) return;
+           vector<Props*>::iterator it;
+           for (it = prop.begin(); it != prop.end();)
+           {
+               if ((*it)->index == index)
+               {
+                   it=prop.erase(it);
+                   continue;
+               }
+               ++it;
            }
        }
        
-       for (int i = 0; i < 15; i++)
-       {
-           if (prop.at(i)->index == -1)
-           {
-               prop.at(i)->amount += amount;
-               prop.at(i)->index = index;
-               return;
-           }
-           
-       }
        //TRACE("prop[0].index=%d", prop.at(0)->index);
        
    }
