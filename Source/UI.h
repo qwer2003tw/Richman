@@ -21,6 +21,7 @@ namespace game_framework {
         void OnMouseMove(UINT nFlags, CPoint point);
         void OnLClick(CPoint point);
         void OnRClick(CPoint point);
+        int GetPickedProp();
         int GetYesOrNoBuy();
         bool GetCardDisplay();
         void SetMyGame(CGameStateRun *mygame);
@@ -45,7 +46,7 @@ namespace game_framework {
         Button *yesButton = new Button(), *noButton = new Button();
 		Button *cardButton = new Button(1);
         int amount;
-        int state = 0;                      // 0 開始 > 1擲骰 > 2骰停傳值 > 3人物移動中 > 可以買地跳4做 可以升級跳5 延遲6 事件7
+        int state = 0;                      // 0 開始 > 1擲骰 > 2骰停傳值 > 3人物移動中 > 可以買地跳4做 可以升級跳5 延遲6 事件7 使用道具8
         int messageType;                    // 訊息類型 1 買地 2 升級
         int money;                          // 金額訊息
         bool displayMessage;
@@ -54,5 +55,7 @@ namespace game_framework {
         void showPropFields();
         int enevtIndex = 4;
         int showEvent = 99;
+        int tempX = 0, tempY = 0;           // 抓道具座標
+        int prop;                           // 所選取的座標
     };
 }

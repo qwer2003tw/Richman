@@ -111,6 +111,7 @@ namespace game_framework {
         yesButton->SetSignal(0);
         noButton->SetSignal(0);
 		cardButton->SetSignal(0);
+        TRACE("Picked Prop: %d", prop);
     }
     void UI::SetXY(int playerX, int playerY, int speed)
     {
@@ -179,10 +180,14 @@ namespace game_framework {
         {
             displayCardFrame = true;
         }
-        if (displayCardFrame) // 判斷點擊位置 620/5=124 270/3=90
+        if (displayCardFrame) // 判斷點擊位置 (620-20)*1.5/5= (270-20)*1.5/3=    (440,360) 邊框10*1.5 = 15
         {
-            //if (point.x > 510 && point.x < 634 && point.y > 380 && point.y < 470)
-                //testsingal = 1;
+            if (point.x > 455 && point.x <  1355 && point.y > 375 && point.y < 750) // 440+(620-10)*1.5=1355  360+(270-10)*1.5=750
+            {
+                tempX = (point.x - 455) / 180; tempY = (point.y - 375) / 125;
+                prop = tempX + tempY * 5;
+                state = 8;
+            }
         }
 
 
@@ -193,6 +198,10 @@ namespace game_framework {
         {
             displayCardFrame = false;
         }
+    }
+    int UI::GetPickedProp()
+    {
+        return prop;
     }
     int UI::GetYesOrNoBuy()
     {
