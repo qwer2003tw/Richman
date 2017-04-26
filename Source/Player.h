@@ -16,7 +16,7 @@ namespace game_framework {
     class Player {
     public:
         Player();
-        Player(int t);
+        Player(int t, int o);
         void LoadBitmap();							// 載入圖形
         void OnMove();			                    // 移動
         void OnShow(int sx, int sy);				// 將圖形貼到畫面 
@@ -30,6 +30,7 @@ namespace game_framework {
         int  GetRemaining();
         int GetNow();
         int GetMoney();                             //獲得金錢
+        int GetType();
         void AdjMoney(int amount);                  //增加或減少金錢                           
         void AdjEstate(int amount);                 //
         void OnShowState();
@@ -50,17 +51,17 @@ namespace game_framework {
         int estate;                                 //房地產數量
 
         //  以下為動畫控制
-        int w, h;                                   //圖片寬度和高度
+        int w, h;                                   // 圖片寬度和高度
         CMovingBitmap bmp[10][5];			        // 人物圖片
-        int direct;                                 //2下 6右 8上 4左
-        int speed;                                  //移動速度
-        int type;                                   //人物種類1 
-        int count;                                  //當前
-        int countmax;                               //每幾個ONMOVE換下一張圖
-        int ani;                                    //當前
-        int animax;                                 //總共圖數
-        int fector;                                 //縮放大小
-                                  
+        int direct;                                 // 2下 6右 8上 4左
+        int speed;                                  // 移動速度
+        int type;                                   // 人物種類 0多拉A夢 1小夫 2胖虎 3大雄 4靜香
+        int order;                                  // 玩家順序
+        int count;                                  // 當前
+        int countmax;                               // 每幾個ONMOVE換下一張圖
+        int ani;                                    // 當前
+        int animax;                                 // 總共圖數
+        int fector;                                 // 縮放大小
         //
         
     };

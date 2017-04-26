@@ -25,7 +25,7 @@ namespace game_framework {
         type       = 0;      //預設為0
         money      = 300000;
     }
-    Player::Player(int t)
+    Player::Player(int t, int o)
     {
         for (int i = 0; i < 15; i++) prop.push_back(new Props);
         PropInit();
@@ -34,13 +34,13 @@ namespace game_framework {
         now        = 0;
         remaining  = 0;
         Bankruptcy = false;
-
-        speed      = 8;     //192/8=24 24*(1/30)sec 移動一格       
+        speed      = 64;     //192/8=24 24*(1/30)sec 移動一格       
         direct     = 2;
         ani        = 0;
         count      = 0;
         type       = t;
-        money = 300000;
+        order      = o;
+        money      = 300000;
     }
     void Player::LoadBitmap()
     {    
@@ -107,7 +107,7 @@ namespace game_framework {
             int c = 1;
             char bf[3];
             char s[100];
-            char *f = "res/Player/Minamoto_Shizuka_";
+            char *f = "res/Player/Nobi_Nobita_";
             char *b = ".bmp";
             for (int k = 2; k <= 8; k += 2) for (int j = 0; j < 4; j++)
             {
@@ -126,7 +126,7 @@ namespace game_framework {
             int c = 1;
             char bf[3];
             char s[100];
-            char *f = "res/Player/Nobi_Nobita_";
+            char *f = "res/Player/Minamoto_Shizuka_";
             char *b = ".bmp";
             for (int k = 2; k <= 8; k += 2) for (int j = 0; j < 4; j++)
             {
@@ -242,6 +242,10 @@ namespace game_framework {
    {
        return money;
    }
+   int Player::GetType()
+   {
+       return type;
+   }
    void Player::AdjMoney(int amount)
    {
        money += amount;
@@ -260,7 +264,7 @@ namespace game_framework {
        //pDC->SetBkColor(RGB(238, 224, 175));
        pDC->SetTextColor(RGB(0, 0, 0));
        char str[80], name[80];								// Demo 數字對字串的轉換
-       sprintf(name, "玩家：%d", type + 1);
+       sprintf(name, "玩家：%d", order + 1);
        sprintf(str, "財產：%d", money);
        pDC->TextOut(1550, 25, name);
        pDC->TextOut(1550, 100, str);
