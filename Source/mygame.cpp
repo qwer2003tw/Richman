@@ -271,7 +271,7 @@ void CGameStateRun::OnMove()							// 簿笆笴栏じ
     if (ui.GetState() == 2)
     {
         // test building house
-/*        if (nowPlayer == 0)
+  /*      if (nowPlayer == 0)
         {
             if (test < 2)
             {
@@ -304,7 +304,7 @@ void CGameStateRun::OnMove()							// 簿笆笴栏じ
             ui.SetState(4); // player stopping & display buy button
         }
         // ど
-        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == nowPlayer && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() < 3)
+        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == player[nowPlayer]->GetType() && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() < 3)
         {
             ui.SetButton(1);
             if(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 0) ui.SetMessage(2, 1200);
@@ -371,7 +371,7 @@ void CGameStateRun::OnInit()  								// 笴栏の瓜砞﹚
     bigMap.LoadBitmap();                                    // 更瓜
     sx = sy = 0;
     nowPlayer = 0;
-    playercount = 2;
+    playercount = 4;
     ui.SetMyGame(this);
     //盢產承ㄓ
     /*for (int i = 0; i < playercount; i++)
@@ -380,12 +380,19 @@ void CGameStateRun::OnInit()  								// 笴栏の瓜砞﹚
         player[i]->LoadBitmap();
         player[i]->SetMap(&bigMap);
     }*/
-    player[0] = new Player(1);//ま计本TYPE
+    player[0] = new Player(2, 0);//ま计本TYPE
     player[0]->LoadBitmap();
     player[0]->SetMap(&bigMap);
-    player[1] = new Player(4);//ま计本TYPE
+    player[1] = new Player(3, 1);//ま计本TYPE
     player[1]->LoadBitmap();
     player[1]->SetMap(&bigMap);
+    player[2] = new Player(0, 2);//ま计本TYPE
+    player[2]->LoadBitmap();
+    player[2]->SetMap(&bigMap);
+    player[3] = new Player(1, 3);//ま计本TYPE
+    player[3]->LoadBitmap();
+    player[3]->SetMap(&bigMap);
+
     //
 	//
 	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				    // 更弧瓜
@@ -433,7 +440,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 矪瞶菲公笆
         if (ui.GetYesOrNoBuy() == 1)
         {
             player[nowPlayer]->AdjMoney(-800);
-            bigMap.Build(nowPlayer, player[nowPlayer]->GetNow());
+            bigMap.Build(player[nowPlayer]->GetType() , player[nowPlayer]->GetNow());
             ui.SetButton(0);
             ui.SetState(6);
             ui.SetDisplay(0);
