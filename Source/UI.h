@@ -34,6 +34,7 @@ namespace game_framework {
         int GetNowUseProp();
         void InitEvent();
         void UseProp(int prop);
+        void UseRemoteDice(CPoint point);
     protected:
         CGameStateRun *myGame;              // Åªmygme¸ê°T
         CMovingBitmap status_background;    // ª¬ºAÄæ

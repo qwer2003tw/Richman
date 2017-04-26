@@ -201,26 +201,7 @@ namespace game_framework {
         }
         if (state == 8 && GetNowUseProp() == 3)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                if (point.x > (576 + 192 * i) && point.x < (576 + 108 * (i + 1) + 192 * i) && point.y > 475 && point.y < 583)
-                {
-                    amount = i + 1;
-                    state = 2;
-                    displayRemoteDice = false;
-                }
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                if (point.x > (576 + 192 * i) && point.x < (576 + 108 * (i + 1) + 192 * i) && point.y > 675 && point.y < 783)
-                {
-
-                    amount = i + 4;
-                    state = 2;
-                    displayRemoteDice = false;
-                }
-            }
-            
+            UseRemoteDice(point);
         }
 
 
@@ -230,6 +211,11 @@ namespace game_framework {
         if (state == 0 && displayCardFrame)
         {
             displayCardFrame = false;
+        }
+        if (state == 8)
+        {
+            displayRemoteDice = false;
+            displayCardFrame = true;
         }
     }
     int UI::GetPickedProp()
@@ -322,6 +308,30 @@ namespace game_framework {
             state = 8;
             displayCardFrame = false;
             displayRemoteDice = true;
+        }
+    }
+    void UI::UseRemoteDice(CPoint point)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (point.x >(576 + 192 * i) && point.x < (576 + 108 * (i + 1) + 192 * i) && point.y > 475 && point.y < 583)
+            {
+                amount = i + 1;
+                state = 2;
+                displayRemoteDice = false;
+                myGame->GetPlayer()[myGame->GetNowPlayer()]->GiveProp(GetNowUseProp(), -1);
+            }
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            if (point.x >(576 + 192 * i) && point.x < (576 + 108 * (i + 1) + 192 * i) && point.y > 675 && point.y < 783)
+            {
+
+                amount = i + 4;
+                state = 2;
+                displayRemoteDice = false;
+                myGame->GetPlayer()[myGame->GetNowPlayer()]->GiveProp(GetNowUseProp(), -1);
+            }
         }
     }
     void UI::ShowPropFields()
