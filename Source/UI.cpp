@@ -14,15 +14,19 @@ namespace game_framework {
         sy = -60;     //道具欄位下修
         displayMessage = false;
         displayCardFrame = false;
+        displayRemoteDice = false;
         propName[0] = "地雷";
         propName[1] = "路障";
         propName[2] = "定時炸彈";
         propName[3] = "遙控骰子";
+        for (int i = 0; i < 6; i++) remoteDice[i].SetValue(i);
     }
     void UI::LoadBitmap()
     {
         dice[0].SetXY(576, 475);                                  // 設定骰子1位置
         dice[1].SetXY(676, 475);                                  // 設定骰子2位置
+        for (int i = 0; i < 3; i++) remoteDice[i].SetXY(576+192*i, 475);
+        for (int i = 3; i < 6; i++) remoteDice[i].SetXY(576 + 192 * (i % 3), 675);
         number[0].SetXY(400, 460);                                // 設定數字初始位置
         number[1].SetXY(450, 460);
         yesButton->SetXY(480, 540);
@@ -30,6 +34,7 @@ namespace game_framework {
 		cardButton->SetXY(0, 0);
         dice[0].LoadBitmap();
         dice[1].LoadBitmap();
+        for (int i = 0; i < 6; i++) remoteDice[i].LoadBitmap();
         number[0].LoadBitmap();
         number[1].LoadBitmap();
         yesButton->LoadBitmap("res/YES.bmp", "res/YES_1.bmp", RGB(0, 0, 0));       // 滑過前圖片 滑過圖片
@@ -53,18 +58,18 @@ namespace game_framework {
     {
         
 
-        if (state != 5)     //非擲骰隱藏
+        if (state != 5 && state != 8)     //非擲骰隱藏
         {
             dice[0].OnShow();
             dice[1].OnShow();
         }
             //
         if (state == 0) amount = 0;
-        if ((amount / 10) == 0 && !dice[0].GetState()) //骰子總和為個位數 貼個位數出來
+        if ((amount / 10) == 0 && !dice[0].GetState() && state != 8) //骰子總和為個位數 貼個位數出來
         {
             number[1].OnShow((amount % 10)); //個位數
         }
-        else if (amount > 0 && amount <= 12 && !dice[0].GetState()) //骰子總合為十位數則貼出兩位數
+        else if (amount > 0 && amount <= 12 && !dice[0].GetState() && state != 8) //骰子總合為十位數則貼出兩位數
         {
             number[0].OnShow((amount / 10)); //十位數
             number[1].OnShow((amount % 10)); //個位數
@@ -83,9 +88,12 @@ namespace game_framework {
         }
         if (displayCardFrame)
         {
-            showPropFields();
+            ShowPropFields();
         }
-
+        if (displayRemoteDice)
+        {
+            for (int i = 0; i < 6; i++) remoteDice[i].OnShow(1.5);
+        }
         yesButton->OnShow();
         noButton->OnShow();        
 		cardButton->OnShow();
@@ -101,8 +109,8 @@ namespace game_framework {
         dice[0].OnMove();   
         dice[1].OnMove();
         TRACE("ui state = %d\n", state);
-
-        amount = dice[0].GetValue() + dice[1].GetValue();
+        TRACE("amount=%d", amount);
+        if (state == 1) amount = dice[0].GetValue() + dice[1].GetValue();
         if (dice[0].GetPlayerRun())
         {
             state = 2;
@@ -186,8 +194,33 @@ namespace game_framework {
             {
                 tempX = (point.x - 455) / 180; tempY = (point.y - 375) / 125;
                 prop = tempX + tempY * 5;
-                state = 8;
+                //->GetPlayer()[myGame->GetNowPlayer()]->GiveProp(myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(prop)->index, -1);
+                UseProp(prop);
+                //state = 8;
             }
+        }
+        if (state == 8 && GetNowUseProp() == 3)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (point.x > (576 + 192 * i) && point.x < (576 + 108 * (i + 1) + 192 * i) && point.y > 475 && point.y < 583)
+                {
+                    amount = i + 1;
+                    state = 2;
+                    displayRemoteDice = false;
+                }
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                if (point.x > (576 + 192 * i) && point.x < (576 + 108 * (i + 1) + 192 * i) && point.y > 675 && point.y < 783)
+                {
+
+                    amount = i + 4;
+                    state = 2;
+                    displayRemoteDice = false;
+                }
+            }
+            
         }
 
 
@@ -274,11 +307,24 @@ namespace game_framework {
     {
         return showEvent;
     }
+    int UI::GetNowUseProp()
+    {
+        return myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(prop)->index;
+    }
     void UI::InitEvent()
     {
         showEvent = 99;
     }
-    void UI::showPropFields()
+    void UI::UseProp(int prop)
+    {
+        if (myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(prop)->index == 3)
+        {
+            state = 8;
+            displayCardFrame = false;
+            displayRemoteDice = true;
+        }
+    }
+    void UI::ShowPropFields()
     {
         char amountStr[50] = "";
         cardFrame.SetTopLeft(440, 360);
@@ -345,5 +391,8 @@ namespace game_framework {
 
         pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
         CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+    }
+    void UI::ShowRemoteDice()
+    {
     }
 }

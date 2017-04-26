@@ -36,6 +36,12 @@ namespace game_framework {
         dicebmp[value].ShowBitmap();
     }
 
+   void Dice::OnShow(double size)
+   {
+       dicebmp[value].SetTopLeft(x, y);
+       dicebmp[value].ShowBitmap(size);
+   }
+
    void Dice::OnMove()
    {
        if (state == 1)
@@ -64,6 +70,7 @@ namespace game_framework {
             playerRun = 0;
         }
     }
+
     void Dice::RandomValue()
     {
         value = rand() % 6;

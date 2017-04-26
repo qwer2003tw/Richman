@@ -6,6 +6,7 @@ namespace game_framework {
         void Initialize();				// 設定擦子為初始值
         void LoadBitmap();				// 載入圖形
         void OnShow();					// 將擦子圖形貼到畫面
+        void OnShow(double size);
         void OnMove();
         void SetXY(int nx, int ny);		// 設定擦子左上角座標
         void OnLButtonDown();

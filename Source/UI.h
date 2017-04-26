@@ -31,7 +31,9 @@ namespace game_framework {
 		void SetDiceValue(int d1, int d2);
         void RandomEvent();
         int GetEvent();
+        int GetNowUseProp();
         void InitEvent();
+        void UseProp(int prop);
     protected:
         CGameStateRun *myGame;              // 讀mygme資訊
         CMovingBitmap status_background;    // 狀態欄
@@ -42,6 +44,7 @@ namespace game_framework {
         CMovingBitmap event[10];            // 事件
         int sx, sy;                         // 螢幕座標
         Dice dice[2];
+        Dice remoteDice[6];
         Number number[2];
         Button *yesButton = new Button(), *noButton = new Button();
 		Button *cardButton = new Button(1);
@@ -51,8 +54,10 @@ namespace game_framework {
         int money;                          // 金額訊息
         bool displayMessage;
         bool displayCardFrame;
+        bool displayRemoteDice;
         char *propName[15];
-        void showPropFields();
+        void ShowPropFields();
+        void ShowRemoteDice();
         int enevtIndex = 4;
         int showEvent = 99;
         int tempX = 0, tempY = 0;           // 抓道具座標
