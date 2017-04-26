@@ -86,10 +86,9 @@ namespace game_framework {
             messageFrame.ShowBitmap();
             messageFrame.SetTopLeft(440, 260);
         }
-        if (displayCardFrame)
-        {
-            ShowPropFields();
-        }
+
+        ShowPropFields();
+
         if (displayRemoteDice)
         {
             for (int i = 0; i < 6; i++) remoteDice[i].OnShow(1.5);
@@ -216,6 +215,7 @@ namespace game_framework {
         {
             displayRemoteDice = false;
             displayCardFrame = true;
+            state = 0;
         }
     }
     int UI::GetPickedProp()
@@ -336,35 +336,19 @@ namespace game_framework {
     }
     void UI::ShowPropFields()
     {
-        char amountStr[50] = "";
-        cardFrame.SetTopLeft(440, 360);
-        cardFrame.ShowBitmap(1.5);
-        for (int i = 0; myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index != -1; i++)
+        if (displayCardFrame)
         {
-            if (i >= 0 && i < 5)
-            {
-                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(510 + i * 180, 380);
-                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
-                //sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
-                //pDC->TextOutA(520 + i * 170, 450, amountStr);
-            }
-            else if (i >= 5 && i < 10)
-            {
-                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(510 + (i % 5) * 180, 470);
-                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
-                //sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
-                //pDC->TextOutA(520 + (i % 5) * 170, 540, amountStr);
-            }
-            else if (i >= 10 && i < 15)
-            {
-                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(510 + (i % 5) * 180, 560);
-                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
-                //sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
-                //pDC->TextOutA(520 + (i % 5) * 170, 630, amountStr);
-
-            }
+            cardFrame.SetTopLeft(440, 360);
+            cardFrame.ShowBitmap(1.5);
+            ShowProp();
+            ShowPropText();
         }
+        
+    }
 
+    void UI::ShowPropText()
+    {
+        char amountStr[50] = "";
         CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
         CFont f, *fp;
         f.CreatePointFont(200, "Times New Roman");
@@ -377,22 +361,16 @@ namespace game_framework {
         {
             if (i >= 0 && i < 5)
             {
-                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(490 + i * 190, 380);
-                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
                 sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
                 pDC->TextOutA(520 + i * 180, 450, amountStr);
             }
             else if (i >= 5 && i < 10)
             {
-                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(490 + (i % 5) * 190, 470);
-                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
                 sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
                 pDC->TextOutA(520 + (i % 5) * 180, 540, amountStr);
             }
             else if (i >= 10 && i < 15)
             {
-                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(490 + (i % 5) * 190, 560);
-                //props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
                 sprintf(amountStr, "X %d", myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->amount);
                 pDC->TextOutA(520 + (i % 5) * 180, 630, amountStr);
 
@@ -402,7 +380,27 @@ namespace game_framework {
         pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
         CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
     }
-    void UI::ShowRemoteDice()
+
+    void UI::ShowProp()
     {
+        for (int i = 0; myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index != -1; i++)
+        {
+            if (i >= 0 && i < 5)
+            {
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(510 + i * 180, 380);
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
+            }
+            else if (i >= 5 && i < 10)
+            {
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(510 + (i % 5) * 180, 470);
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
+            }
+            else if (i >= 10 && i < 15)
+            {
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(510 + (i % 5) * 180, 560);
+                props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
+            }
+        }
     }
+
 }
