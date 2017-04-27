@@ -112,7 +112,7 @@ namespace game_framework {
         TRACE("amount=%d", amount);
         if (state == 1) amount = dice[0].GetValue() + dice[1].GetValue();
         if (dice[0].GetPlayerRun())
-        {
+        {  
             state = 2;
         }
         dice[0].SetPlayerRun(0);
