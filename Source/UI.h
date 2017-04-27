@@ -58,7 +58,8 @@ namespace game_framework {
         bool displayRemoteDice;
         char *propName[15];
         void ShowPropFields();
-        void ShowRemoteDice();
+        void ShowPropText();
+        void ShowProp();
         int enevtIndex = 4;
         int showEvent = 99;
         int tempX = 0, tempY = 0;           // §ì¹D¨ã®y¼Ð
