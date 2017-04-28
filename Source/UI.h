@@ -1,11 +1,13 @@
 #pragma once
 #include"Player.h"
 #include "Button.h"
+#include "Map.h"
 
 namespace game_framework {
     class UI {
     public:
         UI();
+        CMovingBitmap house[4][4][40]; // 4 users 4 levels 40 houses
         void LoadBitmap();
         void OnShow();
         void OnMove();
@@ -60,6 +62,7 @@ namespace game_framework {
         void ShowPropFields();
         void ShowPropText();
         void ShowProp();
+        void ShowMiniMap();
         int enevtIndex = 4;
         int showEvent = 99;
         int tempX = 0, tempY = 0;           // §ì¹D¨ã®y¼Ð

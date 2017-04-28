@@ -53,6 +53,28 @@ namespace game_framework {
         event[1].LoadBitmap("res/Getmoney1.bmp");
         event[2].LoadBitmap("res/Zero1.bmp");
         event[3].LoadBitmap("res/Ufo1.bmp");
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 36; j++)
+            {
+                if (i == 0) house[i][0][j].LoadBitmap("res/House_level0_0.bmp", RGB(0, 0, 0));
+                else if (i == 1) house[i][0][j].LoadBitmap("res/House_level0_1.bmp", RGB(0, 0, 0));
+                else if (i == 2) house[i][0][j].LoadBitmap("res/House_level0_2.bmp", RGB(0, 0, 0));
+                else if (i == 3) house[i][0][j].LoadBitmap("res/House_level0_3.bmp", RGB(255, 255, 255)); //眼鏡白底的
+                if (i == 0) house[i][1][j].LoadBitmap("res/House_level1_0.bmp", RGB(0, 0, 0));
+                else if (i == 1) house[i][1][j].LoadBitmap("res/House_level1_1.bmp", RGB(0, 0, 0));
+                else if (i == 2) house[i][1][j].LoadBitmap("res/House_level1_2.bmp", RGB(0, 0, 0));
+                else if (i == 3) house[i][1][j].LoadBitmap("res/House_level1_3.bmp", RGB(0, 0, 0));
+                if (i == 0) house[i][2][j].LoadBitmap("res/House_level2_0.bmp", RGB(0, 0, 0));
+                else if (i == 1) house[i][2][j].LoadBitmap("res/House_level2_1.bmp", RGB(0, 0, 0));
+                else if (i == 2) house[i][2][j].LoadBitmap("res/House_level2_2.bmp", RGB(0, 0, 0));
+                else if (i == 3) house[i][2][j].LoadBitmap("res/House_level2_3.bmp", RGB(0, 0, 0));
+                if (i == 0) house[i][3][j].LoadBitmap("res/House_level3_0.bmp", RGB(0, 0, 0));
+                else if (i == 1) house[i][3][j].LoadBitmap("res/House_level3_1.bmp", RGB(0, 0, 0));
+                else if (i == 2) house[i][3][j].LoadBitmap("res/House_level3_2.bmp", RGB(0, 0, 0));
+                else if (i == 3) house[i][3][j].LoadBitmap("res/House_level3_3.bmp", RGB(0, 0, 0));
+            }
+        }
     }
     void UI::OnShow()
     {
@@ -78,8 +100,7 @@ namespace game_framework {
         //
         status_background.SetTopLeft(SIZE_X - 390, 0); //狀態欄背景位置
         status_background.ShowBitmap();       //顯示圖片
-        miniMap.SetTopLeft(SIZE_X - 390, SIZE_Y - 390);
-        miniMap.ShowBitmap();
+        ShowMiniMap();
         myGame->GetPlayer()[myGame->GetNowPlayer()]->OnShowState();
         if (displayMessage)
         {
@@ -108,7 +129,7 @@ namespace game_framework {
         dice[0].OnMove();   
         dice[1].OnMove();
         TRACE("ui state = %d\n", state);
-        TRACE("amount=%d", amount);
+        //TRACE("amount=%d", amount);
         if (state == 1) amount = dice[0].GetValue() + dice[1].GetValue();
         if (dice[0].GetPlayerRun())
         {
@@ -399,6 +420,26 @@ namespace game_framework {
             {
                 props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].SetTopLeft(510 + (i % 5) * 180, 560);
                 props[myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(i)->index].ShowBitmap();
+            }
+        }
+    }
+
+    void UI::ShowMiniMap()
+    {
+        
+        int top = SIZE_X - 390, left = SIZE_Y - 390;
+        const float scale = 0.2f;
+    
+        miniMap.SetTopLeft(top, left);
+        miniMap.ShowBitmap();
+
+        for (int i = 0; i < 36; i++)
+        {
+            if (myGame->GetBitMap().GetMapData()[i]->GetOwner() != 99 && myGame->GetBitMap().GetMapData()[i]->GetType() == 1)
+            {
+                TRACE("position=%d", myGame->GetBitMap().GetMapData()[i]->GetBuildingPositionX()/5);
+                house[myGame->GetBitMap().GetMapData()[i]->GetOwner()][0][i].SetTopLeft(top + myGame->GetBitMap().GetMapData()[i]->GetBuildingPositionX()/5, left + myGame->GetBitMap().GetMapData()[i]->GetBuildingPositionY()/5);
+                house[myGame->GetBitMap().GetMapData()[i]->GetOwner()][0][i].ShowBitmap(scale);
             }
         }
     }

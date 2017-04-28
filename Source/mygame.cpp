@@ -502,6 +502,11 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 {
 }
 
+Map CGameStateRun::GetBitMap()
+{
+    return bigMap;
+}
+
 Player **CGameStateRun::GetPlayer()
 {
     return player;

@@ -109,6 +109,10 @@ namespace game_framework {
     {
         mapData[nowPosition]->SetHomeLevel(mapData[nowPosition]->GetHomeLevel() + 1);
     }
+    CMovingBitmap* Map::GetHouse()
+    {
+        return &house[0][0][0];
+    }
     MapData ** Map::GetMapData()
     {
         return mapData;

@@ -8,6 +8,7 @@ namespace game_framework {
         void OnShow(int sx, int sy);
         void Build(int nowPlayer, int nowPosition);
         void Upgrade(int nowPosition);
+        CMovingBitmap* GetHouse();
         MapData** GetMapData();
         int GetMapCount();  
     private:
