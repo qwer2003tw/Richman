@@ -270,27 +270,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     //ui 骰子傳值
     if (ui.GetState() == 2)
     {
-        // test building house
-  /*      if (nowPlayer == 0)
-        {
-            if (test < 2)
-            {
-                test = 0;
-            }
-            player[nowPlayer]->SetRemaining(test);
-            test--;
-        }
-        else if(nowPlayer == 1)
-        {
-            if (test1 < 3)
-            {
-                test1 = 0;
-            }
-            player[nowPlayer]->SetRemaining(test1);
-            test1--;
-        }
-        else*/ player[nowPlayer]->SetRemaining(ui.GetAmount());        // 2-3 傳入值
-        // test
+        player[nowPlayer]->SetRemaining(ui.GetAmount());        // 2-3 傳入值
         ui.SetState(3); // player runing
     }
     if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)   // 已跑完
@@ -351,7 +331,6 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 0)
         canThrowDies = true;
     else canThrowDies = false;
-
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -473,12 +452,29 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
             ui.SetDisplay(0);
         }
     }
-    else if (ui.GetState() == 7)
+    else if (ui.GetState() == 7)                // 切換玩家
     {
         ui.InitEvent();
         ui.SetState(0);
-        if (nowPlayer < playercount - 1) nowPlayer++;   // 切換玩家
+        if (nowPlayer < playercount - 1) nowPlayer++;   
         else nowPlayer = 0;
+    }
+    else if (ui.GetState() == 8 && ui.GetFollowMouse() != 99) // 選擇道具放置位置
+    {
+        int px, py;
+        for (int i = 0; i < 36; i++)
+        {
+            px = bigMap.GetMapData()[i]->GetPositionX();
+            py = bigMap.GetMapData()[i]->GetPositionY();
+            int dx = 5;
+            int dy = 20;
+            //if (point.x + sx +dx>= px-96&& point.x + sx +dx<= px + 96 && point.y +sy +dy>= py-96 && point.y +sy +dy<= py + 96)
+            if (point.x + sx +96>= px && point.x + sx +96<= px + 192 && point.y + sy >= py && point.y + sy <= py + 192)
+            {
+                bigMap.SetPropIndex(ui.GetFollowMouse(), i); // 取得跟隨圖片的index 並設置在map上
+                ui.initFollowMouse();
+            }
+        }
     }
 }
 
@@ -523,13 +519,13 @@ void CGameStateRun::OnShow()
     //
 
     bigMap.OnShow(ui.GetSx(), ui.GetSy());
-    //以下為UI
-    //人物顯示
+    // 人物顯示
     for (int i = 0; i < playercount; i++)
     {
         if (!player[i]->GetBankruptcy())
             player[i]->OnShow(ui.GetSx(), ui.GetSy());
     }
+    // UI顯示
     ui.OnShow();
 }
 }

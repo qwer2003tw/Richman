@@ -42,6 +42,10 @@ namespace game_framework {
     {
         buildingPositionY = y;
     }
+    void MapData::SetPropIndex(int index)
+    {
+        propIndex = index;
+    }
     void MapData::Through()
     {
         //
@@ -81,5 +85,9 @@ namespace game_framework {
     int MapData::GetBuildingPositionY()
     {
         return buildingPositionY;
+    }
+    int MapData::GetPropIndex()
+    {
+        return propIndex;
     }
 }

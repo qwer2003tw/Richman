@@ -22,9 +22,10 @@ namespace game_framework {
             mapData[i]->SetPositionY(ny);
             nx += dx[i / 9];
             ny += dy[i / 9];
-            mapData[i]->SetOwner(99);        // 初始
-            mapData[i]->SetHomeLevel(0);
+            mapData[i]->SetOwner(99);       // 初始
+            mapData[i]->SetHomeLevel(0);    // 初始
             mapData[i]->SetType(0);         // 初始
+            mapData[i]->SetPropIndex(99);   // 初始
         }
         for (int i = 2; i < 8; i++)         
         {
@@ -57,7 +58,6 @@ namespace game_framework {
             mapData[i+17]->SetType(2);             // 2事件格
             mapData[i+26]->SetType(2);             // 2事件格
         }
-
     }
     void Map::LoadBitmap()
     {
@@ -84,19 +84,27 @@ namespace game_framework {
                 else if (i == 3) house[i][3][j].LoadBitmap("res/House_level3_3.bmp", RGB(0, 0, 0));
             }
         }
+        props[0].LoadBitmap("res/Landmine.bmp", RGB(255, 255, 255));
+        props[1].LoadBitmap("res/Roadblocks.bmp", RGB(255, 255, 255));
+        props[2].LoadBitmap("res/Timebombs.bmp", RGB(255, 255, 255));
+        props[3].LoadBitmap("res/Remotedice.bmp", RGB(255, 255, 255));
     }
 
     void Map::OnShow(int sx, int sy)
     {
-        
         map.SetTopLeft(-sx, -sy);
         map.ShowBitmap();
         for (int i = 0; i < 36; i++)
         {
-            if (GetMapData()[i]->GetOwner() != 99 && GetMapData()[i]->GetType() == 1)
+            if (mapData[i]->GetOwner() != 99 && mapData[i]->GetType() == 1)
             {
                 house[mapData[i]->GetOwner()][mapData[i]->GetHomeLevel()][i].SetTopLeft(-sx + mapData[i]->GetBuildingPositionX(), -sy + mapData[i]->GetBuildingPositionY());
                 house[mapData[i]->GetOwner()][mapData[i]->GetHomeLevel()][i].ShowBitmap();
+            }
+            if (mapData[i]->GetPropIndex() != 99)
+            {
+                props[mapData[i]->GetPropIndex()].SetTopLeft(mapData[i]->GetPositionX() - sx, mapData[i]->GetPositionY() - sy);
+                props[mapData[i]->GetPropIndex()].ShowBitmap();
             }
         }
     }
@@ -108,6 +116,10 @@ namespace game_framework {
     void Map::Upgrade(int nowPosition)
     {
         mapData[nowPosition]->SetHomeLevel(mapData[nowPosition]->GetHomeLevel() + 1);
+    }
+    void Map::SetPropIndex(int index, int position)
+    {
+        mapData[position]->SetPropIndex(index);
     }
     MapData ** Map::GetMapData()
     {

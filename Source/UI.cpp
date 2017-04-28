@@ -15,6 +15,7 @@ namespace game_framework {
         displayMessage = false;
         displayCardFrame = false;
         displayRemoteDice = false;
+        followMouse = 99;   // 沒有圖片跟隨滑鼠
         propName[0] = "地雷";
         propName[1] = "路障";
         propName[2] = "定時炸彈";
@@ -102,6 +103,11 @@ namespace game_framework {
             event[showEvent].SetTopLeft(400, 300);
             event[showEvent].ShowBitmap();
         }
+        if (followMouse != 99)
+        {
+            props[followMouse].SetTopLeft(followX - props[followMouse].Width() / 2, followY - props[followMouse].Height() / 2);
+            props[followMouse].ShowBitmap();
+        }
     }
     void UI::OnMove()
     {  
@@ -177,6 +183,8 @@ namespace game_framework {
         yesButton->OnMove(point);
         noButton->OnMove(point);
         cardButton->OnMove(point);
+        followX = point.x;
+        followY = point.y;
     }
     void UI::OnLClick(CPoint point)
     {
@@ -200,10 +208,9 @@ namespace game_framework {
         }
         if (state == 8 && GetNowUseProp() == 3)
         {
+            followMouse = 99;
             UseRemoteDice(point);
         }
-
-
     }
     void UI::OnRClick(CPoint point)
     {
@@ -214,6 +221,7 @@ namespace game_framework {
         if (state == 8)
         {
             displayRemoteDice = false;
+            followMouse = 99;
             displayCardFrame = true;
             state = 0;
         }
@@ -285,6 +293,10 @@ namespace game_framework {
 		dice[0].SetValue(d1);
 		dice[1].SetValue(d2);
 	}
+    void UI::initFollowMouse()
+    {
+        followMouse = 99;
+    }
     void UI::RandomEvent()
     {
         showEvent = rand() % enevtIndex;
@@ -297,17 +309,27 @@ namespace game_framework {
     {
         return myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(prop)->index;
     }
+    int UI::GetFollowMouse()
+    {
+        return followMouse;
+    }
     void UI::InitEvent()
     {
         showEvent = 99;
     }
     void UI::UseProp(int prop)
     {
-        if (myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(prop)->index == 3)
+        int propIndex = myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(prop)->index;
+        if (propIndex == 3)         // 遙控骰子
         {
             state = 8;
             displayCardFrame = false;
             displayRemoteDice = true;
+        }
+        else if (propIndex == 0 || propIndex == 1 || propIndex == 2)    // 路障
+        {
+            state = 8;
+            followMouse = propIndex;
         }
     }
     void UI::UseRemoteDice(CPoint point)

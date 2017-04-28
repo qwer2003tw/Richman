@@ -29,12 +29,15 @@ namespace game_framework {
         void SetMessage(int type, int Money);
         void SetDisplay(bool displayMessage);
 		void SetDiceValue(int d1, int d2);
+        void initFollowMouse();
         void RandomEvent();
         int GetEvent();
         int GetNowUseProp();
+        int GetFollowMouse();
         void InitEvent();
         void UseProp(int prop);
         void UseRemoteDice(CPoint point);
+        
     protected:
         CGameStateRun *myGame;              // Åªmygme¸ê°T
         CMovingBitmap status_background;    // ª¬ºAÄæ
@@ -56,6 +59,8 @@ namespace game_framework {
         bool displayMessage;
         bool displayCardFrame;
         bool displayRemoteDice;
+        int followMouse;
+        int followX, followY;
         char *propName[15];
         void ShowPropFields();
         void ShowPropText();
