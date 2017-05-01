@@ -99,6 +99,7 @@ namespace game_framework {
 		void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作 
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
+        Map GetBitMap();
         Player **GetPlayer();
         int GetNowPlayer();
 	protected:
@@ -119,7 +120,6 @@ namespace game_framework {
         int nowPlayer;              // 當前玩家
         Map bigMap;                 // 地圖
         int amount;                 // 點數和
-        int sx, sy;                 // 螢幕地圖座標
         bool canThrowDies;          
         int test = 2, test1 = 3;    // 原地升級test
         int delayCount = DELAY;        // 延遲 以便玩家瀏覽目前狀態 

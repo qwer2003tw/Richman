@@ -103,8 +103,9 @@ namespace game_framework {
             }
             if (mapData[i]->GetPropIndex() != 99)
             {
-                props[mapData[i]->GetPropIndex()].SetTopLeft(mapData[i]->GetPositionX() - sx, mapData[i]->GetPositionY() - sy);
-                props[mapData[i]->GetPropIndex()].ShowBitmap();
+                // ¹D¨ã¸m¤¤ 45
+                props[mapData[i]->GetPropIndex()].SetTopLeft(mapData[i]->GetPositionX() - sx - 45, mapData[i]->GetPositionY() - sy - 45);
+                props[mapData[i]->GetPropIndex()].ShowBitmap(1.5);
             }
         }
     }
@@ -117,9 +118,16 @@ namespace game_framework {
     {
         mapData[nowPosition]->SetHomeLevel(mapData[nowPosition]->GetHomeLevel() + 1);
     }
+
+
+
     void Map::SetPropIndex(int index, int position)
     {
         mapData[position]->SetPropIndex(index);
+    }
+    CMovingBitmap* Map::GetHouse()
+    {
+        return &house[0][0][0];
     }
     MapData ** Map::GetMapData()
     {

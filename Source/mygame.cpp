@@ -348,7 +348,6 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	background.LoadBitmap(IDB_BACKGROUND);					// 載入背景的圖形
     ui.LoadBitmap();                                        // 載入UI
     bigMap.LoadBitmap();                                    // 載入地圖
-    sx = sy = 0;
     nowPlayer = 0;
     playercount = 4;
     ui.SetMyGame(this);
@@ -403,8 +402,58 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     const char KEY_ESC = 27;
-    if (nChar == KEY_ESC)								        // 關閉遊戲的方法
-        PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+    const char KEY_2   = 50;
+    const char KEY_3   = 51;
+    const char KEY_4   = 52;
+    const char KEY_5   = 53;
+    const char KEY_6   = 54;
+    const char KEY_7   = 55;
+    const char KEY_8   = 56;
+    const char KEY_9   = 57;
+
+    if(ui.GetState() == 0)
+    {
+        switch (nChar)
+        {
+        case KEY_2:
+            ui.SetAmount(2);
+            ui.SetState(2);
+            break;
+        case KEY_3:
+            ui.SetAmount(3);
+            ui.SetState(2);
+            break;
+        case KEY_4:
+            ui.SetAmount(4);
+            ui.SetState(2);
+            break;
+        case KEY_5:
+            ui.SetAmount(5);
+            ui.SetState(2);
+            break;
+        case KEY_6:
+            ui.SetAmount(6);
+            ui.SetState(2);
+            break;
+        case KEY_7:
+            ui.SetAmount(7);
+            ui.SetState(2);
+            break;
+        case KEY_8:
+            ui.SetAmount(8);
+            ui.SetState(2);
+            break;
+        case KEY_9:
+            ui.SetAmount(9);
+            ui.SetState(2);
+            break;
+        case KEY_ESC:
+            PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
@@ -466,10 +515,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
         {
             px = bigMap.GetMapData()[i]->GetPositionX();
             py = bigMap.GetMapData()[i]->GetPositionY();
-            int dx = 5;
-            int dy = 20;
-            //if (point.x + sx +dx>= px-96&& point.x + sx +dx<= px + 96 && point.y +sy +dy>= py-96 && point.y +sy +dy<= py + 96)
-            if (point.x + sx +96>= px && point.x + sx +96<= px + 192 && point.y + sy >= py && point.y + sy <= py + 192)
+            if (point.x - ui.GetSx() >= px && point.x -ui.GetSx() <= px + 192 && point.y -ui.GetSy()>= py && point.y -ui.GetSy() <= py + 192)
             {
                 bigMap.SetPropIndex(ui.GetFollowMouse(), i); // 取得跟隨圖片的index 並設置在map上
                 ui.initFollowMouse();
@@ -496,6 +542,11 @@ void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 
 void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 {
+}
+
+Map CGameStateRun::GetBitMap()
+{
+    return bigMap;
 }
 
 Player **CGameStateRun::GetPlayer()
