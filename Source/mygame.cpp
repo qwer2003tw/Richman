@@ -293,6 +293,42 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             ui.SetDisplay(1);
             ui.SetState(5); // player stopping & display upgrade button
         }
+        // 踩到別人的地
+        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() != player[nowPlayer]->GetType() && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() != 99)
+        {
+            int owner = 0;
+            for (int i = 0; i < playercount; i++)
+            {
+                if (player[i]->GetType() == bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner())
+                    owner = i;
+            }
+            if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 0)
+            {
+                ui.SetMessage(3, 800);
+                player[nowPlayer]->AdjMoney(-800);
+                player[owner]->AdjMoney(800);
+            }
+            else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 1)
+            {
+                ui.SetMessage(3, 1200);
+                player[nowPlayer]->AdjMoney(-1200);
+                player[owner]->AdjMoney(1200);
+            }
+            else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 2)
+            {
+                ui.SetMessage(3, 2000);
+                player[nowPlayer]->AdjMoney(-2000);
+                player[owner]->AdjMoney(2000);
+            }
+            else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 3)
+            {
+                ui.SetMessage(3, 2800);
+                player[nowPlayer]->AdjMoney(-2800);
+                player[owner]->AdjMoney(2800);
+            }
+            ui.SetDisplay(1);
+            ui.SetState(6);
+        }
         // 事件格
         else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 2)
         {
@@ -302,6 +338,11 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             else if (ui.GetEvent() == 2) player[nowPlayer]->AdjMoney(-500); // 沒收
             else if (ui.GetEvent() == 3) player[nowPlayer]->AdjMoney(-500); // 勒索
             ui.SetState(7);
+        }
+        // 踩到路障
+        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex() == 1)
+        {
+
         }
         else
         {
@@ -316,6 +357,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         {
             delayCount = DELAY;
             ui.SetState(0);                                 // 延遲結束 跳回開始狀態
+            ui.SetDisplay(0);
             if (nowPlayer < playercount - 1) nowPlayer++;   // 切換玩家
             else nowPlayer = 0;
         }
@@ -358,16 +400,16 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
         player[i]->LoadBitmap();
         player[i]->SetMap(&bigMap);
     }*/
-    player[0] = new Player(2, 0);//後面引數掛TYPE
+    player[0] = new Player(2, 0);//後面引數掛TYPE ORDER
     player[0]->LoadBitmap();
     player[0]->SetMap(&bigMap);
-    player[1] = new Player(3, 1);//後面引數掛TYPE
+    player[1] = new Player(3, 1);//後面引數掛TYPE ORDER
     player[1]->LoadBitmap();
     player[1]->SetMap(&bigMap);
-    player[2] = new Player(0, 2);//後面引數掛TYPE
+    player[2] = new Player(0, 2);//後面引數掛TYPE ORDER
     player[2]->LoadBitmap();
     player[2]->SetMap(&bigMap);
-    player[3] = new Player(1, 3);//後面引數掛TYPE
+    player[3] = new Player(1, 3);//後面引數掛TYPE ORDER
     player[3]->LoadBitmap();
     player[3]->SetMap(&bigMap);
 
@@ -388,72 +430,24 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-    const char KEY_SHIFT = 16;
-    if (nChar == KEY_SHIFT && ui.GetState() == 0)
-    {
-        for (int i = 0; i < playercount; i++)
-        {
-            if (player[i]->GetSpeed() == 8) player[i]->SetSpeed(64);
-            else if(player[i]->GetSpeed() == 64) player[i]->SetSpeed(8);
-        }
-    }
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-    const char KEY_ESC = 27;
-    const char KEY_2   = 50;
-    const char KEY_3   = 51;
-    const char KEY_4   = 52;
-    const char KEY_5   = 53;
-    const char KEY_6   = 54;
-    const char KEY_7   = 55;
-    const char KEY_8   = 56;
-    const char KEY_9   = 57;
+    const char KEY_ESC    = 27;
+    const char KEY_1TO9   = 49; // 1:49  9:57
+    const char KEY_Z      = 90; // 升級
 
     if(ui.GetState() == 0)
     {
-        switch (nChar)
+        if (nChar - KEY_1TO9 + 1 <= 9 && nChar - KEY_1TO9 + 1 >= 1)
         {
-        case KEY_2:
-            ui.SetAmount(2);
+            ui.SetAmount(nChar - KEY_1TO9 + 1);
             ui.SetState(2);
-            break;
-        case KEY_3:
-            ui.SetAmount(3);
-            ui.SetState(2);
-            break;
-        case KEY_4:
-            ui.SetAmount(4);
-            ui.SetState(2);
-            break;
-        case KEY_5:
-            ui.SetAmount(5);
-            ui.SetState(2);
-            break;
-        case KEY_6:
-            ui.SetAmount(6);
-            ui.SetState(2);
-            break;
-        case KEY_7:
-            ui.SetAmount(7);
-            ui.SetState(2);
-            break;
-        case KEY_8:
-            ui.SetAmount(8);
-            ui.SetState(2);
-            break;
-        case KEY_9:
-            ui.SetAmount(9);
-            ui.SetState(2);
-            break;
-        case KEY_ESC:
-            PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
-            break;
-        default:
-            break;
         }
     }
+    if (nChar == KEY_Z && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() < 3) bigMap.Upgrade(player[nowPlayer]->GetNow());;
+    if (nChar == KEY_ESC) PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
@@ -513,11 +507,12 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
         int px, py;
         for (int i = 0; i < 36; i++)
         {
-            px = bigMap.GetMapData()[i]->GetPositionX();
-            py = bigMap.GetMapData()[i]->GetPositionY();
-            if (point.x - ui.GetSx() >= px && point.x -ui.GetSx() <= px + 192 && point.y -ui.GetSy()>= py && point.y -ui.GetSy() <= py + 192)
+            px = bigMap.GetMapData()[i]->GetPositionX() - 96;
+            py = bigMap.GetMapData()[i]->GetPositionY() - 96;
+            if (point.x >= px - ui.GetSx() && point.x <= px - ui.GetSx() + 192 && point.y >= py - ui.GetSy() && point.y <= py - ui.GetSy() + 192 && bigMap.GetMapData()[i]->GetPropIndex() == 99)
             {
                 bigMap.SetPropIndex(ui.GetFollowMouse(), i); // 取得跟隨圖片的index 並設置在map上
+                GetPlayer()[GetNowPlayer()]->GiveProp(ui.GetNowUseProp(), -1);
                 ui.initFollowMouse();
             }
         }

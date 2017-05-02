@@ -9,6 +9,7 @@ namespace game_framework {
         void Build(int nowPlayer, int nowPosition);
         void Upgrade(int nowPosition);
         void SetPropIndex(int index, int position);
+        int GetPropIndex(int position);
         CMovingBitmap* GetHouse();
         MapData** GetMapData();
         int GetMapCount();  

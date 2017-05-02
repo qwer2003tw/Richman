@@ -125,6 +125,10 @@ namespace game_framework {
     {
         mapData[position]->SetPropIndex(index);
     }
+    int Map::GetPropIndex(int position)
+    {
+        return mapData[position]->GetPropIndex();
+    }
     CMovingBitmap* Map::GetHouse()
     {
         return &house[0][0][0];

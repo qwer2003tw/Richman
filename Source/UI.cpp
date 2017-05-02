@@ -296,7 +296,11 @@ namespace game_framework {
         {
             sprintf(str, "是否要升級");
             sprintf(moneyStr, "$ %d", money);
-
+        }
+        else if (messageType == 3)
+        {
+            sprintf(str, "請付過路費");
+            sprintf(moneyStr, "$ %d", money);
         }
         if (displayMessage)
         {
@@ -353,10 +357,9 @@ namespace game_framework {
             displayCardFrame = false;
             displayRemoteDice = true;
         }
-        else if (propIndex == 0 || propIndex == 1 || propIndex == 2)    // 路障
+        else if (propIndex == 0 || propIndex == 1 || propIndex == 2) 
         {
             state = 8;
-
             followMouse = propIndex;
         }
     }
