@@ -119,8 +119,6 @@ namespace game_framework {
         mapData[nowPosition]->SetHomeLevel(mapData[nowPosition]->GetHomeLevel() + 1);
     }
 
-
-
     void Map::SetPropIndex(int index, int position)
     {
         mapData[position]->SetPropIndex(index);

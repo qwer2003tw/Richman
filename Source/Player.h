@@ -27,7 +27,9 @@ namespace game_framework {
         void SetMap(Map* m);                        // 
         void SetRemaining(int r);
         void SetSpeed(int sp);
-        int  GetRemaining();
+        void SetStop(int stop);
+        int GetStop();
+        int GetRemaining();
         int GetNow();
         int GetMoney();                             //獲得金錢
         int GetType();
@@ -41,14 +43,14 @@ namespace game_framework {
         Map* map;
         MapData** mapData;                          //讀取地圖資訊
     private:
-        int dx, dy;					                //人物地圖座標
-        bool Bankruptcy;                            //是否破產
-        int now;                                    //目前所在位置
-        int remaining;                              //剩餘步數
-
+        int dx, dy;					                // 人物地圖座標
+        bool Bankruptcy;                            // 是否破產
+        int now;                                    // 目前所在位置
+        int remaining;                              // 剩餘步數
+        int stop;                                   // 停止回合數
         //   以下為人物財產
-        int money;                                  //擁有金額
-        int estate;                                 //房地產數量
+        int money;                                  // 擁有金額
+        int estate;                                 // 房地產數量
 
         //  以下為動畫控制
         int w, h;                                   // 圖片寬度和高度
