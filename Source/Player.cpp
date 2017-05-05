@@ -141,6 +141,10 @@ namespace game_framework {
             w = bmp[2][0].Width()*fector;
             h = bmp[2][0].Height()*fector;
         }
+        playerHead[0].LoadBitmap("res/player/doreamon_Head.bmp", RGB(1, 0, 0));
+        playerHead[1].LoadBitmap("res/player/Suneo_Head.bmp", RGB(1, 0, 0));
+        playerHead[2].LoadBitmap("res/player/Goda_Takeshi_Head.bmp", RGB(1, 0, 0));
+        playerHead[3].LoadBitmap("res/player/Nobi_Nobita_Head.bmp", RGB(1, 0, 0));
     }
     
     void Player::OnMove()
@@ -265,6 +269,8 @@ namespace game_framework {
    }
    void Player::OnShowState()
    {
+       playerHead[type].SetTopLeft(1550, 25);
+       playerHead[type].ShowBitmap();
        CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
        CFont f, *fp;
        f.CreatePointFont(300, "Times New Roman");	// 產生 font f; 160表示16 point的字
@@ -275,8 +281,8 @@ namespace game_framework {
        char str[80], name[80];								// Demo 數字對字串的轉換
        sprintf(name, "玩家：%d", order + 1);
        sprintf(str, "財產：%d", money);
-       pDC->TextOut(1550, 25, name);
-       pDC->TextOut(1550, 100, str);
+       pDC->TextOut(1550, 225, name);
+       pDC->TextOut(1550, 300, str);
 
 
        pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)

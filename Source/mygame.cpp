@@ -593,6 +593,7 @@ void CGameStateRun::OnShow()
 
     bigMap.OnShow(ui.GetSx(), ui.GetSy());
     // 人物顯示
+
     for (int i = 0; i < playercount; i++)
     {
         if (!player[i]->GetBankruptcy())

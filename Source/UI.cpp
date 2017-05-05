@@ -54,6 +54,8 @@ namespace game_framework {
         event[1].LoadBitmap("res/Getmoney1.bmp");
         event[2].LoadBitmap("res/Zero1.bmp");
         event[3].LoadBitmap("res/Ufo1.bmp");
+
+
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 36; j++)
