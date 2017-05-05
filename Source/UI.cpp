@@ -283,7 +283,7 @@ namespace game_framework {
     {
         CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
         CFont f, *fp;
-        f.CreatePointFont(240, "Times New Roman");	// 產生 font f; 160表示16 point的字
+        f.CreatePointFont(240, "Microsoft JhengHei");	// 產生 font f; 160表示16 point的字
         fp = pDC->SelectObject(&f);					// 選用 font f
         pDC->SetBkMode(TRANSPARENT);
         pDC->SetTextColor(RGB(255, 255, 255));
@@ -416,7 +416,7 @@ namespace game_framework {
         char amountStr[50] = "";
         CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
         CFont f, *fp;
-        f.CreatePointFont(200, "Times New Roman");
+        f.CreatePointFont(200, "Microsoft JhengHei");
         fp = pDC->SelectObject(&f);					// 選用 font f
         pDC->SetBkMode(TRANSPARENT);
         pDC->SetTextColor(RGB(255, 255, 255));

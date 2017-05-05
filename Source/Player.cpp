@@ -269,11 +269,11 @@ namespace game_framework {
    }
    void Player::OnShowState()
    {
-       playerHead[type].SetTopLeft(1550, 25);
+       playerHead[type].SetTopLeft(1600, 25);
        playerHead[type].ShowBitmap();
        CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
        CFont f, *fp;
-       f.CreatePointFont(300, "Times New Roman");	// 產生 font f; 160表示16 point的字
+       f.CreatePointFont(300, "Microsoft JhengHei");	// 產生 font f; 160表示16 point的字
        fp = pDC->SelectObject(&f);					// 選用 font f
        pDC->SetBkMode(TRANSPARENT);
        //pDC->SetBkColor(RGB(238, 224, 175));
@@ -281,8 +281,10 @@ namespace game_framework {
        char str[80], name[80];								// Demo 數字對字串的轉換
        sprintf(name, "玩家：%d", order + 1);
        sprintf(str, "財產：%d", money);
-       pDC->TextOut(1550, 225, name);
-       pDC->TextOut(1550, 300, str);
+
+       pDC->TextOut(1535, 225, name);
+       pDC->TextOut(1535, 300, str);
+
 
 
        pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
