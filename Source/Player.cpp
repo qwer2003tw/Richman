@@ -33,6 +33,7 @@ namespace game_framework {
         dy         = 96;
         now        = 0;
         remaining  = 0;
+        stop       = 0;
         Bankruptcy = false;
         speed      = 64;     //192/8=24 24*(1/30)sec ²¾°Ê¤@®æ       
         direct     = 2;
@@ -229,6 +230,14 @@ namespace game_framework {
    void Player::SetSpeed(int sp)
    {
        speed = sp;
+   }
+   void Player::SetStop(int stop)
+   {
+       this->stop = stop;
+   }
+   int Player::GetStop()
+   {
+       return stop;
    }
    int Player::GetRemaining()
    {

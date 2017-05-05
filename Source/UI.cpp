@@ -302,6 +302,16 @@ namespace game_framework {
             sprintf(str, "請付過路費");
             sprintf(moneyStr, "$ %d", money);
         }
+        else if (messageType == 4)
+        {
+            sprintf(str, "被地雷炸傷 ");
+            sprintf(moneyStr, "無法行動 %d回合", money);
+        }
+        else if (messageType == 5)
+        {
+            sprintf(str, "原地療傷中 ");
+            sprintf(moneyStr, "剩餘 %d回合", money);
+        }
         if (displayMessage)
         {
             pDC->TextOut(490, 335, str);

@@ -275,8 +275,17 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     }
     if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)   // 已跑完
     {
+        // 碰到地雷
+        if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex() == 0)
+        {
+            bigMap.SetPropIndex(99, player[nowPlayer]->GetNow()); // 取得跟隨圖片的index 並設置在map上
+            player[nowPlayer]->SetStop(3);
+            ui.SetMessage(4, 3);    // 訊息類型 暫停回合
+            ui.SetDisplay(1);
+            ui.SetState(6);
+        }
         // 可以蓋房子
-        if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
+        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
         {
             ui.SetButton(1);
             ui.SetMessage(1, 800);
@@ -333,23 +342,18 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 2)
         {
             ui.RandomEvent();
-            if (ui.GetEvent() == 0) player[nowPlayer]->AdjMoney(-3000);     // 犯罪
-            else if(ui.GetEvent() == 1) player[nowPlayer]->AdjMoney(3000);  // 寶藏
-            else if (ui.GetEvent() == 2) player[nowPlayer]->AdjMoney(-500); // 沒收
-            else if (ui.GetEvent() == 3) player[nowPlayer]->AdjMoney(-500); // 勒索
+            if (ui.GetEvent() == 0) player[nowPlayer]->AdjMoney(-3000);         // 犯罪
+            else if(ui.GetEvent() == 1) player[nowPlayer]->AdjMoney(3000);      // 寶藏
+            else if (ui.GetEvent() == 2) player[nowPlayer]->AdjMoney(-500);     // 沒收
+            else if (ui.GetEvent() == 3) player[nowPlayer]->AdjMoney(-500);     // 勒索
             ui.SetState(7);
-        }
-        // 踩到路障
-        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex() == 1)
-        {
-
         }
         else
         {
             ui.SetState(6);
         }
     }
-    if (ui.GetState() == 6)                                 // 延遲狀態
+    if (ui.GetState() == 6)                                 // 延遲狀態 切換玩家
     {
         if (delayCount > 0)
             delayCount--;
@@ -358,11 +362,34 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             delayCount = DELAY;
             ui.SetState(0);                                 // 延遲結束 跳回開始狀態
             ui.SetDisplay(0);
-            if (nowPlayer < playercount - 1) nowPlayer++;   // 切換玩家
-            else nowPlayer = 0;
+            
+            if (nowPlayer < playercount) // 切換玩家
+            {
+                nowPlayer ++;
+                nowPlayer %= playercount;
+                if (player[nowPlayer]->GetStop() != 0)
+                {
+                    int s = player[nowPlayer]->GetStop();
+                    ui.SetMessage(5, player[nowPlayer]->GetStop());    // 訊息類型 暫停回合
+                    player[nowPlayer]->SetStop(s - 1);
+                    ui.SetDisplay(1);
+                    ui.SetState(6);
+                }
+            }
         }
     }
-    TRACE("OWNER:%d", bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner());
+    if (ui.GetState() == 9)                                 // 延遲狀態 繼續該格買房 升級 事件 等等狀態
+    {
+        if (delayCount > 0)
+            delayCount--;
+        else
+        {
+            delayCount = DELAY;
+            ui.SetState(3);                                 // 延遲結束 跳回判斷狀態
+            ui.SetDisplay(0);
+        }
+    }
+    TRACE("OWNER:%d PropIndex:%d", bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner(), bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex());
     for (int i = 0; i < playercount; i++)
     {
         player[i]->OnMove();
@@ -415,14 +442,14 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
     //
 	//
-	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				    // 載入說明的圖形
-	corner.LoadBitmap(IDB_CORNER);						    	// 載入角落圖形
-	corner.ShowBitmap(background);						    	// 將corner貼到background
-	//CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
-	//CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
-	//CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");	// 載入編號2的聲音ntut.mid
+	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				       // 載入說明的圖形
+	corner.LoadBitmap(IDB_CORNER);						    	   // 載入角落圖形
+	corner.ShowBitmap(background);						    	   // 將corner貼到background
+	//CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");   // 載入編號0的聲音ding.wav
+	//CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");   // 載入編號1的聲音lake.mp3
+	//CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");   // 載入編號2的聲音ntut.mid
 
-    CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	// 載入編號2的聲音BGM.mp3
+    CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	   // 載入編號2的聲音BGM.mp3
     //
 	// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
 	//
@@ -438,7 +465,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
     const char KEY_1TO9   = 49; // 1:49  9:57
     const char KEY_Z      = 90; // 升級
 
-    if(ui.GetState() == 0)
+    if(ui.GetState() == 0 && !ui.GetCardDisplay())
     {
         if (nChar - KEY_1TO9 + 1 <= 9 && nChar - KEY_1TO9 + 1 >= 1)
         {
