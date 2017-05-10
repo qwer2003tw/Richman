@@ -317,10 +317,14 @@ namespace game_framework {
             sprintf(str, "原地療傷中 ");
             sprintf(moneyStr, "剩餘 %d回合", money);
         }
+        else if (messageType == 6)
+        {
+            sprintf(str, "碰到路障");
+        }
         if (displayMessage)
         {
             pDC->TextOut(490, 335, str);
-            pDC->TextOut(490, 410, moneyStr);
+            if(messageType != 6) pDC->TextOut(490, 410, moneyStr);
         }
         pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
         CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC

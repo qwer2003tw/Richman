@@ -47,7 +47,7 @@
 #include "Map.h"
 #include "MapData.h"
 #include "UI.h"
-#define DELAY 30
+#define DELAY 40
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// Constants

@@ -273,6 +273,18 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         player[nowPlayer]->SetRemaining(ui.GetAmount());        // 2-3 傳入值
         ui.SetState(3); // player runing
     }
+    if (ui.GetState() == 3)   // 已跑完
+    {
+        // 路障
+        if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex() == 1)
+        {
+            player[nowPlayer]->SetRemaining(0);
+            bigMap.GetMapData()[player[nowPlayer]->GetNow()]->SetPropIndex(99);
+            ui.SetMessage(6, 0); // 訊息類型 忽略
+            ui.SetDisplay(1);
+            ui.SetState(9);
+        }
+    }
     if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)   // 已跑完
     {
         // 碰到地雷
