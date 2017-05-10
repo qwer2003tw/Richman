@@ -7,7 +7,6 @@ namespace game_framework {
     class UI {
     public:
         UI();
-        CMovingBitmap house[4][4][40]; // 4 users 4 levels 40 houses
         void LoadBitmap();
         void OnShow();
         void OnMove();
@@ -49,6 +48,8 @@ namespace game_framework {
         CMovingBitmap cardFrame;            // 道具欄
         CMovingBitmap props[15];            // 道具
         CMovingBitmap event[10];            // 事件
+        CMovingBitmap house[4][4][40];      // 4 users 4 levels 40 houses
+        CMovingBitmap playerHead[4];
         int sx, sy;                         // 螢幕座標
         Dice dice[2];
         Dice remoteDice[6];

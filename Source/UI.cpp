@@ -54,7 +54,10 @@ namespace game_framework {
         event[1].LoadBitmap("res/Getmoney1.bmp");
         event[2].LoadBitmap("res/Zero1.bmp");
         event[3].LoadBitmap("res/Ufo1.bmp");
-
+        playerHead[0].LoadBitmap("res/player/doreamon_Head.bmp", RGB(1, 0, 0));
+        playerHead[1].LoadBitmap("res/player/Suneo_Head.bmp", RGB(1, 0, 0));
+        playerHead[2].LoadBitmap("res/player/Goda_Takeshi_Head.bmp", RGB(1, 0, 0));
+        playerHead[3].LoadBitmap("res/player/Nobi_Nobita_Head.bmp", RGB(1, 0, 0));
 
         for (int i = 0; i < 4; i++)
         {
@@ -471,19 +474,28 @@ namespace game_framework {
     void UI::ShowMiniMap()
     {
         
-        const int left = SIZE_X - 390, top = SIZE_Y - 390, fix = 5;
+        const int left = SIZE_X - 390, top = SIZE_Y - 390, fix = 5, headFix = 13;
+        const float headScale = 0.17f;
         const float scale = 0.2f;
     
         miniMap.SetTopLeft(left, top);
         miniMap.ShowBitmap();
-
+        
+        for (int i = myGame->GetPlayerCount() - 1; i >= 0; i--)
+        {
+            int nowPosition = myGame->GetPlayer()[i]->GetNow();
+            int x = (myGame->GetBitMap().GetMapData()[nowPosition])->GetPositionX();
+            int y = myGame->GetBitMap().GetMapData()[nowPosition]->GetPositionY();
+            playerHead[myGame->GetPlayer()[i]->GetType()].SetTopLeft(left + x / 5 - headFix, top + y / 5- headFix);
+            playerHead[myGame->GetPlayer()[i]->GetType()].ShowBitmap(headScale);
+        }
         for (int i = 0; i < 36; i++)
         {
             if (myGame->GetBitMap().GetMapData()[i]->GetOwner() != 99 && myGame->GetBitMap().GetMapData()[i]->GetType() == 1)
             {
                 TRACE("position=%d", myGame->GetBitMap().GetMapData()[i]->GetBuildingPositionX()/5);
-                house[myGame->GetBitMap().GetMapData()[i]->GetOwner()][0][i].SetTopLeft(fix + left + myGame->GetBitMap().GetMapData()[i]->GetBuildingPositionX() / 5, fix + top + myGame->GetBitMap().GetMapData()[i]->GetBuildingPositionY() / 5 );
-                house[myGame->GetBitMap().GetMapData()[i]->GetOwner()][0][i].ShowBitmap(scale);
+                house[myGame->GetBitMap().GetMapData()[i]->GetOwner()][myGame->GetBitMap().GetMapData()[i]->GetHomeLevel()][i].SetTopLeft(fix + left + myGame->GetBitMap().GetMapData()[i]->GetBuildingPositionX() / 5, fix + top + myGame->GetBitMap().GetMapData()[i]->GetBuildingPositionY() / 5 );
+                house[myGame->GetBitMap().GetMapData()[i]->GetOwner()][myGame->GetBitMap().GetMapData()[i]->GetHomeLevel()][i].ShowBitmap(scale);
             }
         }
     }

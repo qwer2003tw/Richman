@@ -457,14 +457,10 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-}
-
-void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
     const char KEY_ESC    = 27;
     const char KEY_1TO9   = 49; // 1:49  9:57
     const char KEY_Z      = 90; // 升級
-
+    const char KEY_SPACE  = 32; // 
     if(ui.GetState() == 0 && !ui.GetCardDisplay())
     {
         if (nChar - KEY_1TO9 + 1 <= 9 && nChar - KEY_1TO9 + 1 >= 1)
@@ -475,6 +471,32 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
     }
     if (nChar == KEY_Z && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() < 3) bigMap.Upgrade(player[nowPlayer]->GetNow());;
     if (nChar == KEY_ESC) PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+    if (nChar == KEY_SPACE)
+    {
+        if (ui.GetState() == 7)                // 事件完 切換玩家
+        {
+            ui.InitEvent();
+            ui.SetState(0);
+            if (nowPlayer < playercount) // 切換玩家
+            {
+                nowPlayer++;
+                nowPlayer %= playercount;
+                if (player[nowPlayer]->GetStop() != 0)
+                {
+                    int s = player[nowPlayer]->GetStop();
+                    ui.SetMessage(5, player[nowPlayer]->GetStop());    // 訊息類型 暫停回合
+                    player[nowPlayer]->SetStop(s - 1);
+                    ui.SetDisplay(1);
+                    ui.SetState(6);
+                }
+            }
+        }
+    }
+}
+
+void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
@@ -522,12 +544,23 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
             ui.SetDisplay(0);
         }
     }
-    else if (ui.GetState() == 7)                // 切換玩家
+    else if (ui.GetState() == 7)                // 事件完 切換玩家
     {
         ui.InitEvent();
         ui.SetState(0);
-        if (nowPlayer < playercount - 1) nowPlayer++;   
-        else nowPlayer = 0;
+        if (nowPlayer < playercount) // 切換玩家
+        {
+            nowPlayer++;
+            nowPlayer %= playercount;
+            if (player[nowPlayer]->GetStop() != 0)
+            {
+                int s = player[nowPlayer]->GetStop();
+                ui.SetMessage(5, player[nowPlayer]->GetStop());    // 訊息類型 暫停回合
+                player[nowPlayer]->SetStop(s - 1);
+                ui.SetDisplay(1);
+                ui.SetState(6);
+            }
+        }
     }
     else if (ui.GetState() == 8 && ui.GetFollowMouse() != 99) // 選擇道具放置位置
     {
@@ -536,7 +569,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
         {
             px = bigMap.GetMapData()[i]->GetPositionX() - 96;
             py = bigMap.GetMapData()[i]->GetPositionY() - 96;
-            if (point.x >= px - ui.GetSx() && point.x <= px - ui.GetSx() + 192 && point.y >= py - ui.GetSy() && point.y <= py - ui.GetSy() + 192 && bigMap.GetMapData()[i]->GetPropIndex() == 99)
+            if (point.x >= px - ui.GetSx() && point.x <= px - ui.GetSx() + 192 && point.y >= py - ui.GetSy() && point.y <= py - ui.GetSy() + 192 && bigMap.GetMapData()[i]->GetPropIndex() == 99 && point.x < SIZE_X - 390)
             {
                 bigMap.SetPropIndex(ui.GetFollowMouse(), i); // 取得跟隨圖片的index 並設置在map上
                 GetPlayer()[GetNowPlayer()]->GiveProp(ui.GetNowUseProp(), -1);
@@ -582,6 +615,11 @@ int CGameStateRun::GetNowPlayer()
     return nowPlayer;
 }
 
+int CGameStateRun::GetPlayerCount()
+{
+    return playercount;
+}
+
 void CGameStateRun::OnShow()
 {
     //
@@ -594,7 +632,7 @@ void CGameStateRun::OnShow()
     bigMap.OnShow(ui.GetSx(), ui.GetSy());
     // 人物顯示
 
-    for (int i = 0; i < playercount; i++)
+    for (int i = playercount - 1; i >= 0; i--)
     {
         if (!player[i]->GetBankruptcy())
             player[i]->OnShow(ui.GetSx(), ui.GetSy());

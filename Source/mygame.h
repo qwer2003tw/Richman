@@ -102,6 +102,7 @@ namespace game_framework {
         Map GetBitMap();
         Player **GetPlayer();
         int GetNowPlayer();
+        int GetPlayerCount();
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
