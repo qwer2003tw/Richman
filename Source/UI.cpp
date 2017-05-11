@@ -26,16 +26,18 @@ namespace game_framework {
     {
         dice[0].SetXY(576, 475);                                  // 設定骰子1位置
         dice[1].SetXY(676, 475);                                  // 設定骰子2位置
-        for (int i = 0; i < 3; i++) remoteDice[i].SetXY(576+192*i, 475);
-        for (int i = 3; i < 6; i++) remoteDice[i].SetXY(576 + 192 * (i % 3), 675);
+        for (int i = 0; i < 3; i++) remoteDice[i].SetXY(588+180*i, 485);
+        for (int i = 3; i < 6; i++) remoteDice[i].SetXY(588 + 180 * (i % 3), 665);
         number[0].SetXY(400, 460);                                // 設定數字初始位置
         number[1].SetXY(450, 460);
         yesButton->SetXY(480, 540);
         noButton->SetXY(680, 540);
 		cardButton->SetXY(0, 0);
+        rdbg.LoadBitmap("res/rdbg.bmp");
         dice[0].LoadBitmap();
         dice[1].LoadBitmap();
         for (int i = 0; i < 6; i++) remoteDice[i].LoadBitmap();
+        btnbackground.LoadBitmap("res/btnbg.bmp");
         number[0].LoadBitmap();
         number[1].LoadBitmap();
         yesButton->LoadBitmap("res/YES.bmp", "res/YES_1.bmp", RGB(0, 0, 0));       // 滑過前圖片 滑過圖片
@@ -58,6 +60,8 @@ namespace game_framework {
         playerHead[1].LoadBitmap("res/player/Suneo_Head.bmp", RGB(1, 0, 0));
         playerHead[2].LoadBitmap("res/player/Goda_Takeshi_Head.bmp", RGB(1, 0, 0));
         playerHead[3].LoadBitmap("res/player/Nobi_Nobita_Head.bmp", RGB(1, 0, 0));
+        rdbg.SetTopLeft(550, 450);
+
 
         for (int i = 0; i < 4; i++)
         {
@@ -104,9 +108,12 @@ namespace game_framework {
         }
             
         //
+        btnbackground.SetTopLeft(0, 0);
+        btnbackground.ShowBitmap();
         status_background.SetTopLeft(SIZE_X - 390, 0); //狀態欄背景位置
         status_background.ShowBitmap();       //顯示圖片
         ShowMiniMap();
+        
         myGame->GetPlayer()[myGame->GetNowPlayer()]->OnShowState();
         if (displayMessage)
         {
@@ -118,6 +125,7 @@ namespace game_framework {
 
         if (displayRemoteDice)
         {
+            rdbg.ShowBitmap(1.8);
             for (int i = 0; i < 6; i++) remoteDice[i].OnShow(1.5);
         }
         yesButton->OnShow();
@@ -386,7 +394,7 @@ namespace game_framework {
     {
         for (int i = 0; i < 3; i++)
         {
-            if (point.x >(576 + 192 * i) && point.x < (576 + 108 * (i + 1) + 192 * i) && point.y > 475 && point.y < 583)
+            if (point.x >(586 + 192 * i) && point.x < (586 + 110 * (i + 1) + 192 * i) && point.y > 483 && point.y < 595)
             {
                 amount = i + 1;
                 state = 2;
@@ -396,7 +404,7 @@ namespace game_framework {
         }
         for (int i = 0; i < 3; i++)
         {
-            if (point.x >(576 + 192 * i) && point.x < (576 + 108 * (i + 1) + 192 * i) && point.y > 675 && point.y < 783)
+            if (point.x >(586 + 192 * i) && point.x < (586 + 110 * (i + 1) + 192 * i) && point.y > 663 && point.y < 775)
             {
 
                 amount = i + 4;
