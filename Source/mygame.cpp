@@ -295,6 +295,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             ui.SetMessage(4, 3);    // 訊息類型 暫停回合
             ui.SetDisplay(1);
             ui.SetState(6);
+            isExplosion = true;
+            explosionCount = 0;
         }
         // 可以蓋房子
         else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
@@ -432,6 +434,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     nowPlayer = 0;
     playercount = 4;
     ui.SetMyGame(this);
+    isExplosion = false;
     //將四個玩家創出來
     /*for (int i = 0; i < playercount; i++)
     {
@@ -457,6 +460,15 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				       // 載入說明的圖形
 	corner.LoadBitmap(IDB_CORNER);						    	   // 載入角落圖形
 	corner.ShowBitmap(background);						    	   // 將corner貼到background
+    explosion[0].LoadBitmap("RES/explosion/explosion_1.bmp", RGB(0, 0, 0));
+    explosion[1].LoadBitmap("RES/explosion/explosion_2.bmp", RGB(0, 0, 0));
+    explosion[2].LoadBitmap("RES/explosion/explosion_3.bmp", RGB(0, 0, 0));
+    explosion[3].LoadBitmap("RES/explosion/explosion_4.bmp", RGB(0, 0, 0));
+    explosion[4].LoadBitmap("RES/explosion/explosion_5.bmp", RGB(0, 0, 0));
+    explosion[5].LoadBitmap("RES/explosion/explosion_6.bmp", RGB(0, 0, 0));
+    explosion[6].LoadBitmap("RES/explosion/explosion_7.bmp", RGB(0, 0, 0));
+    explosion[7].LoadBitmap("RES/explosion/explosion_8.bmp", RGB(0, 0, 0));
+
 	//CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");   // 載入編號0的聲音ding.wav
 	//CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");   // 載入編號1的聲音lake.mp3
 	//CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");   // 載入編號2的聲音ntut.mid
@@ -643,11 +655,17 @@ void CGameStateRun::OnShow()
 
     bigMap.OnShow(ui.GetSx(), ui.GetSy());
     // 人物顯示
-
     for (int i = playercount - 1; i >= 0; i--)
     {
         if (!player[i]->GetBankruptcy())
             player[i]->OnShow(ui.GetSx(), ui.GetSy());
+    }
+    if (isExplosion == true)
+    {
+        explosion[explosionCount].SetTopLeft(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPositionX()-ui.GetSx() - 50, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPositionY() - ui.GetSy()-50);
+        explosion[explosionCount].ShowBitmap();
+        explosionCount++;
+        if (explosionCount == 8) isExplosion = false;
     }
     // UI顯示
     ui.OnShow();

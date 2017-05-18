@@ -110,6 +110,7 @@ namespace game_framework {
 		const int		NUMBALLS;	// 球的總數
 		CMovingBitmap	background;	// 背景圖
 		CMovingBitmap	help;		// 說明圖
+        CMovingBitmap   explosion[8];
 		CBall			*ball;		// 球的陣列
 		CMovingBitmap	corner;		// 角落圖
 		CEraser			eraser;		// 拍子
@@ -122,8 +123,10 @@ namespace game_framework {
         Map bigMap;                 // 地圖
         int amount;                 // 點數和
         bool canThrowDies;          
+        bool isExplosion;
+        int explosionCount;
         int test = 2, test1 = 3;    // 原地升級test
-        int delayCount = DELAY;        // 延遲 以便玩家瀏覽目前狀態 
+        int delayCount = DELAY;     // 延遲 以便玩家瀏覽目前狀態 
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
