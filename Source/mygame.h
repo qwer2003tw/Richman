@@ -57,7 +57,11 @@ namespace game_framework {
 		AUDIO_DING,				// 0
 		AUDIO_LAKE,				// 1
 		AUDIO_NTUT,	            // 2
-        AUDIO_BGM               // 3
+        AUDIO_BGM,              // 3
+        AUDIO_BOOMER,           // 4
+        AUDIO_STOP,             // 5
+        AUDIO_WALK              // 6
+
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

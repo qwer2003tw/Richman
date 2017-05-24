@@ -278,6 +278,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         // 路障
         if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex() == 1)
         {
+            CAudio::Instance()->Play(AUDIO_STOP, true);
+            CAudio::Instance()->Play(AUDIO_STOP, false);
             player[nowPlayer]->SetRemaining(0);
             bigMap.GetMapData()[player[nowPlayer]->GetNow()]->SetPropIndex(99);
             ui.SetMessage(6, 0); // 訊息類型 忽略
@@ -285,18 +287,45 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             ui.SetState(9);
         }
     }
-    if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)   // 已跑完
+    if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)
     {
+
         // 碰到地雷
         if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex() == 0)
         {
-            bigMap.SetPropIndex(99, player[nowPlayer]->GetNow()); // 取得跟隨圖片的index 並設置在map上
-            player[nowPlayer]->SetStop(3);
-            ui.SetMessage(4, 3);    // 訊息類型 暫停回合
+            CAudio::Instance()->Play(AUDIO_BOOMER, true);
+            CAudio::Instance()->Play(AUDIO_BOOMER, false);
+            bigMap.SetPropIndex(99, player[nowPlayer]->GetNow()); // 取得跟隨圖片的index 並重置
+            player[nowPlayer]->SetStop(2);    // 剩餘暫停回合
+            ui.SetMessage(4, 3);              // 訊息類型 暫停回合
             ui.SetDisplay(1);
             ui.SetState(6);
             isExplosion = true;
+            player[nowPlayer]->SetInjury(true);
+            player[nowPlayer]->SetHaveBombs(false); // 當擁有炸彈 碰到地雷 爆炸後障 定時炸彈狀態重製
             explosionCount = 0;
+        }
+        // 沒設暫停回合 表示定時炸彈所傷
+        else if (player[nowPlayer]->GetInjury() && player[nowPlayer]->GetStop() == 0)
+        {
+            CAudio::Instance()->Play(AUDIO_BOOMER, true);
+            CAudio::Instance()->Play(AUDIO_BOOMER, false);
+            player[nowPlayer]->SetStop(2);    // 剩餘暫停回合
+            ui.SetState(6);
+            isExplosion = true;
+            player[nowPlayer]->SetInjury(true);
+            player[nowPlayer]->SetHaveBombs(false); // 當擁有炸彈 碰到地雷 爆炸後障 定時炸彈狀態重製
+            explosionCount = 0;
+        }
+        // 碰到定時炸彈
+        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex() == 2)
+        {
+            bigMap.SetPropIndex(99, player[nowPlayer]->GetNow()); // 取得跟隨圖片的index 並設置在map上
+            player[nowPlayer]->SetHaveBombs(true);
+            player[nowPlayer]->SetTimeBombsCounter(15); // 步數設定
+            ui.SetMessage(7, 15);                       // 訊息類型 同上步數設定
+            ui.SetDisplay(1);
+            ui.SetState(9);
         }
         // 可以蓋房子
         else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
@@ -379,7 +408,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             
             if (nowPlayer < playercount) // 切換玩家
             {
-                nowPlayer ++;
+                nowPlayer++;
                 nowPlayer %= playercount;
                 if (player[nowPlayer]->GetStop() != 0)
                 {
@@ -389,6 +418,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     ui.SetDisplay(1);
                     ui.SetState(6);
                 }
+                else if (player[nowPlayer]->GetStop() == 0)player[nowPlayer]->SetInjury(false);
             }
         }
     }
@@ -473,7 +503,12 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	//CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");   // 載入編號1的聲音lake.mp3
 	//CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");   // 載入編號2的聲音ntut.mid
 
-    CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	   // 載入編號2的聲音BGM.mp3
+    CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	   // 載入編號3的聲音BGM.mp3
+    CAudio::Instance()->Load(AUDIO_BOOMER, "sounds\\boomer.mp3");  // 載入編號4的聲音BGM.mp3 
+    CAudio::Instance()->Load(AUDIO_STOP, "sounds\\stop.wav");      // 載入編號5的聲音BGM.mp3
+    CAudio::Instance()->Load(AUDIO_WALK, "sounds\\walk.mp3");      // 載入編號6的聲音BGM.mp3
+
+
     //
 	// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
 	//
@@ -497,6 +532,10 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     if (nChar == KEY_ESC) PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
     if (nChar == KEY_SPACE)
     {
+        CPoint point;
+        point.x = 100; point.y = 100;
+        OnLButtonDown(nFlags,point);    // space 取代 mouse
+        /*
         if (ui.GetState() == 7)                // 事件完 切換玩家
         {
             ui.InitEvent();
@@ -513,8 +552,10 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                     ui.SetDisplay(1);
                     ui.SetState(6);
                 }
+                else if (player[nowPlayer]->GetStop() == 0)player[nowPlayer]->SetInjury(false);
             }
         }
+        */
     }
 }
 
@@ -584,6 +625,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
                 ui.SetDisplay(1);
                 ui.SetState(6);
             }
+            else if (player[nowPlayer]->GetStop() == 0)player[nowPlayer]->SetInjury(false);
         }
     }
     else if (ui.GetState() == 8 && ui.GetFollowMouse() != 99) // 選擇道具放置位置
@@ -662,10 +704,13 @@ void CGameStateRun::OnShow()
     }
     if (isExplosion == true)
     {
-        explosion[explosionCount].SetTopLeft(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPositionX()-ui.GetSx() - 50, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPositionY() - ui.GetSy()-50);
+        explosion[explosionCount].SetTopLeft(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPositionX()-ui.GetSx() - 100, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPositionY() - ui.GetSy() - 100);
         explosion[explosionCount].ShowBitmap();
         explosionCount++;
-        if (explosionCount == 8) isExplosion = false;
+        if (explosionCount == 8)
+        {
+            isExplosion = false;
+        }
     }
     // UI顯示
     ui.OnShow();
