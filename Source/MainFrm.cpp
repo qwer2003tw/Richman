@@ -72,8 +72,8 @@ CMainFrame::CMainFrame()
 {
 	// TODO: add member initialization code here
 	isFullScreen = OPEN_AS_FULLSCREEN;	
-	isToolBarVisible = true;
-	isStatusBarVisible = true;
+	isToolBarVisible = false;
+    isStatusBarVisible = false;
 }
 
 CMainFrame::~CMainFrame()
