@@ -59,11 +59,12 @@
 #include "gamelib.h"
 #include "mygame.h"
 #include "Map.h"
-
+SelectCharactor* SelectCharactor::instance = nullptr;
 namespace game_framework {
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的遊戲開頭畫面物件
 /////////////////////////////////////////////////////////////////////////////
+
 
 CGameStateInit::CGameStateInit(CGame *g)
 : CGameState(g)
@@ -72,6 +73,7 @@ CGameStateInit::CGameStateInit(CGame *g)
 
 void CGameStateInit::OnInit()
 {
+    
 	//
 	// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
 	//     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
@@ -87,8 +89,11 @@ void CGameStateInit::OnInit()
 	//
     startButton = new Button(1);
     startButton->LoadBitmap("res/BUTTON_START_1.bmp", "res/BUTTON_START_2.bmp", RGB(255, 255, 255));
-    startButton->SetXY((SIZE_X - 484) / 2, SIZE_Y / 2);
-    startButton->SetEnable(true);
+    
+    selectcharactor.LoadBitmap("res/SelectCharactor.bmp",RGB(80,228,255));
+    arrow.LoadBitmap("res/arrow.bmp",RGB(255,255,255));
+    arrow1.LoadBitmap("res/arrow1.bmp", RGB(255, 255, 255));
+    arrow2.LoadBitmap("res/arrow2.bmp", RGB(255, 255, 255));
 }
 
 void CGameStateInit::OnBeginState()
@@ -99,14 +104,53 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	const char KEY_ESC = 27;
 	const char KEY_SPACE = ' ';
-	if (nChar == KEY_SPACE)
-		GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
-	else if (nChar == KEY_ESC)								// Demo 關閉遊戲的方法
+    const char KEY_RIGHT = 0x27;
+    const char KEY_LEFT = 0x25;
+    const char KEY_ENTER = 0x0D;
+	/*if (nChar == KEY_SPACE)
+		GotoGameState(GAME_STATE_RUN);	*/					// 切換至GAME_STATE_RUN
+	if (nChar == KEY_ESC)								// Demo 關閉遊戲的方法
 		PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE,0,0);	// 關閉遊戲
+
+    else if (nChar == KEY_RIGHT)
+    {
+        if (ancor <= 3)
+        {
+            if (++arrow_index[ancor] >= 5)arrow_index[ancor] = 0;
+            dump = false;
+            for (int i = 0; i < ancor; i++) if (arrow_index[ancor] == arrow_index[i]) dump = true;
+        }   
+    }
+    else if (nChar == KEY_LEFT)
+    {
+        if (ancor <= 3)
+        {
+            if (--arrow_index[ancor] < 0)arrow_index[ancor] = 4;
+            dump = false;
+            for (int i = 0; i < ancor; i++) if (arrow_index[ancor] == arrow_index[i]) dump = true;
+        }
+        
+    }
+    else if (nChar == KEY_ENTER)
+    {
+        dump = false;
+        for (int i = 0; i < ancor; i++) if (arrow_index[ancor] == arrow_index[i]) dump = true; 
+        if (!dump && ancor <= 3)
+        {
+            ancor++;
+            if (ancor == 4)
+            {
+                select = SelectCharactor::setInstance(arrow_index);
+                GotoGameState(GAME_STATE_RUN);
+            }
+            if (arrow_index[ancor] == arrow_index[ancor - 1]) dump = true;
+        }
+    }
 }
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)   //按下滑鼠左鍵
 {
+    TRACE("x:%d,y:%d\n", point.x, point.y);
     if (startButton != nullptr)
         startButton->OnClick(point);
     if(startButton->GetSignal())
@@ -137,8 +181,46 @@ void CGameStateInit::OnShow()
     // 貼上beginbackground和button
     //
     beginground.SetTopLeft(0, 0);    
-    beginground.ShowBitmap(1.2);        
-    startButton->OnShow();           
+    beginground.ShowBitmap(1.2);      
+    startButton->SetXY((SIZE_X - 484) / 2+25, SIZE_Y / 2+225);
+    startButton->SetEnable(true);
+    startButton->OnShow();        
+    selectcharactor.SetTopLeft(360,  180);
+    selectcharactor.ShowBitmap();
+    //
+    int bx = 601 - arrow.Width() / 2;
+    int by = 445 - arrow.Height() + 15;
+    if (++acount == 12)acount = 0;
+   for (int i = 0; i < 4; i++)
+    {
+       if (ancor == i)
+       {
+           if (dump == true)
+           {
+               arrow2.SetTopLeft(bx + arrow_index[i] * 180, by + i * 70);
+               arrow2.ShowBitmap();
+           }
+           else if (acount >= 6)
+           {
+               arrow1.SetTopLeft(bx + arrow_index[i] * 180, by + i * 70);
+               arrow1.ShowBitmap();
+           }
+           else
+           {
+               arrow.SetTopLeft(bx + arrow_index[i] * 180, by + i * 70);
+               arrow.ShowBitmap();
+           }
+       }
+       else
+       {
+           arrow.SetTopLeft(bx + arrow_index[i] * 180, by + i * 70);
+           arrow.ShowBitmap();
+       }
+    }
+
+  //arrow.SetTopLeft(601-arrow.Width()/2,433-arrow.Height()/2);
+    
+
 	//
 	// Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
 	//
@@ -230,6 +312,18 @@ CGameStateRun::~CGameStateRun()
 
 void CGameStateRun::OnBeginState()
 {
+    player[0] = new Player(select->getInstance()->charactor[0], 0);//後面引數掛TYPE ORDER
+    player[0]->LoadBitmap();
+    player[0]->SetMap(&bigMap);
+    player[1] = new Player(select->getInstance()->charactor[1], 1);//後面引數掛TYPE ORDER
+    player[1]->LoadBitmap();
+    player[1]->SetMap(&bigMap);
+    player[2] = new Player(select->getInstance()->charactor[2], 2);//後面引數掛TYPE ORDER
+    player[2]->LoadBitmap();
+    player[2]->SetMap(&bigMap);
+    player[3] = new Player(select->getInstance()->charactor[3], 3);//後面引數掛TYPE ORDER
+    player[3]->LoadBitmap();
+    player[3]->SetMap(&bigMap);
 	const int BALL_GAP = 90;
 	const int BALL_XY_OFFSET = 45;
 	const int BALL_PER_ROW = 7;
@@ -418,6 +512,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
+    select=SelectCharactor::instance = nullptr;
     srand((int)time(NULL));
 	//
 	// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
@@ -442,18 +537,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
         player[i]->LoadBitmap();
         player[i]->SetMap(&bigMap);
     }*/
-    player[0] = new Player(2, 0);//後面引數掛TYPE ORDER
-    player[0]->LoadBitmap();
-    player[0]->SetMap(&bigMap);
-    player[1] = new Player(3, 1);//後面引數掛TYPE ORDER
-    player[1]->LoadBitmap();
-    player[1]->SetMap(&bigMap);
-    player[2] = new Player(0, 2);//後面引數掛TYPE ORDER
-    player[2]->LoadBitmap();
-    player[2]->SetMap(&bigMap);
-    player[3] = new Player(1, 3);//後面引數掛TYPE ORDER
-    player[3]->LoadBitmap();
-    player[3]->SetMap(&bigMap);
+
 
     //
 	//
@@ -474,7 +558,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	//CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");   // 載入編號2的聲音ntut.mid
 
     CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	   // 載入編號2的聲音BGM.mp3
-    //
+    //BGM
 	// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
 	//
 }

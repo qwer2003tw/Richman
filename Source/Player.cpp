@@ -65,7 +65,7 @@ namespace game_framework {
             w = bmp[2][0].Width()*fector;
             h = bmp[2][0].Height()*fector;
         }
-        else if (type == 1)
+        else if (type == 4)
         {
             int c = 1;
             char bf[3];
@@ -84,7 +84,7 @@ namespace game_framework {
             w = bmp[2][0].Width()*fector;
             h = bmp[2][0].Height()*fector;
         }
-        else if (type == 2)
+        else if (type == 1)
         {
             int c = 1;
             char bf[3];
@@ -122,7 +122,7 @@ namespace game_framework {
             w = bmp[2][0].Width()*fector;
             h = bmp[2][0].Height()*fector;
         }
-        else if (type == 4)
+        else if (type == 2)
         {
             int c = 1;
             char bf[3];
@@ -142,9 +142,10 @@ namespace game_framework {
             h = bmp[2][0].Height()*fector;
         }
         playerHead[0].LoadBitmap("res/player/doreamon_Head.bmp", RGB(1, 0, 0));
-        playerHead[1].LoadBitmap("res/player/Suneo_Head.bmp", RGB(1, 0, 0));
-        playerHead[2].LoadBitmap("res/player/Goda_Takeshi_Head.bmp", RGB(1, 0, 0));
+        playerHead[1].LoadBitmap("res/player/Goda_Takeshi_Head.bmp", RGB(1, 0, 0));
+        playerHead[2].LoadBitmap("res/player/Minamoto_Shizuka_Head.bmp", RGB(1, 0, 0));
         playerHead[3].LoadBitmap("res/player/Nobi_Nobita_Head.bmp", RGB(1, 0, 0));
+        playerHead[4].LoadBitmap("res/player/Suneo_Head.bmp", RGB(1, 0, 0));
     }
     
     void Player::OnMove()

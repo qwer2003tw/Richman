@@ -47,6 +47,7 @@
 #include "Map.h"
 #include "MapData.h"
 #include "UI.h"
+#include "SelectCharactor.h"
 #define DELAY 40
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -54,12 +55,11 @@ namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 
 	enum AUDIO_ID {				// 定義各種音效的編號
-		AUDIO_DING,				// 0
-		AUDIO_LAKE,				// 1
-		AUDIO_NTUT,	            // 2
+		//AUDIO_DING,				// 0
+		//AUDIO_LAKE,				// 1
+		//AUDIO_NTUT,	            // 2
         AUDIO_BGM               // 3
 	};
-
 	/////////////////////////////////////////////////////////////////////////////
 	// 這個class為遊戲的遊戲開頭畫面物件
 	// 每個Member function的Implementation都要弄懂
@@ -77,9 +77,18 @@ namespace game_framework {
 	protected:
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
-        Button* startButton = nullptr;                    // 按鈕
+        Button* startButton = nullptr;                  // 按鈕
 		CMovingBitmap logo;								// csie的logo
         CMovingBitmap beginground;                      // 初始畫面
+        CMovingBitmap selectcharactor;                  // 選角圖
+        CMovingBitmap arrow;                            // 選角箭頭
+        CMovingBitmap arrow1;
+        CMovingBitmap arrow2;                           //腳色重複錯誤箭頭
+        SelectCharactor* select;
+        int arrow_index[4] = {0,1,2,3};
+        int ancor = 0;
+        int acount = 0;
+        bool dump=false;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -117,6 +126,7 @@ namespace game_framework {
 		CInteger		hits_left;	// 剩下的撞擊數
 		CBouncingBall   bball;		// 反覆彈跳的球
         Player *player[4];          // 4個玩家
+        SelectCharactor* select;
         UI ui;                      // User Interface
         int playercount;
         int nowPlayer;              // 當前玩家

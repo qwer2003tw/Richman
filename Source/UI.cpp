@@ -57,9 +57,10 @@ namespace game_framework {
         event[2].LoadBitmap("res/Zero1.bmp");
         event[3].LoadBitmap("res/Ufo1.bmp");
         playerHead[0].LoadBitmap("res/player/doreamon_Head.bmp", RGB(1, 0, 0));
-        playerHead[1].LoadBitmap("res/player/Suneo_Head.bmp", RGB(1, 0, 0));
-        playerHead[2].LoadBitmap("res/player/Goda_Takeshi_Head.bmp", RGB(1, 0, 0));
+        playerHead[1].LoadBitmap("res/player/Goda_Takeshi_Head.bmp", RGB(1, 0, 0));
+        playerHead[2].LoadBitmap("res/player/Minamoto_Shizuka_Head.bmp", RGB(1, 0, 0));
         playerHead[3].LoadBitmap("res/player/Nobi_Nobita_Head.bmp", RGB(1, 0, 0));
+        playerHead[4].LoadBitmap("res/player/Suneo_Head.bmp", RGB(1, 0, 0));
         rdbg.SetTopLeft(550, 450);
 
 
@@ -493,7 +494,7 @@ namespace game_framework {
         miniMap.SetTopLeft(left, top);
         miniMap.ShowBitmap();
         
-        for (int i = myGame->GetPlayerCount() - 1; i >= 0; i--)
+        for (int i = 0; i < myGame->GetPlayerCount(); i++)
         {
             int nowPosition = myGame->GetPlayer()[i]->GetNow();
             int x = (myGame->GetBitMap().GetMapData()[nowPosition])->GetPositionX();

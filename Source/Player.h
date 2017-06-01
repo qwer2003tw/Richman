@@ -55,10 +55,10 @@ namespace game_framework {
         //  以下為動畫控制
         int w, h;                                   // 圖片寬度和高度
         CMovingBitmap bmp[10][5];			        // 人物圖片
-        CMovingBitmap playerHead[4];                // 玩家頭像
+        CMovingBitmap playerHead[5];                // 玩家頭像
         int direct;                                 // 2下 6右 8上 4左
         int speed;                                  // 移動速度
-        int type;                                   // 人物種類 0多拉A夢 1小夫 2胖虎 3大雄 4靜香
+        int type;                                   // 人物種類 0多拉A夢 1胖虎 2靜香 3大雄 4小夫
         int order;                                  // 玩家順序
         int count;                                  // 當前
         int countmax;                               // 每幾個ONMOVE換下一張圖
