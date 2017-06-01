@@ -34,21 +34,25 @@ namespace game_framework {
             mapData[i]->SetBuildingPoisitionX(mapData[i]->GetPositionX() - 96);
             mapData[i]->SetBuildingPoisitionY(mapData[i]->GetPositionY() + 96);
             mapData[i]->SetOwner(99);
+            mapData[i]->SetPrice(800);
             // 右排區
             mapData[i + 9]->SetType(1);         // 1住宅區
             mapData[i + 9]->SetBuildingPoisitionX(mapData[i + 9]->GetPositionX() - 288);
             mapData[i + 9]->SetBuildingPoisitionY(mapData[i + 9]->GetPositionY() - 96);
             mapData[i + 9]->SetOwner(99);
+            mapData[i + 9]->SetPrice(1200);
             // 下排區
             mapData[i + 18]->SetType(1);         // 1住宅區
             mapData[i + 18]->SetBuildingPoisitionX(mapData[i + 18]->GetPositionX() - 96);
             mapData[i + 18]->SetBuildingPoisitionY(mapData[i + 18]->GetPositionY() - 288);
             mapData[i + 18]->SetOwner(99);
+            mapData[i + 18]->SetPrice(1000);
             // 左排區
             mapData[i + 27]->SetType(1);         // 1住宅區
             mapData[i + 27]->SetBuildingPoisitionX(mapData[i + 27]->GetPositionX() + 96);
             mapData[i + 27]->SetBuildingPoisitionY(mapData[i + 27]->GetPositionY() - 96);
             mapData[i + 27]->SetOwner(99);
+            mapData[i + 27]->SetPrice(1500);
         }
         // 事件格設定
         for (int i = 0; i < 3; i++) {

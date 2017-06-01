@@ -153,8 +153,12 @@ void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)   //按下滑鼠左鍵
     TRACE("x:%d,y:%d\n", point.x, point.y);
     if (startButton != nullptr)
         startButton->OnClick(point);
-    if(startButton->GetSignal())
-	    GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+    if (startButton->GetSignal())
+    {
+        select = SelectCharactor::setInstance(arrow_index);
+        GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+    }
+        
 }
 
 void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point)     //按下彈起滑鼠左鍵
@@ -367,11 +371,13 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         player[nowPlayer]->SetRemaining(ui.GetAmount());        // 2-3 傳入值
         ui.SetState(3); // player runing
     }
-    if (ui.GetState() == 3)   // 已跑完
-    {
+    // 正在行進中 包含抵達
+    if (ui.GetState() == 3){
         // 路障
         if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex() == 1)
         {
+            CAudio::Instance()->Play(AUDIO_STOP, true);
+            CAudio::Instance()->Play(AUDIO_STOP, false);
             player[nowPlayer]->SetRemaining(0);
             bigMap.GetMapData()[player[nowPlayer]->GetNow()]->SetPropIndex(99);
             ui.SetMessage(6, 0); // 訊息類型 忽略
@@ -379,24 +385,72 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             ui.SetState(9);
         }
     }
-    if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)   // 已跑完
+    // 正在行進中
+    if (player[nowPlayer]->GetRemaining() != 0 && ui.GetState() == 3)
     {
+        if (player[nowPlayer]->GetBombs())
+        {
+            for (int i = 0; i < playercount; i++)
+            {
+                if (i != nowPlayer)
+                {
+                    if (player[nowPlayer]->GetNow() == player[i]->GetNow())
+                    {
+                        player[i]->SetHaveBombs(true);
+                        player[i]->SetTimeBombsCounter(player[nowPlayer]->GetTimeBombsCounter()); // 步數設定                           
+                        player[nowPlayer]->SetHaveBombs(false);
+                        player[nowPlayer]->SetTimeBombsCounter(0);
+                    }
+                }
+            }
+        }
+    }
+    // 已抵達
+    if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)
+    {
+
         // 碰到地雷
         if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex() == 0)
         {
-            bigMap.SetPropIndex(99, player[nowPlayer]->GetNow()); // 取得跟隨圖片的index 並設置在map上
-            player[nowPlayer]->SetStop(3);
-            ui.SetMessage(4, 3);    // 訊息類型 暫停回合
+            CAudio::Instance()->Play(AUDIO_BOOMER, true);
+            CAudio::Instance()->Play(AUDIO_BOOMER, false);
+            bigMap.SetPropIndex(99, player[nowPlayer]->GetNow()); // 取得跟隨圖片的index 並重置
+            player[nowPlayer]->SetStop(2);    // 剩餘暫停回合
+            ui.SetMessage(4, 3);              // 訊息類型 暫停回合
             ui.SetDisplay(1);
             ui.SetState(6);
             isExplosion = true;
+            player[nowPlayer]->SetInjury(true);
+            player[nowPlayer]->SetHaveBombs(false); // 當擁有炸彈 碰到地雷 爆炸後障 定時炸彈狀態重置
             explosionCount = 0;
+        }
+        // 沒設暫停回合 表示定時炸彈所傷
+        else if (player[nowPlayer]->GetInjury() && player[nowPlayer]->GetStop() == 0)
+        {
+            CAudio::Instance()->Play(AUDIO_BOOMER, true);
+            CAudio::Instance()->Play(AUDIO_BOOMER, false);
+            player[nowPlayer]->SetStop(2);    // 剩餘暫停回合
+            ui.SetState(6);
+            isExplosion = true;
+            player[nowPlayer]->SetInjury(true);
+            player[nowPlayer]->SetHaveBombs(false); // 當擁有炸彈 碰到地雷 爆炸後障 定時炸彈狀態重製
+            explosionCount = 0;
+        }
+        // 碰到定時炸彈
+        else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex() == 2)
+        {
+            bigMap.SetPropIndex(99, player[nowPlayer]->GetNow()); // 取得跟隨圖片的index 並設置在map上
+            player[nowPlayer]->SetHaveBombs(true);
+            player[nowPlayer]->SetTimeBombsCounter(15); // 步數設定
+            ui.SetMessage(7, 15);                       // 訊息類型 同上步數設定
+            ui.SetDisplay(1);
+            ui.SetState(9);
         }
         // 可以蓋房子
         else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == 99 && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetType() == 1)
         {
             ui.SetButton(1);
-            ui.SetMessage(1, 800);
+            ui.SetMessage(1, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice());
             ui.SetDisplay(1);
             ui.SetState(4); // player stopping & display buy button
         }
@@ -404,9 +458,9 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner() == player[nowPlayer]->GetType() && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() < 3)
         {
             ui.SetButton(1);
-            if(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 0) ui.SetMessage(2, 1200);
-            else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 1) ui.SetMessage(2, 2000);
-            else ui.SetMessage(2, 2800);
+            if(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 0) ui.SetMessage(2, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+200);
+            else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 1) ui.SetMessage(2, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+400);
+            else ui.SetMessage(2, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+600);
             ui.SetDisplay(1);
             ui.SetState(5); // player stopping & display upgrade button
         }
@@ -421,27 +475,27 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             }
             if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 0)
             {
-                ui.SetMessage(3, 800);
-                player[nowPlayer]->AdjMoney(-800);
-                player[owner]->AdjMoney(800);
+                ui.SetMessage(3, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice());
+                player[nowPlayer]->AdjMoney(-bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice());
+                player[owner]->AdjMoney(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice());
             }
             else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 1)
             {
-                ui.SetMessage(3, 1200);
-                player[nowPlayer]->AdjMoney(-1200);
-                player[owner]->AdjMoney(1200);
+                ui.SetMessage(3, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+200);
+                player[nowPlayer]->AdjMoney(-(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+200));
+                player[owner]->AdjMoney(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+200);
             }
             else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 2)
             {
-                ui.SetMessage(3, 2000);
-                player[nowPlayer]->AdjMoney(-2000);
-                player[owner]->AdjMoney(2000);
+                ui.SetMessage(3, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 400);
+                player[nowPlayer]->AdjMoney(-(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 400));
+                player[owner]->AdjMoney(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 400);
             }
             else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 3)
             {
-                ui.SetMessage(3, 2800);
-                player[nowPlayer]->AdjMoney(-2800);
-                player[owner]->AdjMoney(2800);
+                ui.SetMessage(3, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 600);
+                player[nowPlayer]->AdjMoney(-(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 600));
+                player[owner]->AdjMoney(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 600);
             }
             ui.SetDisplay(1);
             ui.SetState(6);
@@ -473,7 +527,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             
             if (nowPlayer < playercount) // 切換玩家
             {
-                nowPlayer ++;
+                nowPlayer++;
                 nowPlayer %= playercount;
                 if (player[nowPlayer]->GetStop() != 0)
                 {
@@ -483,6 +537,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                     ui.SetDisplay(1);
                     ui.SetState(6);
                 }
+                else if (player[nowPlayer]->GetStop() == 0)player[nowPlayer]->SetInjury(false);
             }
         }
     }
@@ -557,8 +612,16 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	//CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");   // 載入編號1的聲音lake.mp3
 	//CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");   // 載入編號2的聲音ntut.mid
 
-    CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	   // 載入編號2的聲音BGM.mp3
+
     //BGM
+
+    CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	   // 載入編號3的聲音BGM.mp3
+    CAudio::Instance()->Load(AUDIO_BOOMER, "sounds\\boomer.mp3");  // 載入編號4的聲音BGM.mp3 
+    CAudio::Instance()->Load(AUDIO_STOP, "sounds\\stop.wav");      // 載入編號5的聲音BGM.mp3
+    CAudio::Instance()->Load(AUDIO_WALK, "sounds\\walk.mp3");      // 載入編號6的聲音BGM.mp3
+
+
+    //
 	// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
 	//
 }
@@ -566,7 +629,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     const char KEY_ESC    = 27;
-    const char KEY_1TO9   = 49; // 1:49  9:57
+    const char KEY_1TO9_1 = 49; // 1:49
+    const char KEY_1TO9   = 97; // 1:97
     const char KEY_Z      = 90; // 升級
     const char KEY_SPACE  = 32; // 
     if(ui.GetState() == 0 && !ui.GetCardDisplay())
@@ -576,29 +640,19 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
             ui.SetAmount(nChar - KEY_1TO9 + 1);
             ui.SetState(2);
         }
+        if (nChar - KEY_1TO9_1 + 1 <= 9 && nChar - KEY_1TO9_1 + 1 >= 1)
+        {
+            ui.SetAmount(nChar - KEY_1TO9_1 + 1);
+            ui.SetState(2);
+        }
     }
     if (nChar == KEY_Z && bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() < 3) bigMap.Upgrade(player[nowPlayer]->GetNow());;
     if (nChar == KEY_ESC) PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
     if (nChar == KEY_SPACE)
     {
-        if (ui.GetState() == 7)                // 事件完 切換玩家
-        {
-            ui.InitEvent();
-            ui.SetState(0);
-            if (nowPlayer < playercount) // 切換玩家
-            {
-                nowPlayer++;
-                nowPlayer %= playercount;
-                if (player[nowPlayer]->GetStop() != 0)
-                {
-                    int s = player[nowPlayer]->GetStop();
-                    ui.SetMessage(5, player[nowPlayer]->GetStop());    // 訊息類型 暫停回合
-                    player[nowPlayer]->SetStop(s - 1);
-                    ui.SetDisplay(1);
-                    ui.SetState(6);
-                }
-            }
-        }
+        CPoint point;
+        point.x = 520; point.y = 600;
+        OnLButtonDown(nFlags,point);    // space 取代 mouse
     }
 }
 
@@ -618,7 +672,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
     {
         if (ui.GetYesOrNoBuy() == 1)
         {
-            player[nowPlayer]->AdjMoney(-800);
+            player[nowPlayer]->AdjMoney(-bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice());
             bigMap.Build(player[nowPlayer]->GetType() , player[nowPlayer]->GetNow());
             ui.SetButton(0);
             ui.SetState(6);
@@ -636,9 +690,9 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
         if (ui.GetYesOrNoBuy() == 1)
         {
             //升級費用
-            if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 0) player[nowPlayer]->AdjMoney(-1200);
-            else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 1) player[nowPlayer]->AdjMoney(-2000);
-            else  player[nowPlayer]->AdjMoney(-2800);
+            if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 0) player[nowPlayer]->AdjMoney(-bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+200);
+            else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 1) player[nowPlayer]->AdjMoney(-bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+400);
+            else  player[nowPlayer]->AdjMoney(-bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+600);
             
             bigMap.Upgrade(player[nowPlayer]->GetNow());
             ui.SetButton(0);
@@ -668,6 +722,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
                 ui.SetDisplay(1);
                 ui.SetState(6);
             }
+            else if (player[nowPlayer]->GetStop() == 0)player[nowPlayer]->SetInjury(false);
         }
     }
     else if (ui.GetState() == 8 && ui.GetFollowMouse() != 99) // 選擇道具放置位置
@@ -746,10 +801,13 @@ void CGameStateRun::OnShow()
     }
     if (isExplosion == true)
     {
-        explosion[explosionCount].SetTopLeft(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPositionX()-ui.GetSx() - 50, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPositionY() - ui.GetSy()-50);
+        explosion[explosionCount].SetTopLeft(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPositionX()-ui.GetSx() - 100, bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPositionY() - ui.GetSy() - 100);
         explosion[explosionCount].ShowBitmap();
         explosionCount++;
-        if (explosionCount == 8) isExplosion = false;
+        if (explosionCount == 8)
+        {
+            isExplosion = false;
+        }
     }
     // UI顯示
     ui.OnShow();

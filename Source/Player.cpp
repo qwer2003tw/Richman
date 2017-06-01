@@ -9,7 +9,6 @@
 #include "Player.h"
 #include "mygame.h"
 
-
 namespace game_framework {
     Player::Player()
     {
@@ -42,6 +41,9 @@ namespace game_framework {
         type       = t;
         order      = o;
         money      = 300000;
+        isInjury   = false;
+        isHaveTimeBombs = false;
+        TimeBombsCounter = 0;
     }
     void Player::LoadBitmap()
     {    
@@ -59,6 +61,7 @@ namespace game_framework {
                 sprintf(s, "%s%s%s", f, bf, b);
                 bmp[k][j].LoadBitmap(s, RGB(250, 250, 250));
             }
+            bmpInjury.LoadBitmap("res/Player/doreamon_injury.bmp", RGB(250, 250, 250));
             countmax = 4;
             animax = 4;
             fector = 3;
@@ -78,6 +81,7 @@ namespace game_framework {
                 sprintf(s, "%s%s%s", f, bf, b);
                 bmp[k][j].LoadBitmap(s, RGB(255, 255, 255));
             }
+            bmpInjury.LoadBitmap("res/Player/Suneo_injury.bmp", RGB(250, 250, 250));
             countmax = 4;
             animax = 4;
             fector = 3;
@@ -97,6 +101,7 @@ namespace game_framework {
                 sprintf(s, "%s%s%s", f, bf, b);
                 bmp[k][j].LoadBitmap(s, RGB(255, 255, 255));
             }
+            bmpInjury.LoadBitmap("res/Player/Goda_Takeshi_injury.bmp", RGB(255, 255, 255));
             countmax = 4;
             animax = 4;
             fector = 3;
@@ -116,6 +121,7 @@ namespace game_framework {
                 sprintf(s, "%s%s%s", f, bf, b);
                 bmp[k][j].LoadBitmap(s, RGB(255, 255, 255));
             }
+            bmpInjury.LoadBitmap("res/Player/Nobi_Nobita_injury.bmp", RGB(255, 255, 255));
             countmax = 4;
             animax = 4;
             fector = 3;
@@ -135,6 +141,7 @@ namespace game_framework {
                 sprintf(s, "%s%s%s", f, bf, b);
                 bmp[k][j].LoadBitmap(s, RGB(255, 255, 255));
             }
+            //bmpInjury.LoadBitmap("res/Player/Nobi_Nobita_injury", RGB(250, 250, 250));
             countmax = 4;
             animax = 4;
             fector = 3;
@@ -146,6 +153,20 @@ namespace game_framework {
         playerHead[2].LoadBitmap("res/player/Minamoto_Shizuka_Head.bmp", RGB(1, 0, 0));
         playerHead[3].LoadBitmap("res/player/Nobi_Nobita_Head.bmp", RGB(1, 0, 0));
         playerHead[4].LoadBitmap("res/player/Suneo_Head.bmp", RGB(1, 0, 0));
+        timeBombs.LoadBitmap("res/Timebombs.bmp", RGB(255, 255, 255));
+        for (int i = 0; i < 2; i++)
+        {
+            number[i][0].LoadBitmap("res/BMP0.BMP", RGB(255, 255, 255));
+            number[i][1].LoadBitmap("res/BMP1.BMP", RGB(255, 255, 255));
+            number[i][2].LoadBitmap("res/BMP2.BMP", RGB(255, 255, 255));
+            number[i][3].LoadBitmap("res/BMP3.BMP", RGB(255, 255, 255));
+            number[i][4].LoadBitmap("res/BMP4.BMP", RGB(255, 255, 255));
+            number[i][5].LoadBitmap("res/BMP5.BMP", RGB(255, 255, 255));
+            number[i][6].LoadBitmap("res/BMP6.BMP", RGB(255, 255, 255));
+            number[i][7].LoadBitmap("res/BMP7.BMP", RGB(255, 255, 255));
+            number[i][8].LoadBitmap("res/BMP8.BMP", RGB(255, 255, 255));
+            number[i][9].LoadBitmap("res/BMP9.BMP", RGB(255, 255, 255));
+        }
     }
     
     void Player::OnMove()
@@ -183,10 +204,19 @@ namespace game_framework {
                 now = (now + 1) % map->GetMapCount();
                 mapData[now]->Through();
                 remaining--;
+                if (isHaveTimeBombs)
+                {
+                    TimeBombsCounter--;
+                }
                  mapData[now]->Arrive();
             }
         }
-    
+        if (isHaveTimeBombs && TimeBombsCounter == 0)
+        {
+            remaining = 0;
+            isHaveTimeBombs = false;
+            isInjury = true;
+        }
         //°Êµe±±¨î
         count++;
         if (count >= countmax) {
@@ -204,9 +234,25 @@ namespace game_framework {
     void Player::OnShow(int sx, int sy)
     {
         mapData = map->GetMapData();
-        bmp[direct][ani].SetTopLeft(dx -w/2  - sx, dy -h/2 - sy);
-        bmp[direct][ani].ShowBitmap(fector);
-
+        if (isHaveTimeBombs)
+        {
+            timeBombs.SetTopLeft(dx - w / 3 + 5 - sx, dy - h / 2 - 33 - sy);
+            timeBombs.ShowBitmap(0.6);
+            number[0][TimeBombsCounter / 10].SetTopLeft(dx - w / 3 + 13 - sx, dy - h / 2 - 30 - sy);
+            number[0][TimeBombsCounter / 10].ShowBitmap(0.2);
+            number[1][TimeBombsCounter % 10].SetTopLeft(dx - w / 3 + 23 - sx, dy - h / 2 - 30 - sy);
+            number[1][TimeBombsCounter % 10].ShowBitmap(0.2);
+        }
+        if (isInjury)
+        {
+            bmpInjury.SetTopLeft(dx - w / 2 - sx, dy - h / 2 - sy);
+            bmpInjury.ShowBitmap(fector);
+        }
+        else
+        {
+            bmp[direct][ani].SetTopLeft(dx - w / 2 - sx, dy - h / 2 - sy);
+            bmp[direct][ani].ShowBitmap(fector);
+        }
     }
     int Player::GetMapX()
     {
@@ -336,6 +382,36 @@ namespace game_framework {
    void Player::PropInit()
    {
        for (int i = 0; i < 4; i++) GiveProp(i, 1);
+   }
+
+   void Player::SetInjury(bool injury)
+   {
+       isInjury = injury;
+   }
+
+   void Player::SetHaveBombs(bool bombs)
+   { 
+       isHaveTimeBombs = bombs;
+   }
+
+   void Player::SetTimeBombsCounter(int count)
+   {
+       TimeBombsCounter = count;
+   }
+
+   bool Player::GetInjury()
+   {
+       return isInjury;
+   }
+
+   bool Player::GetBombs()
+   {
+       return isHaveTimeBombs;
+   }
+
+   int Player::GetTimeBombsCounter()
+   {
+       return TimeBombsCounter;
    }
    
 }

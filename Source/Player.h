@@ -38,6 +38,12 @@ namespace game_framework {
         void OnShowState();
         void GiveProp(int index,int amount);
         void PropInit();
+        void SetInjury(bool injury);
+        void SetHaveBombs(bool bombs);
+        void SetTimeBombsCounter(int count);
+        bool GetInjury();
+        bool GetBombs();
+        int GetTimeBombsCounter();
         vector<Props*> prop;
     protected:
         Map* map;
@@ -56,6 +62,8 @@ namespace game_framework {
         int w, h;                                   // 圖片寬度和高度
         CMovingBitmap bmp[10][5];			        // 人物圖片
         CMovingBitmap playerHead[5];                // 玩家頭像
+        CMovingBitmap bmpInjury;                    // 人物受傷的圖片
+        CMovingBitmap timeBombs;                    // 定時炸彈 人物頭上顯示
         int direct;                                 // 2下 6右 8上 4左
         int speed;                                  // 移動速度
         int type;                                   // 人物種類 0多拉A夢 1胖虎 2靜香 3大雄 4小夫
@@ -65,7 +73,9 @@ namespace game_framework {
         int ani;                                    // 當前
         int animax;                                 // 總共圖數
         int fector;                                 // 縮放大小
-        //
-        
+        bool isInjury;                              // 是否受傷
+        bool isHaveTimeBombs;                       // 是否擁有炸彈
+        int TimeBombsCounter;                       // 定時炸彈倒數計時器
+        CMovingBitmap number[2][10];                    // 定時炸彈倒數
     };
 }

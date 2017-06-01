@@ -55,11 +55,20 @@ namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 
 	enum AUDIO_ID {				// 定義各種音效的編號
-		//AUDIO_DING,				// 0
+
+                                //AUDIO_DING,				// 0
 		//AUDIO_LAKE,				// 1
 		//AUDIO_NTUT,	            // 2
-        AUDIO_BGM               // 3
-	};
+        AUDIO_DING,				// 0
+		AUDIO_LAKE,				// 1
+		AUDIO_NTUT,	            // 2
+        AUDIO_BGM,              // 3
+        AUDIO_BOOMER,           // 4
+        AUDIO_STOP,             // 5
+        AUDIO_WALK              // 6
+
+
+    };
 	/////////////////////////////////////////////////////////////////////////////
 	// 這個class為遊戲的遊戲開頭畫面物件
 	// 每個Member function的Implementation都要弄懂

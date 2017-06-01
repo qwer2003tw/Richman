@@ -330,6 +330,11 @@ namespace game_framework {
         {
             sprintf(str, "碰到路障");
         }
+        else if (messageType == 7)
+        {
+            sprintf(str, "裝置定時炸彈");
+            sprintf(moneyStr, "%d步後爆炸", money);
+        }
         if (displayMessage)
         {
             pDC->TextOut(490, 335, str);
