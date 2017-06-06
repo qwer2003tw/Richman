@@ -400,6 +400,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                         player[i]->SetTimeBombsCounter(player[nowPlayer]->GetTimeBombsCounter()); // 步數設定                           
                         player[nowPlayer]->SetHaveBombs(false);
                         player[nowPlayer]->SetTimeBombsCounter(0);
+                        break;
                     }
                 }
             }
