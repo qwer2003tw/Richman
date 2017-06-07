@@ -22,6 +22,12 @@ namespace game_framework {
         propName[3] = "遙控骰子";
         for (int i = 0; i < 6; i++) remoteDice[i].SetValue(i);
     }
+    UI::~UI()
+    {
+        delete yesButton;
+        delete noButton;
+        delete cardButton;
+    }
     void UI::LoadBitmap()
     {
         dice[0].SetXY(576, 475);                                  // 設定骰子1位置
@@ -148,8 +154,6 @@ namespace game_framework {
     {  
         dice[0].OnMove();   
         dice[1].OnMove();
-        TRACE("ui state = %d\n", state);
-        //TRACE("amount=%d", amount);
         if (state == 1) amount = dice[0].GetValue() + dice[1].GetValue();
         if (dice[0].GetPlayerRun())
         {  
@@ -159,7 +163,6 @@ namespace game_framework {
         yesButton->SetSignal(0);
         noButton->SetSignal(0);
 		cardButton->SetSignal(0);
-        TRACE("Picked Prop: %d", prop);
     }
     void UI::SetXY(int playerX, int playerY, int speed)
     {
@@ -511,7 +514,6 @@ namespace game_framework {
         {
             if (myGame->GetBitMap().GetMapData()[i]->GetOwner() != 99 && myGame->GetBitMap().GetMapData()[i]->GetType() == 1)
             {
-                TRACE("position=%d", myGame->GetBitMap().GetMapData()[i]->GetBuildingPositionX()/5);
                 house[myGame->GetBitMap().GetMapData()[i]->GetOwner()][myGame->GetBitMap().GetMapData()[i]->GetHomeLevel()][i].SetTopLeft(fix + left + myGame->GetBitMap().GetMapData()[i]->GetBuildingPositionX() / 5, fix + top + myGame->GetBitMap().GetMapData()[i]->GetBuildingPositionY() / 5 );
                 house[myGame->GetBitMap().GetMapData()[i]->GetOwner()][myGame->GetBitMap().GetMapData()[i]->GetHomeLevel()][i].ShowBitmap(scale);
             }

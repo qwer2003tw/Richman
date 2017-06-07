@@ -63,6 +63,11 @@ namespace game_framework {
             mapData[i+26]->SetType(2);             // 2¨Æ¥ó®æ
         }
     }
+    Map::~Map()
+    {
+       // for (int i = 0; i < 36; i++)
+       //     delete mapData[i];
+    }
     void Map::LoadBitmap()
     {
         map.LoadBitmap("res/MAP.bmp", RGB(255, 255, 255));
