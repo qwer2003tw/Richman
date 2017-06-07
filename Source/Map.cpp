@@ -11,6 +11,7 @@
 namespace game_framework {
     Map::Map()
     {
+        for (int i = 0; i < 40; i++)mapData[i] = nullptr;
         int dx[4] = { 192,0,-192,0 };
         int dy[4] = { 0,192,0,-192 };
         int nx = 96;
@@ -65,8 +66,7 @@ namespace game_framework {
     }
     Map::~Map()
     {
-       // for (int i = 0; i < 36; i++)
-       //     delete mapData[i];
+        for (int i = 0; i < 36; i++) if (mapData != nullptr) delete mapData[i];
     }
     void Map::LoadBitmap()
     {
