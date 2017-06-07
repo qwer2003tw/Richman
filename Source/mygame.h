@@ -49,6 +49,9 @@
 #include "UI.h"
 #include "SelectCharactor.h"
 #define DELAY 40
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 	// Constants
@@ -77,6 +80,7 @@ namespace game_framework {
 	class CGameStateInit : public CGameState {
 	public:
 		CGameStateInit(CGame *g);
+        ~CGameStateInit();
 		void OnInit();  								// 遊戲的初值及圖形設定
 		void OnBeginState();							// 設定每次重玩所需的變數
 		void OnKeyUp(UINT, UINT, UINT); 				// 處理鍵盤Up的動作
@@ -117,7 +121,7 @@ namespace game_framework {
 		void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作 
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
-        Map GetBitMap();
+        Map* GetBitMap();
         Player **GetPlayer();
         int GetNowPlayer();
         int GetPlayerCount();

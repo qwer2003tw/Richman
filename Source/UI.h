@@ -7,6 +7,7 @@ namespace game_framework {
     class UI {
     public:
         UI();
+        ~UI();
         void LoadBitmap();
         void OnShow();
         void OnMove();

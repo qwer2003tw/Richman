@@ -4,6 +4,7 @@ namespace game_framework {
     class Map {
     public:
         Map();
+        ~Map();
         void LoadBitmap();
         void OnShow(int sx, int sy);
         void Build(int nowPlayer, int nowPosition);

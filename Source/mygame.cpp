@@ -59,6 +59,7 @@
 #include "gamelib.h"
 #include "mygame.h"
 #include "Map.h"
+
 SelectCharactor* SelectCharactor::instance = nullptr;
 namespace game_framework {
 /////////////////////////////////////////////////////////////////////////////
@@ -69,6 +70,11 @@ namespace game_framework {
 CGameStateInit::CGameStateInit(CGame *g)
 : CGameState(g)
 {
+}
+
+CGameStateInit::~CGameStateInit()
+{
+    delete startButton;
 }
 
 void CGameStateInit::OnInit()
@@ -83,7 +89,7 @@ void CGameStateInit::OnInit()
 	// 開始載入資料
 	//
     beginground.LoadBitmap("res/BEGIN_BACKGROUND.bmp");
-	Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
+	//Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
 	//
 	// 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
 	//
@@ -306,12 +312,14 @@ void CGameStateOver::OnShow()
 CGameStateRun::CGameStateRun(CGame *g)
 : CGameState(g), NUMBALLS(28)
 {
+    for (int i = 0; i < 4; i++) player[i] = nullptr;
 	ball = new CBall [NUMBALLS];
 }
 
 CGameStateRun::~CGameStateRun()
 {
 	delete [] ball;
+    for (int i = 0; i < 4; i++) if (player[i] != nullptr) delete player[i];
 }
 
 void CGameStateRun::OnBeginState()
@@ -553,7 +561,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             ui.SetDisplay(0);
         }
     }
-    TRACE("OWNER:%d PropIndex:%d", bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner(), bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex());
+    //TRACE("OWNER:%d PropIndex:%d", bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner(), bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex());
     for (int i = 0; i < playercount; i++)
     {
         player[i]->OnMove();
@@ -763,9 +771,9 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 {
 }
 
-Map CGameStateRun::GetBitMap()
+Map *CGameStateRun::GetBitMap()
 {
-    return bigMap;
+    return &bigMap;
 }
 
 Player **CGameStateRun::GetPlayer()

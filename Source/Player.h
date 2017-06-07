@@ -17,6 +17,7 @@ namespace game_framework {
     public:
         Player();
         Player(int t, int o);
+        ~Player();
         void LoadBitmap();							// 載入圖形
         void OnMove();			                    // 移動
         void OnShow(int sx, int sy);				// 將圖形貼到畫面 

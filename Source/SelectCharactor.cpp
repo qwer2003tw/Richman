@@ -29,3 +29,8 @@ SelectCharactor::SelectCharactor()
 {
     for (int i = 0; i < 4; i++) charactor[i] = 0;
 }
+
+SelectCharactor::~SelectCharactor()
+{
+    delete instance;
+}

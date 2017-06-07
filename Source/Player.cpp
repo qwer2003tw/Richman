@@ -45,6 +45,10 @@ namespace game_framework {
         isHaveTimeBombs = false;
         TimeBombsCounter = 0;
     }
+    Player::~Player()
+    {
+        for (unsigned int i = 0; i < prop.size(); i++) delete prop[i];
+    }
     void Player::LoadBitmap()
     {    
         //type=0 doreamon
@@ -368,6 +372,7 @@ namespace game_framework {
            {
                if ((*it)->index == index)
                {
+                   delete *it;
                    it=prop.erase(it);
                    continue;
                }
