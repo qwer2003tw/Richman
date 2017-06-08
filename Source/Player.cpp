@@ -145,7 +145,7 @@ namespace game_framework {
                 sprintf(s, "%s%s%s", f, bf, b);
                 bmp[k][j].LoadBitmap(s, RGB(255, 255, 255));
             }
-            //bmpInjury.LoadBitmap("res/Player/Nobi_Nobita_injury", RGB(250, 250, 250));
+            bmpInjury.LoadBitmap("res/Player/Minamoto_Shizuka_injury.bmp", RGB(255, 255, 255));
             countmax = 4;
             animax = 4;
             fector = 3;
@@ -240,12 +240,15 @@ namespace game_framework {
         mapData = map->GetMapData();
         if (isHaveTimeBombs)
         {
+            
             timeBombs.SetTopLeft(dx - w / 3 + 5 - sx, dy - h / 2 - 33 - sy);
             timeBombs.ShowBitmap(0.6);
+
             number[0][TimeBombsCounter / 10].SetTopLeft(dx - w / 3 + 13 - sx, dy - h / 2 - 30 - sy);
             number[0][TimeBombsCounter / 10].ShowBitmap(0.2);
             number[1][TimeBombsCounter % 10].SetTopLeft(dx - w / 3 + 23 - sx, dy - h / 2 - 30 - sy);
             number[1][TimeBombsCounter % 10].ShowBitmap(0.2);
+            
         }
         if (isInjury)
         {
@@ -379,9 +382,6 @@ namespace game_framework {
                ++it;
            }
        }
-       
-       //TRACE("prop[0].index=%d", prop.at(0)->index);
-       
    }
 
    void Player::PropInit()

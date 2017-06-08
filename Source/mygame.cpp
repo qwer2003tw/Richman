@@ -156,7 +156,6 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)   //按下滑鼠左鍵
 {
-    TRACE("x:%d,y:%d\n", point.x, point.y);
     if (startButton != nullptr)
         startButton->OnClick(point);
     if (startButton->GetSignal())
@@ -181,12 +180,6 @@ void CGameStateInit::OnMouseMove(UINT nFlags, CPoint point)     //滑鼠滑過
 
 void CGameStateInit::OnShow()
 {
-	//
-	// 貼上logo
-	//
-	//logo.SetTopLeft((SIZE_X - logo.Width())/2, SIZE_Y/8);
-	//logo.ShowBitmap();
-
     //
     // 貼上beginbackground和button
     //
@@ -227,29 +220,6 @@ void CGameStateInit::OnShow()
            arrow.ShowBitmap();
        }
     }
-
-  //arrow.SetTopLeft(601-arrow.Width()/2,433-arrow.Height()/2);
-    
-
-	//
-	// Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
-	//
-    /*
-	CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
-	CFont f,*fp;
-	f.CreatePointFont(240,"Microsoft JhengHei");	// 產生 font f; 160表示16 point的字
-	fp=pDC->SelectObject(&f);					// 選用 font f
-	pDC->SetBkColor(RGB(0,0,0));
-	pDC->SetTextColor(RGB(255,255,0));
-	pDC->TextOut(SIZE_X/4, SIZE_Y/2,"Please click mouse or press SPACE to begin.");
-	pDC->TextOut(5,825,"Press Ctrl-F to switch in between window mode and full screen mode.");
-	if (ENABLE_GAME_PAUSE)
-		pDC->TextOut(5,865,"Press Ctrl-Q to pause the Game.");
-	pDC->TextOut(5,905,"Press Alt-F4 or ESC to Quit.");
-
-    pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-	CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
-    */
 }								
 
 /////////////////////////////////////////////////////////////////////////////
@@ -312,13 +282,13 @@ void CGameStateOver::OnShow()
 CGameStateRun::CGameStateRun(CGame *g)
 : CGameState(g), NUMBALLS(28)
 {
+
     for (int i = 0; i < 4; i++) player[i] = nullptr;
-	ball = new CBall [NUMBALLS];
+	//ball = new CBall [NUMBALLS];
 }
 
 CGameStateRun::~CGameStateRun()
 {
-	delete [] ball;
     for (int i = 0; i < 4; i++) if (player[i] != nullptr) delete player[i];
 }
 
@@ -345,16 +315,13 @@ void CGameStateRun::OnBeginState()
 	const int BACKGROUND_X = 60;
 	const int ANIMATION_SPEED = 15;
 
-	eraser.Initialize();
 	background.SetTopLeft(BACKGROUND_X,0);				// 設定背景的起始座標
 	help.SetTopLeft(0, SIZE_Y - help.Height());			// 設定說明圖的起始座標
-	hits_left.SetInteger(HITS_LEFT);					// 指定剩下的撞擊數
-	hits_left.SetTopLeft(HITS_LEFT_X,HITS_LEFT_Y);		// 指定剩下撞擊數的座標
 	//CAudio::Instance()->Play(AUDIO_LAKE, true);	    // 撥放 WAVE
 	//CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
 	//CAudio::Instance()->Play(AUDIO_NTUT, true);	    // 撥放 MIDI
 
-    CAudio::Instance()->Play(AUDIO_BGM, true);	    // 撥放 MIDI
+   // CAudio::Instance()->Play(AUDIO_BGM, true);	    // 撥放 MIDI
 
 }
 
@@ -606,8 +573,6 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     //
 	//
 	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				       // 載入說明的圖形
-	corner.LoadBitmap(IDB_CORNER);						    	   // 載入角落圖形
-	corner.ShowBitmap(background);						    	   // 將corner貼到background
     explosion[0].LoadBitmap("RES/explosion/explosion_1.bmp", RGB(0, 0, 0));
     explosion[1].LoadBitmap("RES/explosion/explosion_2.bmp", RGB(0, 0, 0));
     explosion[2].LoadBitmap("RES/explosion/explosion_3.bmp", RGB(0, 0, 0));

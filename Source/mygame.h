@@ -34,7 +34,8 @@
  *         event driven.
  *   2008-02-15 V4.4
  *      1. Add namespace game_framework.
- *      2. Replace the demonstration of animation as a new bouncing ball.
+ *      2. Replace the demonstration of animation as a 
+ bouncing ball.
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
 #pragma once
@@ -133,11 +134,6 @@ namespace game_framework {
 		CMovingBitmap	background;	// 背景圖
 		CMovingBitmap	help;		// 說明圖
         CMovingBitmap   explosion[8];
-		CBall			*ball;		// 球的陣列
-		CMovingBitmap	corner;		// 角落圖
-		CEraser			eraser;		// 拍子
-		CInteger		hits_left;	// 剩下的撞擊數
-		CBouncingBall   bball;		// 反覆彈跳的球
         Player *player[4];          // 4個玩家
         SelectCharactor* select;
         UI ui;                      // User Interface
