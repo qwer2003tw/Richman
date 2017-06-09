@@ -60,7 +60,6 @@
 #include "mygame.h"
 #include "Map.h"
 
-SelectCharactor* SelectCharactor::instance = nullptr;
 namespace game_framework {
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的遊戲開頭畫面物件
@@ -146,7 +145,7 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
             ancor++;
             if (ancor == 4)
             {
-                select = SelectCharactor::setInstance(arrow_index);
+                SelectCharactor::getInstance()->setData(arrow_index);
                 GotoGameState(GAME_STATE_RUN);
             }
             if (arrow_index[ancor] == arrow_index[ancor - 1]) dump = true;
@@ -160,7 +159,7 @@ void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)   //按下滑鼠左鍵
         startButton->OnClick(point);
     if (startButton->GetSignal())
     {
-        select = SelectCharactor::setInstance(arrow_index);
+        SelectCharactor::getInstance()->setData(arrow_index);
         GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
     }
         
@@ -294,16 +293,16 @@ CGameStateRun::~CGameStateRun()
 
 void CGameStateRun::OnBeginState()
 {
-    player[0] = new Player(select->getInstance()->charactor[0], 0);//後面引數掛TYPE ORDER
+    player[0] = new Player(SelectCharactor::getInstance()->getCharactor()[0], 0);//後面引數掛TYPE ORDER
     player[0]->LoadBitmap();
     player[0]->SetMap(&bigMap);
-    player[1] = new Player(select->getInstance()->charactor[1], 1);//後面引數掛TYPE ORDER
+    player[1] = new Player(SelectCharactor::getInstance()->getCharactor()[1], 1);//後面引數掛TYPE ORDER
     player[1]->LoadBitmap();
     player[1]->SetMap(&bigMap);
-    player[2] = new Player(select->getInstance()->charactor[2], 2);//後面引數掛TYPE ORDER
+    player[2] = new Player(SelectCharactor::getInstance()->getCharactor()[2], 2);//後面引數掛TYPE ORDER
     player[2]->LoadBitmap();
     player[2]->SetMap(&bigMap);
-    player[3] = new Player(select->getInstance()->charactor[3], 3);//後面引數掛TYPE ORDER
+    player[3] = new Player(SelectCharactor::getInstance()->getCharactor()[3], 3);//後面引數掛TYPE ORDER
     player[3]->LoadBitmap();
     player[3]->SetMap(&bigMap);
 	const int BALL_GAP = 90;
@@ -528,7 +527,6 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             ui.SetDisplay(0);
         }
     }
-    //TRACE("OWNER:%d PropIndex:%d", bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetOwner(), bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex());
     for (int i = 0; i < playercount; i++)
     {
         player[i]->OnMove();
@@ -543,7 +541,6 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
-    select=SelectCharactor::instance = nullptr;
     srand((int)time(NULL));
 	//
 	// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
@@ -561,14 +558,6 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     playercount = 4;
     ui.SetMyGame(this);
     isExplosion = false;
-    //將四個玩家創出來
-    /*for (int i = 0; i < playercount; i++)
-    {
-        player[i] = new Player(0);//後面引數掛TYPE
-        player[i]->LoadBitmap();
-        player[i]->SetMap(&bigMap);
-    }*/
-
 
     //
 	//
@@ -581,11 +570,6 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     explosion[5].LoadBitmap("RES/explosion/explosion_6.bmp", RGB(0, 0, 0));
     explosion[6].LoadBitmap("RES/explosion/explosion_7.bmp", RGB(0, 0, 0));
     explosion[7].LoadBitmap("RES/explosion/explosion_8.bmp", RGB(0, 0, 0));
-
-	//CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");   // 載入編號0的聲音ding.wav
-	//CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");   // 載入編號1的聲音lake.mp3
-	//CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\ntut.mid");   // 載入編號2的聲音ntut.mid
-
 
     //BGM
 
@@ -607,6 +591,12 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     const char KEY_1TO9   = 97; // 1:97
     const char KEY_Z      = 90; // 升級
     const char KEY_SPACE  = 32; // 
+    const unsigned int KEY_ADD    = 187;
+    const unsigned int KEY_SUB    = 189;
+    const char KEY_ADD1 = 107;
+    const char KEY_SUB1 = 109;
+
+
     if(ui.GetState() == 0 && !ui.GetCardDisplay())
     {
         if (nChar - KEY_1TO9 + 1 <= 9 && nChar - KEY_1TO9 + 1 >= 1)
@@ -627,6 +617,14 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         CPoint point;
         point.x = 520; point.y = 600;
         OnLButtonDown(nFlags,point);    // space 取代 mouse
+    }
+    if(nChar==KEY_ADD || nChar == KEY_ADD1)
+    {
+        player[nowPlayer]->AdjMoney(2000);
+    }
+    if (nChar == KEY_SUB || nChar == KEY_SUB1)
+    {
+        player[nowPlayer]->AdjMoney(-2000);
     }
 }
 
@@ -711,6 +709,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
                 bigMap.SetPropIndex(ui.GetFollowMouse(), i); // 取得跟隨圖片的index 並設置在map上
                 GetPlayer()[GetNowPlayer()]->GiveProp(ui.GetNowUseProp(), -1);
                 ui.initFollowMouse();
+                ui.SetState(0);
             }
         }
     }

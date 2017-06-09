@@ -5,13 +5,12 @@
 class SelectCharactor
 {
 public:
-    SelectCharactor(int c0, int c1, int c2, int c3);
-    SelectCharactor();
-    ~SelectCharactor();
 
-    static SelectCharactor* setInstance(int input[4]);
     static SelectCharactor* getInstance();
-    static SelectCharactor* instance;
+    void setData(int input[4]);
+    int* getCharactor();
+protected:
+    SelectCharactor();
     int charactor[4];
 };
 

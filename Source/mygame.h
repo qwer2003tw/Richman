@@ -98,7 +98,6 @@ namespace game_framework {
         CMovingBitmap arrow;                            // 選角箭頭
         CMovingBitmap arrow1;
         CMovingBitmap arrow2;                           //腳色重複錯誤箭頭
-        SelectCharactor* select;
         int arrow_index[4] = {0,1,2,3};
         int ancor = 0;
         int acount = 0;
@@ -135,7 +134,6 @@ namespace game_framework {
 		CMovingBitmap	help;		// 說明圖
         CMovingBitmap   explosion[8];
         Player *player[4];          // 4個玩家
-        SelectCharactor* select;
         UI ui;                      // User Interface
         int playercount;
         int nowPlayer;              // 當前玩家

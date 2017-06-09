@@ -22,7 +22,7 @@ namespace game_framework {
         ani        = 0;
         count      = 0;
         type       = 0;      //¹w³]¬°0
-        money      = 300000;
+        money      = 30000;
     }
     Player::Player(int t, int o)
     {
@@ -40,7 +40,7 @@ namespace game_framework {
         count      = 0;
         type       = t;
         order      = o;
-        money      = 300000;
+        money      = 30000;
         isInjury   = false;
         isHaveTimeBombs = false;
         TimeBombsCounter = 0;

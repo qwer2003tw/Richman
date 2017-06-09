@@ -247,9 +247,7 @@ namespace game_framework {
             {
                 tempX = (point.x - 455) / 180; tempY = (point.y - 375) / 125;
                 prop = tempX + tempY * 5;
-                //->GetPlayer()[myGame->GetNowPlayer()]->GiveProp(myGame->GetPlayer()[myGame->GetNowPlayer()]->prop.at(prop)->index, -1);
                 UseProp(prop);
-                //state = 8;
             }
         }
         if (state == 8 && GetNowUseProp() == 3)
