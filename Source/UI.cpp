@@ -339,6 +339,15 @@ namespace game_framework {
             sprintf(str, "裝置定時炸彈");
             sprintf(moneyStr, "%d步後爆炸", money);
         }
+        else if (messageType == 8)
+        {
+            sprintf(str, "你沒錢惹買屁R");
+        }
+        else if (messageType == 9)
+        {
+            sprintf(str, "沒錢惹還想升級");
+            sprintf(moneyStr, "你跟窩開玩笑ㄇ?");
+        }
         if (displayMessage)
         {
             pDC->TextOut(490, 335, str);

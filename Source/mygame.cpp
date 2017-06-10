@@ -644,11 +644,17 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
     {
         if (ui.GetYesOrNoBuy() == 1)
         {
-            player[nowPlayer]->AdjMoney(-bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice());
-            bigMap.Build(player[nowPlayer]->GetType() , player[nowPlayer]->GetNow());
+            if (player[nowPlayer]->GetMoney() < bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice())
+                ui.SetMessage(8, 0);
+            else
+            {
+                player[nowPlayer]->AdjMoney(-bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice());
+                bigMap.Build(player[nowPlayer]->GetType(), player[nowPlayer]->GetNow());
+            }
+            
             ui.SetButton(0);
             ui.SetState(6);
-            ui.SetDisplay(0);
+            ui.SetDisplay(1);
         }
         else if (ui.GetYesOrNoBuy() == 0)
         {
@@ -662,14 +668,32 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
         if (ui.GetYesOrNoBuy() == 1)
         {
             //升級費用
-            if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 0) player[nowPlayer]->AdjMoney(-bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+200);
-            else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 1) player[nowPlayer]->AdjMoney(-bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+400);
-            else  player[nowPlayer]->AdjMoney(-bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice()+600);
+            if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 0)
+            {
+                if(player[nowPlayer]->GetMoney()<(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 200))
+                    ui.SetMessage(9, 0);
+                else
+                    player[nowPlayer]->AdjMoney(-(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 200));
+            }
+            else if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetHomeLevel() == 1)
+            {
+                if (player[nowPlayer]->GetMoney()<(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 400))
+                    ui.SetMessage(9, 0);
+                else
+                    player[nowPlayer]->AdjMoney(-(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 400));
+            }
+            else
+            {
+                if (player[nowPlayer]->GetMoney()<(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 600))
+                    ui.SetMessage(9, 0);
+                else
+                    player[nowPlayer]->AdjMoney(-(bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice() + 600));
+            }
             
             bigMap.Upgrade(player[nowPlayer]->GetNow());
             ui.SetButton(0);
             ui.SetState(6);
-            ui.SetDisplay(0);
+            ui.SetDisplay(1);
         }
         else if (ui.GetYesOrNoBuy() == 0)
         {
