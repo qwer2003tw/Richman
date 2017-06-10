@@ -74,6 +74,7 @@ CGameStateInit::CGameStateInit(CGame *g)
 CGameStateInit::~CGameStateInit()
 {
     delete startButton;
+    delete helpButton;
 }
 
 void CGameStateInit::OnInit()
@@ -94,11 +95,13 @@ void CGameStateInit::OnInit()
 	//
     startButton = new Button(1);
     startButton->LoadBitmap("res/BUTTON_START_1.bmp", "res/BUTTON_START_2.bmp", RGB(255, 255, 255));
-    
+    helpButton = new Button(1);
+    helpButton->LoadBitmap("res/BUTTON_HELP_1.bmp", "res/BUTTON_HELP_2.bmp", RGB(255, 255, 255));
     selectcharactor.LoadBitmap("res/SelectCharactor.bmp",RGB(80,228,255));
     arrow.LoadBitmap("res/arrow.bmp",RGB(255,255,255));
     arrow1.LoadBitmap("res/arrow1.bmp", RGB(255, 255, 255));
     arrow2.LoadBitmap("res/arrow2.bmp", RGB(255, 255, 255));
+    helpInfo.LoadBitmap("res/helpinfo.bmp",RGB(0, 0, 0));
 }
 
 void CGameStateInit::OnBeginState()
@@ -152,7 +155,10 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
         }
     }
 }
-
+void CGameStateInit::OnRButtonDown(UINT nFlags, CPoint point)   //«ö¤U·Æ¹«¥ªÁä
+{
+    showHelp = false;
+}
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)   //«ö¤U·Æ¹«¥ªÁä
 {
     if (startButton != nullptr)
@@ -162,19 +168,30 @@ void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)   //«ö¤U·Æ¹«¥ªÁä
         SelectCharactor::getInstance()->setData(arrow_index);
         GotoGameState(GAME_STATE_RUN);		// ¤Á´«¦ÜGAME_STATE_RUN
     }
-        
+    if (helpButton != nullptr)
+        helpButton->OnClick(point);
+    if (helpButton->GetSignal())
+    {
+        showHelp = true;
+    }
+
 }
 
 void CGameStateInit::OnLButtonUp(UINT nFlags, CPoint point)     //«ö¤U¼u°_·Æ¹«¥ªÁä
 {
     if (startButton != nullptr)
         startButton->OnNoClick();
+    if (helpButton != nullptr)
+        helpButton->OnNoClick();
+
 }
 
 void CGameStateInit::OnMouseMove(UINT nFlags, CPoint point)     //·Æ¹«·Æ¹L
 {   
     if (startButton != nullptr)
         startButton->OnMove(point);
+    if (helpButton != nullptr)
+        helpButton->OnMove(point);
 }
 
 void CGameStateInit::OnShow()
@@ -187,12 +204,17 @@ void CGameStateInit::OnShow()
     startButton->SetXY((SIZE_X - 484) / 2+25, SIZE_Y / 2+225);
     startButton->SetEnable(true);
     startButton->OnShow();        
+    helpButton->SetXY((SIZE_X - 484) / 2 + 25, SIZE_Y / 2 + 375);
+    helpButton->SetEnable(true);
+    helpButton->OnShow();
+
     selectcharactor.SetTopLeft(360,  180);
     selectcharactor.ShowBitmap();
     //
     int bx = 601 - arrow.Width() / 2;
     int by = 445 - arrow.Height() + 15;
     if (++acount == 12)acount = 0;
+
    for (int i = 0; i < 4; i++)
     {
        if (ancor == i)
@@ -219,6 +241,11 @@ void CGameStateInit::OnShow()
            arrow.ShowBitmap();
        }
     }
+   if (showHelp)
+   {
+       helpInfo.SetTopLeft((SIZE_X - 484) / 2 -30, SIZE_Y / 2 - 380);
+       helpInfo.ShowBitmap(1.5);
+   }
 }								
 
 /////////////////////////////////////////////////////////////////////////////
