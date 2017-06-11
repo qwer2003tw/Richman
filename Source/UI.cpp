@@ -406,6 +406,10 @@ namespace game_framework {
     {
         return followMouse;
     }
+    Button ** UI::GetyesButton()
+    {
+        return &yesButton;
+    }
     void UI::InitEvent()
     {
         showEvent = 99;
