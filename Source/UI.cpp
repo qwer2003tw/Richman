@@ -94,62 +94,69 @@ namespace game_framework {
         house[2][3].LoadBitmap("res/House_level3_4.bmp", RGB(0, 0, 0));
         house[3][3].LoadBitmap("res/House_level3_3.bmp", RGB(0, 0, 0));
         house[4][3].LoadBitmap("res/House_level3_1.bmp", RGB(0, 0, 0));
+
+        endbackground.LoadBitmap("res/endbackground.bmp");
     }
     void UI::OnShow()
     {
-        
-
-        if (state != 5 && state != 8)     //非擲骰隱藏
+        if (state == 10)
         {
-            dice[0].OnShow();
-            dice[1].OnShow();
+            ShowEnd();
         }
+        else
+        {
+            if (state != 5 && state != 8)     //非擲骰隱藏
+            {
+                dice[0].OnShow();
+                dice[1].OnShow();
+            }
             //
-        if (state == 0) amount = 0;
-        if ((amount / 10) == 0 && !dice[0].GetState() && state != 8) //骰子總和為個位數 貼個位數出來
-        {
-            number[1].OnShow((amount % 10)); //個位數
-        }
-        else if (amount > 0 && amount <= 12 && !dice[0].GetState() && state != 8) //骰子總合為十位數則貼出兩位數
-        {
-            number[0].OnShow((amount / 10)); //十位數
-            number[1].OnShow((amount % 10)); //個位數
-        }
-            
-        //
-        btnbackground.SetTopLeft(0, 0);
-        btnbackground.ShowBitmap();
-        status_background.SetTopLeft(SIZE_X - 390, 0); //狀態欄背景位置
-        status_background.ShowBitmap();       //顯示圖片
-        ShowMiniMap();
-        
-        myGame->GetPlayer()[myGame->GetNowPlayer()]->OnShowState();
-        if (displayMessage)
-        {
-            messageFrame.ShowBitmap();
-            messageFrame.SetTopLeft(440, 260);
-        }
+            if (state == 0) amount = 0;
+            if ((amount / 10) == 0 && !dice[0].GetState() && state != 8) //骰子總和為個位數 貼個位數出來
+            {
+                number[1].OnShow((amount % 10)); //個位數
+            }
+            else if (amount > 0 && amount <= 12 && !dice[0].GetState() && state != 8) //骰子總合為十位數則貼出兩位數
+            {
+                number[0].OnShow((amount / 10)); //十位數
+                number[1].OnShow((amount % 10)); //個位數
+            }
 
-        ShowPropFields();
+            //
+            btnbackground.SetTopLeft(0, 0);
+            btnbackground.ShowBitmap();
+            status_background.SetTopLeft(SIZE_X - 390, 0); //狀態欄背景位置
+            status_background.ShowBitmap();       //顯示圖片
+            ShowMiniMap();
 
-        if (displayRemoteDice)
-        {
-            rdbg.ShowBitmap(1.8);
-            for (int i = 0; i < 6; i++) remoteDice[i].OnShow(1.5);
-        }
-        yesButton->OnShow();
-        noButton->OnShow();        
-		cardButton->OnShow();
-        OnShowMessage();
-        if (showEvent != 99)
-        {
-            event[showEvent].SetTopLeft(400, 300);
-            event[showEvent].ShowBitmap();
-        }
-        if (followMouse != 99)
-        {
-            props[followMouse].SetTopLeft(followX - props[followMouse].Width() / 2, followY - props[followMouse].Height() / 2);
-            props[followMouse].ShowBitmap();
+            myGame->GetPlayer()[myGame->GetNowPlayer()]->OnShowState();
+            if (displayMessage)
+            {
+                messageFrame.ShowBitmap();
+                messageFrame.SetTopLeft(440, 260);
+            }
+
+            ShowPropFields();
+
+            if (displayRemoteDice)
+            {
+                rdbg.ShowBitmap(1.8);
+                for (int i = 0; i < 6; i++) remoteDice[i].OnShow(1.5);
+            }
+            yesButton->OnShow();
+            noButton->OnShow();
+            cardButton->OnShow();
+            OnShowMessage();
+            if (showEvent != 99)
+            {
+                event[showEvent].SetTopLeft(400, 300);
+                event[showEvent].ShowBitmap();
+            }
+            if (followMouse != 99)
+            {
+                props[followMouse].SetTopLeft(followX - props[followMouse].Width() / 2, followY - props[followMouse].Height() / 2);
+                props[followMouse].ShowBitmap();
+            }
         }
     }
     void UI::OnMove()
@@ -292,6 +299,10 @@ namespace game_framework {
     {
         return displayCardFrame;
     }
+   bool UI::GetIsEnd()
+   {
+       return isEnd;
+   }
     void UI::SetMyGame(CGameStateRun *mygame)
     {
         myGame = mygame;
@@ -371,6 +382,10 @@ namespace game_framework {
 		dice[0].SetValue(d1);
 		dice[1].SetValue(d2);
 	}
+    void UI::SetIsEnd(bool isEnd)
+    {
+        this->isEnd = isEnd;
+    }
     void UI::initFollowMouse()
     {
         followMouse = 99;
@@ -432,6 +447,31 @@ namespace game_framework {
                 displayRemoteDice = false;
                 myGame->GetPlayer()[myGame->GetNowPlayer()]->GiveProp(GetNowUseProp(), -1);
             }
+        }
+    }
+    void UI::ComputeOrder()
+    {
+        for (int i = 0; i < 4; i++) order[i] = -1;
+        
+        int max = -999999;
+        int oldmax = 999999;
+        for (int j = 0; j < 4; j++)
+        {
+            max = -999999;
+            for (int i = 0; i < 4; i++)
+            {
+                if (max < myGame->GetPlayer()[i]->GetMoney() && myGame->GetPlayer()[i]->GetMoney() <= oldmax)
+                {
+                    bool dump = false;
+                    for (int k = 0; k < j; k++) if (i == order[k]) dump = true;
+                    if (dump == false)
+                    {
+                        order[j] = i;
+                        max = myGame->GetPlayer()[i]->GetMoney();
+                    }
+                }
+            }
+            oldmax = max;
         }
     }
     void UI::ShowPropFields()
@@ -530,6 +570,39 @@ namespace game_framework {
                 house[myGame->GetBitMap()->GetMapData()[i]->GetOwner()][myGame->GetBitMap()->GetMapData()[i]->GetHomeLevel()].ShowBitmap(scale);
             }
         }
+    }
+
+    void UI::ShowEnd()
+    {
+        
+        endbackground.ShowBitmap();
+        ComputeOrder();
+
+        for (int i = 0; i < 4; i++)
+        {
+            playerHead[myGame->GetPlayer()[order[i]]->GetType()].SetTopLeft(300, 70 + 250 * i);
+            playerHead[myGame->GetPlayer()[order[i]]->GetType()].ShowBitmap();
+        }
+        yesButton->SetEnable(true);
+        yesButton->SetXY(1350, 850);
+        yesButton->OnShow();
+
+        char amountStr[50] = "";
+        CDC *pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC 
+        CFont f, *fp;
+        f.CreatePointFont(250, "Microsoft JhengHei");
+        fp = pDC->SelectObject(&f);					// 選用 font f
+        pDC->SetBkMode(TRANSPARENT);
+        pDC->SetTextColor(RGB(255, 255, 255));
+
+        for (int i = 0; i < 4; i++)
+        { 
+          sprintf(amountStr, "金額%d , 房產數量%d", myGame->GetPlayer()[order[i]]->GetMoney(),myGame->GetBitMap()->GetHouseAmount(i));
+          pDC->TextOutA(600, 130 + 250 * i, amountStr);
+        }
+        
+        pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
+        CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
     }
 
 }

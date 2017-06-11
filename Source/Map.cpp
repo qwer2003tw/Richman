@@ -140,6 +140,12 @@ namespace game_framework {
     {
         return mapData[position]->GetPropIndex();
     }
+    int Map::GetHouseAmount(int playerIndex)
+    {
+        int amount = 0;
+        for (int i = 0; i < 36; i++)if (mapData[i]->GetOwner() == playerIndex) amount++;
+        return amount;
+    }
     CMovingBitmap* Map::GetHouse()
     {
         return &house[0][0];
