@@ -164,11 +164,11 @@ IDR_GAMETYPE            ICON                    "..\\res\\gameDoc.ico"
 
 IDR_MAINFRAME TOOLBAR 16, 15
 BEGIN
-    BUTTON      ID_BUTTON_FULLSCREEN
-    BUTTON      ID_BUTTON_PAUSE
-    SEPARATOR
-    BUTTON      ID_FILE_OPEN
-    BUTTON      ID_FILE_SAVE
+BUTTON      ID_BUTTON_FULLSCREEN
+BUTTON      ID_BUTTON_PAUSE
+SEPARATOR
+BUTTON      ID_FILE_OPEN
+BUTTON      ID_FILE_SAVE
 END
 
 
@@ -179,32 +179,32 @@ END
 
 IDR_MAINFRAME MENU
 BEGIN
-    POPUP "&File"
-    BEGIN
-        MENUITEM "&New",                        ID_FILE_NEW
-        MENUITEM "Pause\tCtrl+Q",               ID_FILE_PAUSE
-        MENUITEM "&Open...",                    ID_FILE_OPEN
-        MENUITEM "&Save",                       ID_FILE_SAVE
-        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
-        MENUITEM SEPARATOR
-        MENUITEM "&Print...",                   ID_FILE_PRINT
-        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
-        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
-        MENUITEM SEPARATOR
-        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
-        MENUITEM SEPARATOR
-        MENUITEM "E&xit",                       ID_APP_EXIT
-    END
-    POPUP "&View"
-    BEGIN
-        MENUITEM "&Fullscreen\tCtrl+F",         ID_TOGGLE_FULLSCREEN
-        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
-        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
-    END
-    POPUP "&Help"
-    BEGIN
-        MENUITEM "&About game...",              ID_APP_ABOUT
-    END
+POPUP "&File"
+BEGIN
+MENUITEM "&New", ID_FILE_NEW
+MENUITEM "Pause\tCtrl+Q", ID_FILE_PAUSE
+MENUITEM "&Open...", ID_FILE_OPEN
+MENUITEM "&Save", ID_FILE_SAVE
+MENUITEM "Save &As...", ID_FILE_SAVE_AS
+MENUITEM SEPARATOR
+MENUITEM "&Print...", ID_FILE_PRINT
+MENUITEM "Print Pre&view", ID_FILE_PRINT_PREVIEW
+MENUITEM "P&rint Setup...", ID_FILE_PRINT_SETUP
+MENUITEM SEPARATOR
+MENUITEM "Recent File", ID_FILE_MRU_FILE1, GRAYED
+MENUITEM SEPARATOR
+MENUITEM "E&xit", ID_APP_EXIT
+END
+POPUP "&View"
+BEGIN
+MENUITEM "&Fullscreen\tCtrl+F", ID_TOGGLE_FULLSCREEN
+MENUITEM "&Toolbar", ID_VIEW_TOOLBAR
+MENUITEM "&Status Bar", ID_VIEW_STATUS_BAR
+END
+POPUP "&Help"
+BEGIN
+MENUITEM "&About game...", ID_APP_ABOUT
+END
 END
 
 
@@ -215,8 +215,8 @@ END
 
 IDR_MAINFRAME ACCELERATORS
 BEGIN
-    "F",            ID_TOGGLE_FULLSCREEN,   VIRTKEY, CONTROL, NOINVERT
-    "Q",            ID_FILE_PAUSE,          VIRTKEY, CONTROL, NOINVERT
+"F", ID_TOGGLE_FULLSCREEN, VIRTKEY, CONTROL, NOINVERT
+"Q", ID_FILE_PAUSE, VIRTKEY, CONTROL, NOINVERT
 END
 
 
@@ -230,14 +230,13 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About game"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-    LTEXT           "Game Framework Version 4.8",IDC_STATIC,39,10,119,8,SS_NOPREFIX
-    LTEXT           "Copyright (C) 2002-2012",IDC_STATIC,39,23,119,8
-    DEFPUSHBUTTON   "OK",IDOK,172,7,39,14,WS_GROUP
-    LTEXT           "Liense: GPL",IDC_STATIC,39,35,119,8
-    PUSHBUTTON      "ReadMe",IDC_README,172,24,39,13,WS_GROUP
-    LTEXT           "Author: Woei-Kae Chen, CSIE Department, NTUT",IDC_STATIC,39,47,159,8
-    LTEXT           "http://www.ntut.edu.tw/~wkchen/game",IDC_STATIC,39,60,159,8
+ICON            IDR_MAINFRAME, IDC_STATIC, 11, 17, 20, 20
+LTEXT           "Rich Man", IDC_STATIC, 39, 10, 119, 8, SS_NOPREFIX
+LTEXT           "Author: Ren-Hao, Jheng",IDC_STATIC,39,23,119,8
+DEFPUSHBUTTON   "OK", IDOK, 172, 7, 39, 14, WS_GROUP
+LTEXT           "              Chen-Tai, Peng",IDC_STATIC,39,35,119,8
+//PUSHBUTTON      "ReadMe",IDC_README,172,24,39,13,WS_GROUP
+LTEXT           "Date: 2017/2 - 2017/6", IDC_STATIC, 39, 47, 159, 8
 END
 
 

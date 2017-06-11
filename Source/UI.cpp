@@ -71,28 +71,29 @@ namespace game_framework {
         rdbg.SetTopLeft(550, 450);
 
 
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 36; j++)
-            {
-                if (i == 0) house[i][0][j].LoadBitmap("res/House_level0_0.bmp", RGB(0, 0, 0));
-                else if (i == 1) house[i][0][j].LoadBitmap("res/House_level0_1.bmp", RGB(0, 0, 0));
-                else if (i == 2) house[i][0][j].LoadBitmap("res/House_level0_2.bmp", RGB(0, 0, 0));
-                else if (i == 3) house[i][0][j].LoadBitmap("res/House_level0_3.bmp", RGB(255, 255, 255)); //眼鏡白底的
-                if (i == 0) house[i][1][j].LoadBitmap("res/House_level1_0.bmp", RGB(0, 0, 0));
-                else if (i == 1) house[i][1][j].LoadBitmap("res/House_level1_1.bmp", RGB(0, 0, 0));
-                else if (i == 2) house[i][1][j].LoadBitmap("res/House_level1_2.bmp", RGB(0, 0, 0));
-                else if (i == 3) house[i][1][j].LoadBitmap("res/House_level1_3.bmp", RGB(0, 0, 0));
-                if (i == 0) house[i][2][j].LoadBitmap("res/House_level2_0.bmp", RGB(0, 0, 0));
-                else if (i == 1) house[i][2][j].LoadBitmap("res/House_level2_1.bmp", RGB(0, 0, 0));
-                else if (i == 2) house[i][2][j].LoadBitmap("res/House_level2_2.bmp", RGB(0, 0, 0));
-                else if (i == 3) house[i][2][j].LoadBitmap("res/House_level2_3.bmp", RGB(0, 0, 0));
-                if (i == 0) house[i][3][j].LoadBitmap("res/House_level3_0.bmp", RGB(0, 0, 0));
-                else if (i == 1) house[i][3][j].LoadBitmap("res/House_level3_1.bmp", RGB(0, 0, 0));
-                else if (i == 2) house[i][3][j].LoadBitmap("res/House_level3_2.bmp", RGB(0, 0, 0));
-                else if (i == 3) house[i][3][j].LoadBitmap("res/House_level3_3.bmp", RGB(0, 0, 0));
-            }
-        }
+        house[0][0].LoadBitmap("res/House_level0_0.bmp", RGB(0, 0, 0));
+        house[1][0].LoadBitmap("res/House_level0_2.bmp", RGB(0, 0, 0));
+        house[2][0].LoadBitmap("res/House_level0_4.bmp", RGB(0, 0, 0));
+        house[3][0].LoadBitmap("res/House_level0_3.bmp", RGB(255, 255, 255)); //眼鏡白底的
+        house[4][0].LoadBitmap("res/House_level0_1.bmp", RGB(0, 0, 0));
+
+        house[0][1].LoadBitmap("res/House_level1_0.bmp", RGB(0, 0, 0));
+        house[1][1].LoadBitmap("res/House_level1_2.bmp", RGB(0, 0, 0));
+        house[2][1].LoadBitmap("res/House_level1_4.bmp", RGB(0, 0, 0));
+        house[3][1].LoadBitmap("res/House_level1_3.bmp", RGB(0, 0, 0));
+        house[4][1].LoadBitmap("res/House_level1_1.bmp", RGB(0, 0, 0));
+
+        house[0][2].LoadBitmap("res/House_level2_0.bmp", RGB(0, 0, 0));
+        house[1][2].LoadBitmap("res/House_level2_2.bmp", RGB(0, 0, 0));
+        house[2][2].LoadBitmap("res/House_level2_4.bmp", RGB(0, 0, 0));
+        house[3][2].LoadBitmap("res/House_level2_3.bmp", RGB(0, 0, 0));
+        house[4][2].LoadBitmap("res/House_level2_1.bmp", RGB(0, 0, 0));
+
+        house[0][3].LoadBitmap("res/House_level3_0.bmp", RGB(0, 0, 0));
+        house[1][3].LoadBitmap("res/House_level3_2.bmp", RGB(0, 0, 0));
+        house[2][3].LoadBitmap("res/House_level3_4.bmp", RGB(0, 0, 0));
+        house[3][3].LoadBitmap("res/House_level3_3.bmp", RGB(0, 0, 0));
+        house[4][3].LoadBitmap("res/House_level3_1.bmp", RGB(0, 0, 0));
     }
     void UI::OnShow()
     {
@@ -524,10 +525,9 @@ namespace game_framework {
         {
             if (myGame->GetBitMap()->GetMapData()[i]->GetOwner() != 99 && myGame->GetBitMap()->GetMapData()[i]->GetType() == 1)
             {
-
-                TRACE("position=%d", myGame->GetBitMap()->GetMapData()[i]->GetBuildingPositionX()/5);
-                house[myGame->GetBitMap()->GetMapData()[i]->GetOwner()][myGame->GetBitMap()->GetMapData()[i]->GetHomeLevel()][i].SetTopLeft(fix + left + myGame->GetBitMap()->GetMapData()[i]->GetBuildingPositionX() / 5, fix + top + myGame->GetBitMap()->GetMapData()[i]->GetBuildingPositionY() / 5 );
-                house[myGame->GetBitMap()->GetMapData()[i]->GetOwner()][myGame->GetBitMap()->GetMapData()[i]->GetHomeLevel()][i].ShowBitmap(scale);
+                //TRACE("position=%d", myGame->GetBitMap()->GetMapData()[i]->GetBuildingPositionX()/5);
+                house[myGame->GetBitMap()->GetMapData()[i]->GetOwner()][myGame->GetBitMap()->GetMapData()[i]->GetHomeLevel()].SetTopLeft(fix + left + myGame->GetBitMap()->GetMapData()[i]->GetBuildingPositionX() / 5, fix + top + myGame->GetBitMap()->GetMapData()[i]->GetBuildingPositionY() / 5 );
+                house[myGame->GetBitMap()->GetMapData()[i]->GetOwner()][myGame->GetBitMap()->GetMapData()[i]->GetHomeLevel()].ShowBitmap(scale);
             }
         }
     }

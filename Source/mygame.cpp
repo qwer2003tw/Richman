@@ -173,6 +173,7 @@ void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)   //菲公オ龄
     if (helpButton->GetSignal())
     {
         showHelp = true;
+        helpButton->SetSignal(0);
     }
 
 }
@@ -332,6 +333,7 @@ void CGameStateRun::OnBeginState()
     player[3] = new Player(SelectCharactor::getInstance()->getCharactor()[3], 3);//ま计本TYPE ORDER
     player[3]->LoadBitmap();
     player[3]->SetMap(&bigMap);
+
 	const int BALL_GAP = 90;
 	const int BALL_XY_OFFSET = 45;
 	const int BALL_PER_ROW = 7;
@@ -678,10 +680,9 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 矪瞶菲公笆
                 player[nowPlayer]->AdjMoney(-bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPrice());
                 bigMap.Build(player[nowPlayer]->GetType(), player[nowPlayer]->GetNow());
             }
-            
             ui.SetButton(0);
             ui.SetState(6);
-            ui.SetDisplay(1);
+            ui.SetDisplay(0);
         }
         else if (ui.GetYesOrNoBuy() == 0)
         {

@@ -17,7 +17,7 @@ namespace game_framework {
     private:
         int mapcount = 36;//地圖格數
         CMovingBitmap map;
-        CMovingBitmap house[4][4][40];      // 4 users 4 levels 40 houses
+        CMovingBitmap house[5][4];      // 5 users 4 levels
         CMovingBitmap props[15];            // 道具貼圖
         MapData *mapData[40];
     };

@@ -71,28 +71,32 @@ namespace game_framework {
     void Map::LoadBitmap()
     {
         map.LoadBitmap("res/MAP.bmp", RGB(255, 255, 255));
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 36; j++)
-            {
-                if      (i == 0) house[i][0][j].LoadBitmap("res/House_level0_0.bmp", RGB(0, 0, 0));
-                else if (i == 1) house[i][0][j].LoadBitmap("res/House_level0_1.bmp", RGB(0, 0, 0));
-                else if (i == 2) house[i][0][j].LoadBitmap("res/House_level0_2.bmp", RGB(0, 0, 0));
-                else if (i == 3) house[i][0][j].LoadBitmap("res/House_level0_3.bmp", RGB(255, 255, 255)); //眼鏡白底的
-                if      (i == 0) house[i][1][j].LoadBitmap("res/House_level1_0.bmp", RGB(0, 0, 0));
-                else if (i == 1) house[i][1][j].LoadBitmap("res/House_level1_1.bmp", RGB(0, 0, 0));
-                else if (i == 2) house[i][1][j].LoadBitmap("res/House_level1_2.bmp", RGB(0, 0, 0));
-                else if (i == 3) house[i][1][j].LoadBitmap("res/House_level1_3.bmp", RGB(0, 0, 0));
-                if      (i == 0) house[i][2][j].LoadBitmap("res/House_level2_0.bmp", RGB(0, 0, 0));
-                else if (i == 1) house[i][2][j].LoadBitmap("res/House_level2_1.bmp", RGB(0, 0, 0));
-                else if (i == 2) house[i][2][j].LoadBitmap("res/House_level2_2.bmp", RGB(0, 0, 0));
-                else if (i == 3) house[i][2][j].LoadBitmap("res/House_level2_3.bmp", RGB(0, 0, 0));
-                if      (i == 0) house[i][3][j].LoadBitmap("res/House_level3_0.bmp", RGB(0, 0, 0));
-                else if (i == 1) house[i][3][j].LoadBitmap("res/House_level3_1.bmp", RGB(0, 0, 0));
-                else if (i == 2) house[i][3][j].LoadBitmap("res/House_level3_2.bmp", RGB(0, 0, 0));
-                else if (i == 3) house[i][3][j].LoadBitmap("res/House_level3_3.bmp", RGB(0, 0, 0));
-            }
-        }
+        // 人物種類 0多拉A夢 1胖虎 2靜香 3大雄 4小夫
+
+        house[0][0].LoadBitmap("res/House_level0_0.bmp", RGB(0, 0, 0));
+        house[1][0].LoadBitmap("res/House_level0_2.bmp", RGB(0, 0, 0));
+        house[2][0].LoadBitmap("res/House_level0_4.bmp", RGB(0, 0, 0));
+        house[3][0].LoadBitmap("res/House_level0_3.bmp", RGB(255, 255, 255)); //眼鏡白底的
+        house[4][0].LoadBitmap("res/House_level0_1.bmp", RGB(0, 0, 0));
+
+        house[0][1].LoadBitmap("res/House_level1_0.bmp", RGB(0, 0, 0));
+        house[1][1].LoadBitmap("res/House_level1_2.bmp", RGB(0, 0, 0));
+        house[2][1].LoadBitmap("res/House_level1_4.bmp", RGB(0, 0, 0));
+        house[3][1].LoadBitmap("res/House_level1_3.bmp", RGB(0, 0, 0));
+        house[4][1].LoadBitmap("res/House_level1_1.bmp", RGB(0, 0, 0));
+
+        house[0][2].LoadBitmap("res/House_level2_0.bmp", RGB(0, 0, 0));
+        house[1][2].LoadBitmap("res/House_level2_2.bmp", RGB(0, 0, 0));
+        house[2][2].LoadBitmap("res/House_level2_4.bmp", RGB(0, 0, 0));
+        house[3][2].LoadBitmap("res/House_level2_3.bmp", RGB(0, 0, 0));
+        house[4][2].LoadBitmap("res/House_level2_1.bmp", RGB(0, 0, 0));
+
+        house[0][3].LoadBitmap("res/House_level3_0.bmp", RGB(0, 0, 0));
+        house[1][3].LoadBitmap("res/House_level3_2.bmp", RGB(0, 0, 0));
+        house[2][3].LoadBitmap("res/House_level3_4.bmp", RGB(0, 0, 0));
+        house[3][3].LoadBitmap("res/House_level3_3.bmp", RGB(0, 0, 0));
+        house[4][3].LoadBitmap("res/House_level3_1.bmp", RGB(0, 0, 0));
+
         props[0].LoadBitmap("res/Landmine.bmp", RGB(255, 255, 255));
         props[1].LoadBitmap("res/Roadblocks.bmp", RGB(255, 255, 255));
         props[2].LoadBitmap("res/Timebombs.bmp", RGB(255, 255, 255));
@@ -107,8 +111,8 @@ namespace game_framework {
         {
             if (mapData[i]->GetOwner() != 99 && mapData[i]->GetType() == 1)
             {
-                house[mapData[i]->GetOwner()][mapData[i]->GetHomeLevel()][i].SetTopLeft(-sx + mapData[i]->GetBuildingPositionX(), -sy + mapData[i]->GetBuildingPositionY());
-                house[mapData[i]->GetOwner()][mapData[i]->GetHomeLevel()][i].ShowBitmap();
+                 house[mapData[i]->GetOwner()][mapData[i]->GetHomeLevel()].SetTopLeft(-sx + mapData[i]->GetBuildingPositionX(), -sy + mapData[i]->GetBuildingPositionY());
+                 house[mapData[i]->GetOwner()][mapData[i]->GetHomeLevel()].ShowBitmap();
             }
             if (mapData[i]->GetPropIndex() != 99)
             {
@@ -138,7 +142,7 @@ namespace game_framework {
     }
     CMovingBitmap* Map::GetHouse()
     {
-        return &house[0][0][0];
+        return &house[0][0];
     }
     MapData ** Map::GetMapData()
     {

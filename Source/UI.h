@@ -49,7 +49,7 @@ namespace game_framework {
         CMovingBitmap cardFrame;            // 道具欄
         CMovingBitmap props[15];            // 道具
         CMovingBitmap event[10];            // 事件
-        CMovingBitmap house[4][4][40];      // 4 users 4 levels 40 houses
+        CMovingBitmap house[5][4];          // 4 users 4 levels
         CMovingBitmap playerHead[5];
         CMovingBitmap btnbackground;        // 上方背景
         CMovingBitmap rdbg;                 //遙控骰子背景

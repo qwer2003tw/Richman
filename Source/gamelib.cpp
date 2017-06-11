@@ -369,7 +369,7 @@ void CMovingBitmap::LoadBitmap(char *filename, COLORREF color)
 
 void CMovingBitmap::SetTopLeft(int x, int y)
 {
-	GAME_ASSERT(isBitmapLoaded,"A bitmap must be loaded before SetTopLeft() is called !!!");
+    GAME_ASSERT(isBitmapLoaded,"A bitmap must be loaded before SetTopLeft() is called !!!");
 	int dx = location.left - x;
 	int dy = location.top - y;
 	location.left = x;

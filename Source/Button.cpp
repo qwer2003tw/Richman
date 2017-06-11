@@ -66,7 +66,6 @@ namespace game_framework {
             {
                 state = 1;
                 signal = 1;
-                
             }
         }
         else
