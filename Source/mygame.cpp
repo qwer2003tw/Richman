@@ -348,7 +348,8 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-
+    if (ui.GetState() == 10 && ui.GetYesOrNoBuy() == 1)
+        GotoGameState(GAME_STATE_OVER);
 	if (background.Top() > SIZE_Y)
 		background.SetTopLeft(60 ,-background.Height());
 	background.SetTopLeft(background.Left(),background.Top()+1);
@@ -516,7 +517,9 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     }
     if (ui.GetState() == 6)                                 // 延遲狀態 切換玩家
     {
-        if (delayCount > 0)
+        if(player[nowPlayer]->GetMoney() < 0)
+            ui.SetState(10);
+        else if (delayCount > 0)
             delayCount--;
         else
         {
@@ -679,7 +682,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
             }
             ui.SetButton(0);
             ui.SetState(6);
-            ui.SetDisplay(0);
+            ui.SetDisplay(1);
         }
         else if (ui.GetYesOrNoBuy() == 0)
         {

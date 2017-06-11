@@ -11,6 +11,7 @@ namespace game_framework {
         void Upgrade(int nowPosition);
         void SetPropIndex(int index, int position);
         int GetPropIndex(int position);
+        int GetHouseAmount(int playerIndex);
         CMovingBitmap* GetHouse();
         MapData** GetMapData();
         int GetMapCount();  
