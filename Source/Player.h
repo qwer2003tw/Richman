@@ -12,7 +12,6 @@ namespace game_framework {
         int amount;
     };
     
-    
     class Player {
     public:
         Player();

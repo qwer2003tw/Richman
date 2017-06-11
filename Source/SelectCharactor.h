@@ -5,7 +5,6 @@
 class SelectCharactor
 {
 public:
-
     static SelectCharactor* getInstance();
     void setData(int input[4]);
     int* getCharactor();

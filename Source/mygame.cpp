@@ -78,21 +78,10 @@ CGameStateInit::~CGameStateInit()
 }
 
 void CGameStateInit::OnInit()
-{
-    
-	//
-	// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
-	//     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
-	//
+{   
 	ShowInitProgress(0);	// 一開始的loading進度為0%
-	//
-	// 開始載入資料
-	//
     beginground.LoadBitmap("res/BEGIN_BACKGROUND.bmp");
-	//Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
-	//
-	// 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
-	//
+
     startButton = new Button(1);
     startButton->LoadBitmap("res/BUTTON_START_1.bmp", "res/BUTTON_START_2.bmp", RGB(255, 255, 255));
     helpButton = new Button(1);
@@ -273,18 +262,7 @@ void CGameStateOver::OnBeginState()
 
 void CGameStateOver::OnInit()
 {
-	//
-	// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
-	//     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
-	//
-	ShowInitProgress(66);	// 接個前一個狀態的進度，此處進度視為66%
-	//
-	// 開始載入資料
-	//
-	//Sleep(300);				// 放慢，以便看清楚進度，實際遊戲請刪除此Sleep
-	//
-	// 最終進度為100%
-	//
+	ShowInitProgress(66);
 	ShowInitProgress(100);
 }
 
@@ -570,16 +548,9 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
     srand((int)time(NULL));
-	//
-	// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
-	//     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
-	//
-	ShowInitProgress(33);	// 接個前一個狀態的進度，此處進度視為33%
-	//
-	// 開始載入資料
-	//
+    ShowInitProgress(33);	// 接個前一個狀態的進度，此處進度視為33%
 
-	background.LoadBitmap(IDB_BACKGROUND);					// 載入背景的圖形
+    background.LoadBitmap(IDB_BACKGROUND);					// 載入背景的圖形
     ui.LoadBitmap();                                        // 載入UI
     bigMap.LoadBitmap();                                    // 載入地圖
     nowPlayer = 0;
@@ -587,9 +558,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     ui.SetMyGame(this);
     isExplosion = false;
 
-    //
-	//
-	help.LoadBitmap(IDB_HELP,RGB(255,255,255));				       // 載入說明的圖形
+    help.LoadBitmap(IDB_HELP, RGB(255, 255, 255));				    // 載入說明的圖形
     explosion[0].LoadBitmap("RES/explosion/explosion_1.bmp", RGB(0, 0, 0));
     explosion[1].LoadBitmap("RES/explosion/explosion_2.bmp", RGB(0, 0, 0));
     explosion[2].LoadBitmap("RES/explosion/explosion_3.bmp", RGB(0, 0, 0));
@@ -599,21 +568,13 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     explosion[6].LoadBitmap("RES/explosion/explosion_7.bmp", RGB(0, 0, 0));
     explosion[7].LoadBitmap("RES/explosion/explosion_8.bmp", RGB(0, 0, 0));
 
-    //BGM
-
-    CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	    // 載入編號3的聲音BGM.mp3
-    CAudio::Instance()->Load(AUDIO_BOOMER, "sounds\\BOOMER.mp3");   // 載入編號4的聲音BGM.mp3 
-    CAudio::Instance()->Load(AUDIO_STOP, "sounds\\STOP.wav");       // 載入編號5的聲音stop.mp3
-    CAudio::Instance()->Load(AUDIO_WALK, "sounds\\WALK.mp3");       // 載入編號6的聲音walk.mp3
-    CAudio::Instance()->Load(AUDIO_TICKING, "sounds\\TICKING.mp3"); // 載入編號7的聲音BGM.mp3
-
+    CAudio::Instance()->Load(AUDIO_BGM, "sounds\\BGM.mp3");	        // 載入編號3的聲音BGM.mp3
+    CAudio::Instance()->Load(AUDIO_BOOMER, "sounds\\BOOMER.mp3");   // 載入編號4的聲音BOOMER.mp3 
+    CAudio::Instance()->Load(AUDIO_STOP, "sounds\\STOP.wav");       // 載入編號5的聲音STOP.mp3
+    CAudio::Instance()->Load(AUDIO_WALK, "sounds\\WALK.mp3");       // 載入編號6的聲音WALK.mp3
+    CAudio::Instance()->Load(AUDIO_TICKING, "sounds\\TICKING.mp3"); // 載入編號7的聲音TICKING.mp3
     CAudio::Instance()->Play(AUDIO_BGM, true);
-
-    //
-	// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
-	//
 }
-
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     const char KEY_ESC    = 27;
@@ -652,7 +613,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     {
         player[nowPlayer]->AdjMoney(2000);
     }
-    if (nChar == KEY_SUB || nChar == KEY_SUB1)
+    if ((nChar == KEY_SUB || nChar == KEY_SUB1) && player[nowPlayer]->GetMoney() >= 2000)
     {
         player[nowPlayer]->AdjMoney(-2000);
     }
@@ -820,12 +781,6 @@ int CGameStateRun::GetPlayerCount()
 
 void CGameStateRun::OnShow()
 {
-    //
-    //  注意：Show裡面千萬不要移動任何物件的座標，移動座標的工作應由Move做才對，
-    //        否則當視窗重新繪圖時(OnDraw)，物件就會移動，看起來會很怪。換個術語
-    //        說，Move負責MVC中的Model，Show負責View，而View不應更動Model。
-    //
-    //
 
     bigMap.OnShow(ui.GetSx(), ui.GetSy());
     // 人物顯示

@@ -601,12 +601,11 @@ namespace game_framework {
 
         for (int i = 0; i < 4; i++)
         { 
-          sprintf(amountStr, "金額%d , 房產數量%d", myGame->GetPlayer()[order[i]]->GetMoney(),myGame->GetBitMap()->GetHouseAmount(i));
+          sprintf(amountStr, "金額%d , 房產數量%d", myGame->GetPlayer()[order[i]]->GetMoney(),myGame->GetBitMap()->GetHouseAmount(myGame->GetPlayer()[order[i]]->GetType()));
           pDC->TextOutA(600, 130 + 250 * i, amountStr);
         }
         
         pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
         CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
     }
-
 }

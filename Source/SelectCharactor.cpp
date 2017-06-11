@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #include "SelectCharactor.h"
 
-
-
-
-
 void SelectCharactor::setData(int input[4])
 {
     charactor[0] = input[0];
@@ -23,8 +19,6 @@ SelectCharactor * SelectCharactor::getInstance()
     static SelectCharactor instance;
     return &instance;
 }
-
-
 
 SelectCharactor::SelectCharactor()
 {

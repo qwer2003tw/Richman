@@ -338,9 +338,6 @@ namespace game_framework {
 
        pDC->TextOut(1535, 225, name);
        pDC->TextOut(1535, 300, str);
-
-
-
        pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
        CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
    }
@@ -418,5 +415,4 @@ namespace game_framework {
    {
        return TimeBombsCounter;
    }
-   
 }

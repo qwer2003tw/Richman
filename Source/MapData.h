@@ -31,6 +31,5 @@ namespace game_framework {
         int homeLevel;
         int buildingPositionX, buildingPositionY;
         int propIndex;                                // 放置的道具
-
     };
 }

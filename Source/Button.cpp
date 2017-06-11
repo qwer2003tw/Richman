@@ -106,9 +106,7 @@ namespace game_framework {
                 state = 1;
             else
                 state = 0;
-        }
-
-              
+        }         
     }
     int Button::GetSignal()
     {

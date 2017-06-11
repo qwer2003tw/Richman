@@ -23,7 +23,5 @@ namespace game_framework {
         bool enable;
         int state;
         int signal;                    // ÂIÀ»Signal
-    private:
-       
     };
 }

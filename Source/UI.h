@@ -67,7 +67,6 @@ namespace game_framework {
         int amount;
         int state = 0;                      // 0 開始 > 1擲骰 > 2骰停傳值 > 3人物移動中 > 可以買地跳4做 
                                             // 5可以升級跳 6延遲 7事件 8使用道具 9暫停延遲 10結算
-
         int messageType;                    // 訊息類型 1 買地 2 升級
         int money;                          // 金額訊息
         bool displayMessage;
