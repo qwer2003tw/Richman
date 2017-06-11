@@ -308,11 +308,9 @@ void CGameStateOver::OnShow()
 /////////////////////////////////////////////////////////////////////////////
 
 CGameStateRun::CGameStateRun(CGame *g)
-: CGameState(g), NUMBALLS(28)
+: CGameState(g)
 {
-
     for (int i = 0; i < 4; i++) player[i] = nullptr;
-	//ball = new CBall [NUMBALLS];
 }
 
 CGameStateRun::~CGameStateRun()
@@ -366,6 +364,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         ui.SetState(3); // player runing
         if(player[nowPlayer]->GetTimeBombsCounter() > 0)
             CAudio::Instance()->Play(AUDIO_TICKING, true);
+        else 
+            CAudio::Instance()->Stop(7);
         CAudio::Instance()->Play(AUDIO_WALK, true);
     }
     // 正在行進中 包含抵達
@@ -602,11 +602,12 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     //BGM
 
     CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	    // 載入編號3的聲音BGM.mp3
-    CAudio::Instance()->Load(AUDIO_BOOMER, "sounds\\boomer.mp3");   // 載入編號4的聲音BGM.mp3 
-    CAudio::Instance()->Load(AUDIO_STOP, "sounds\\stop.wav");       // 載入編號5的聲音stop.mp3
-    CAudio::Instance()->Load(AUDIO_WALK, "sounds\\walk.mp3");       // 載入編號6的聲音walk.mp3
-    CAudio::Instance()->Load(AUDIO_TICKING, "sounds\\Ticking.mp3"); // 載入編號7的聲音BGM.mp3
+    CAudio::Instance()->Load(AUDIO_BOOMER, "sounds\\BOOMER.mp3");   // 載入編號4的聲音BGM.mp3 
+    CAudio::Instance()->Load(AUDIO_STOP, "sounds\\STOP.wav");       // 載入編號5的聲音stop.mp3
+    CAudio::Instance()->Load(AUDIO_WALK, "sounds\\WALK.mp3");       // 載入編號6的聲音walk.mp3
+    CAudio::Instance()->Load(AUDIO_TICKING, "sounds\\TICKING.mp3"); // 載入編號7的聲音BGM.mp3
 
+    CAudio::Instance()->Play(AUDIO_BGM, true);
 
     //
 	// 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
