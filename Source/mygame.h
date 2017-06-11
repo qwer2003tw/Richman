@@ -69,8 +69,8 @@ namespace game_framework {
         AUDIO_BGM,              // 3
         AUDIO_BOOMER,           // 4
         AUDIO_STOP,             // 5
-        AUDIO_WALK              // 6
-
+        AUDIO_WALK,             // 6
+        AUDIO_TICKING           // 7
 
     };
 	/////////////////////////////////////////////////////////////////////////////

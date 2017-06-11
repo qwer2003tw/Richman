@@ -345,23 +345,12 @@ void CGameStateRun::OnBeginState()
 
 	background.SetTopLeft(BACKGROUND_X,0);				// 設定背景的起始座標
 	help.SetTopLeft(0, SIZE_Y - help.Height());			// 設定說明圖的起始座標
-	//CAudio::Instance()->Play(AUDIO_LAKE, true);	    // 撥放 WAVE
-	//CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
-	//CAudio::Instance()->Play(AUDIO_NTUT, true);	    // 撥放 MIDI
-
-   // CAudio::Instance()->Play(AUDIO_BGM, true);	    // 撥放 MIDI
 
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-	//
-	// 如果希望修改cursor的樣式，則將下面程式的commment取消即可
-	//
-	// SetCursor(AfxGetApp()->LoadCursor(IDC_GAMECURSOR));
-	//
-	// 移動背景圖的座標
-	//
+
 	if (background.Top() > SIZE_Y)
 		background.SetTopLeft(60 ,-background.Height());
 	background.SetTopLeft(background.Left(),background.Top()+1);
@@ -373,6 +362,9 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     {
         player[nowPlayer]->SetRemaining(ui.GetAmount());        // 2-3 傳入值
         ui.SetState(3); // player runing
+        if(player[nowPlayer]->GetTimeBombsCounter() > 0)
+            CAudio::Instance()->Play(AUDIO_TICKING, true);
+        CAudio::Instance()->Play(AUDIO_WALK, true);
     }
     // 正在行進中 包含抵達
     if (ui.GetState() == 3){
@@ -381,6 +373,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         {
             CAudio::Instance()->Play(AUDIO_STOP, true);
             CAudio::Instance()->Play(AUDIO_STOP, false);
+            CAudio::Instance()->Stop(7);
+            CAudio::Instance()->Stop(6);
             player[nowPlayer]->SetRemaining(0);
             bigMap.GetMapData()[player[nowPlayer]->GetNow()]->SetPropIndex(99);
             ui.SetMessage(6, 0); // 訊息類型 忽略
@@ -412,7 +406,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     // 已抵達
     if (player[nowPlayer]->GetRemaining() == 0 && ui.GetState() == 3)
     {
-
+        CAudio::Instance()->Stop(7);
+        CAudio::Instance()->Stop(6);
         // 碰到地雷
         if (bigMap.GetMapData()[player[nowPlayer]->GetNow()]->GetPropIndex() == 0)
         {
@@ -602,10 +597,11 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
     //BGM
 
-    CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	   // 載入編號3的聲音BGM.mp3
-    CAudio::Instance()->Load(AUDIO_BOOMER, "sounds\\boomer.mp3");  // 載入編號4的聲音BGM.mp3 
-    CAudio::Instance()->Load(AUDIO_STOP, "sounds\\stop.wav");      // 載入編號5的聲音BGM.mp3
-    CAudio::Instance()->Load(AUDIO_WALK, "sounds\\walk.mp3");      // 載入編號6的聲音BGM.mp3
+    CAudio::Instance()->Load(AUDIO_BGM,  "sounds\\BGM.mp3");	    // 載入編號3的聲音BGM.mp3
+    CAudio::Instance()->Load(AUDIO_BOOMER, "sounds\\boomer.mp3");   // 載入編號4的聲音BGM.mp3 
+    CAudio::Instance()->Load(AUDIO_STOP, "sounds\\stop.wav");       // 載入編號5的聲音stop.mp3
+    CAudio::Instance()->Load(AUDIO_WALK, "sounds\\walk.mp3");       // 載入編號6的聲音walk.mp3
+    CAudio::Instance()->Load(AUDIO_TICKING, "sounds\\Ticking.mp3"); // 載入編號7的聲音BGM.mp3
 
 
     //
