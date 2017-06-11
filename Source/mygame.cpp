@@ -682,7 +682,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
             }
             ui.SetButton(0);
             ui.SetState(6);
-            ui.SetDisplay(1);
+            ui.SetDisplay(0);
         }
         else if (ui.GetYesOrNoBuy() == 0)
         {
