@@ -39,6 +39,7 @@ namespace game_framework {
         int GetEvent();
         int GetNowUseProp();
         int GetFollowMouse();
+        Button** GetyesButton();
         void InitEvent();
         void UseProp(int prop);
         void UseRemoteDice(CPoint point);

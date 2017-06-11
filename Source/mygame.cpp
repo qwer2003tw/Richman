@@ -260,6 +260,7 @@ CGameStateOver::CGameStateOver(CGame *g)
 
 void CGameStateOver::OnMove()
 {
+    PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);
 	counter--;
 	if (counter < 0)
 		GotoGameState(GAME_STATE_INIT);
@@ -731,22 +732,31 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
     }
     else if (ui.GetState() == 7)                // 事件完 切換玩家
     {
-        ui.InitEvent();
-        ui.SetState(0);
-        if (nowPlayer < playercount) // 切換玩家
+        if (player[nowPlayer]->GetMoney() < 0)
         {
-            nowPlayer++;
-            nowPlayer %= playercount;
-            if (player[nowPlayer]->GetStop() != 0)
-            {
-                int s = player[nowPlayer]->GetStop();
-                ui.SetMessage(5, player[nowPlayer]->GetStop());    // 訊息類型 暫停回合
-                player[nowPlayer]->SetStop(s - 1);
-                ui.SetDisplay(1);
-                ui.SetState(6);
-            }
-            else if (player[nowPlayer]->GetStop() == 0)player[nowPlayer]->SetInjury(false);
+            (*ui.GetyesButton())->SetSignal(0);
+            ui.SetState(10);
         }
+        else
+        {
+            ui.InitEvent();
+            ui.SetState(0);
+            if (nowPlayer < playercount) // 切換玩家
+            {
+                nowPlayer++;
+                nowPlayer %= playercount;
+                if (player[nowPlayer]->GetStop() != 0)
+                {
+                    int s = player[nowPlayer]->GetStop();
+                    ui.SetMessage(5, player[nowPlayer]->GetStop());    // 訊息類型 暫停回合
+                    player[nowPlayer]->SetStop(s - 1);
+                    ui.SetDisplay(1);
+                    ui.SetState(6);
+                }
+                else if (player[nowPlayer]->GetStop() == 0)player[nowPlayer]->SetInjury(false);
+            }
+        }
+       
     }
     else if (ui.GetState() == 8 && ui.GetFollowMouse() != 99) // 選擇道具放置位置
     {
