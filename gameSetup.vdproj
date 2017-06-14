@@ -4876,15 +4876,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Richman"
-        "ProductCode" = "8:{358A211B-39AF-47EF-9A5F-DFE90E37CB2E}"
-        "PackageCode" = "8:{026F0C6B-7514-4C7B-B33E-83E9F8169B79}"
-        "UpgradeCode" = "8:{ED698920-B25B-42D0-BFFA-09FFBB20AAC5}"
+        "ProductCode" = "8:{8786C58A-EED8-4EB8-83AC-96347405D13C}"
+        "PackageCode" = "8:{ABAACD7D-BDF9-472F-9FDA-894DE685D0A1}"
+        "UpgradeCode" = "8:{91C61546-7096-4FE5-B222-7657583E9B19}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.0"
+        "ProductVersion" = "8:3.0"
         "Manufacturer" = "8: NUTU-CSIE-2017Games"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -5454,7 +5454,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_FEB1C521B758467A98F7B43033E60D12"
             {
-            "SourcePath" = "8:Release\\game.exe"
+            "SourcePath" = "8:Debug\\game.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_A62E3FBC3C2C4A6D9157A8D6CE468FB2"
